@@ -1,0 +1,15 @@
+.form-aluno h1 {
+    padding: 10px;
+    text-align: center;
+}
+
+.form-aluno form {
+    align-items: center;    
+}
+
+.form-aluno form label {
+    padding-left: 10px;
+    width: 110px;
+    display: inline-flex;
+
+}

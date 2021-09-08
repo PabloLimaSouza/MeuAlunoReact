@@ -1,0 +1,17 @@
+.Header{    
+    font-size: 20px;
+    position: absolute;    
+    background-color: cadetblue;
+    width: 100%;
+    align-items: center;
+    height: 7%;
+    justify-content: center;
+    text-align: right;
+    padding-right: 30px;
+    padding-top: 10px;      
+}
+
+.label{
+    font-size: 200px;
+    padding-left: 100px;
+}

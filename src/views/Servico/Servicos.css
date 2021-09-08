@@ -1,0 +1,37 @@
+#servicos {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 95%;    
+  }  
+  
+  #servicos td, #servicos th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #servicos tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #servicos tr:hover {background-color: #ddd;}
+  
+  #servicos th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #060b26;
+    color: white;
+  }
+
+  .lista-servicos h1{
+    text-align: center;    
+  }
+
+  .diaAula{     
+    align-content: center;   
+  }
+
+  .btn-novo{    
+    text-align: right;    
+    width: 95%;
+    padding-left: 85%;    
+    padding-bottom: 1%;
+  }
