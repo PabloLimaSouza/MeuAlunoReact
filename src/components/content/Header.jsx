@@ -7,8 +7,8 @@ const Header = () => {
   console.log(token);
   return (    
     <div className="Header">
-      <label for="empresas" className="empresa">Empresa</label>
-      <select name="empresas" id="empresas"> 
+      <label for="head-empresas" className="head-empresa">Empresa</label>
+      <select name="head-empresas" id="head-empresas"> 
         <option value={token.pessoa.empresa.razaoSocial}>{token.pessoa.empresa.razaoSocial}</option>              
       </select>
       <label>Olá </label>

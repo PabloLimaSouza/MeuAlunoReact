@@ -12,6 +12,7 @@ import CadastroMateria from "../../views/Materia/CadastroMateria";
 import Materias from "../../views/Materia/Materias";
 import Aulas from "../../views/Aula/Aulas";
 import CadastroAula from "../../views/Aula/CadastroAula";
+import Empresas from "../../views/Empresa/Empresa";
 import CadastroEmpresa from "../../views/Empresa/CadastroEmpresa";
 
 const Content = (props) => (
@@ -29,6 +30,7 @@ const Content = (props) => (
           <Route path="/materias" component={Materias}/>
           <Route path="/aulas" component={Aulas}/>
           <Route path="/cadastroAula" component={CadastroAula}/>
+          <Route path="/empresas" component={Empresas}/>
           <Route path="/cadastroEmpresa" component={CadastroEmpresa}/>
 
         </Switch></div>   

@@ -36,7 +36,7 @@ export const MenuItem = [
     },
     {
         title: 'Empresas',
-        path: '/cadastroEmpresa',
+        path: '/empresas',
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
     },
