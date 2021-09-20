@@ -158,7 +158,7 @@ function CadastroAluno() {
       Object.keys(Endereco).forEach((key) => {
         if (key === "CEP") Endereco[key] = value;
       });
-    }
+    } 
 
     setValues({ ...values, Endereco });
   };

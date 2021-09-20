@@ -1,259 +1,318 @@
-import React , {useState, useContext} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import StoreContext from "../../contexts/StoreContext";
-import { Button, Grid, Paper, TextField, Select, Divider, Switch, FormLabel } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  Paper,
+  TextField,
+  Select,
+  Divider,
+  Switch,
+  FormLabel,
+} from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
 import { MenuItem } from "@material-ui/core";
+import { format } from "date-fns";
 
 function CadastroEmpresa() {
+  var editarEmpresaUrl = "";
+  const editarEmpresaId = window.location.pathname.split("/");
+  if (editarEmpresaId[2] != null) {
+    editarEmpresaUrl = `https://localhost:44389/api/empresa/${editarEmpresaId[2]}`;
+  }
 
-    const initialValues = {
-        //Id: "",
-        TipoEmpresa: "",
-        UsarDados: false,
-        CNPJ_CPF: "",
-        RazaoSocial: "",
-        Telefone: "",
-        Endereco: {
-            Logradouro: "",
-            Numero: "",
-            Complemento: "",
-            Bairro: "",
-            Cidade: "",
-            Estado: "",
-            CEP: "",
+  const empresaResponse = useFetch(editarEmpresaUrl);
+  const [loading, setLoading] = useState(true);
+
+  const person = { Nome: "", Telefone: "" };
+
+  const initialValues = {
+    //Id: "",
+    TipoEmpresa: "",
+    UsarDados: false,
+    CNPJ_CPF: "",
+    RazaoSocial: "",
+    Telefone: "",
+    Endereco: {
+      Logradouro: "",
+      Numero: "",
+      Complemento: "",
+      Bairro: "",
+      Cidade: "",
+      Estado: "",
+      CEP: "",
+    },
+    Pessoas: [person],
+  };
+
+  const [values, setValues] = useState(initialValues);
+
+  useEffect(
+    function () {
+      if (empresaResponse.data != null) {
+        setValues((prevState) => ({
+          TipoEmpresa: (empresaResponse.data.cnpJ_CPF).length < 12 ? "1" : "2" ,
+          CNPJ_CPF: empresaResponse.data.cnpJ_CPF,
+          RazaoSocial: empresaResponse.data.razaoSocial,
+          Telefone: empresaResponse.data.telefone,
+          Endereco: {
+            Logradouro: empresaResponse.data.endereco.logradouro,
+            Numero: empresaResponse.data.endereco.numero,
+            Complemento: empresaResponse.data.endereco.complemento,
+            Bairro: empresaResponse.data.endereco.bairro,
+            Cidade: empresaResponse.data.endereco.cidade,
+            Estado: empresaResponse.data.endereco.estado,
+            CEP: empresaResponse.data.endereco.cep,
           },
-        Pessoa: {
-            CPF: "",
-            Nome: "",
-            Email: "",
-            DataNascimento: "",
-            Telefone: "",
-        }  
-     };  
-     
-     const[values, setValues] = useState(initialValues);
-    
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setValues({ ...values, [name]: e.target.value });
-        console.log({name,value});
-      };
-
-      const handleEndereco = (e) => {
-        const { name, value } = e.target;
-        console.log({name,value});
-        const Endereco = { ...values.Endereco };
-        const Pessoa = {...values.Pessoa};
-    
-        if (name == "Logradouro") {
-          Object.keys(Endereco).forEach((key) => {
-            if (key === "Logradouro") Endereco[key] = value;
-          });
-        } else if (name == "Numero") {
-          Object.keys(Endereco).forEach((key) => {
-            if (key === "Numero") Endereco[key] = value;
-          });
-        } else if (name == "Complemento") {
-          Object.keys(Endereco).forEach((key) => {
-            if (key === "Complemento") Endereco[key] = value;
-          });
-        } else if (name == "Bairro") {
-          Object.keys(Endereco).forEach((key) => {
-            if (key === "Bairro") Endereco[key] = value;
-          });
-        } else if (name == "Cidade") {
-          Object.keys(Endereco).forEach((key) => {
-            if (key === "Cidade") Endereco[key] = value;
-          });
-        } else if (name == "Estado") {
-          Object.keys(Endereco).forEach((key) => {
-            if (key === "Estado") Endereco[key] = value;
-          });
-        } else if (name == "CEP") {
-          Object.keys(Endereco).forEach((key) => {
-            if (key === "CEP") Endereco[key] = value;
-          });
-        } else if (name == "CPF") {
-            Object.keys(Pessoa).forEach((key) => {
-            if (key === "CPF") Pessoa[key] = value;
-            });
-        } else if (name == "Nome") {
-            Object.keys(Pessoa).forEach((key) => {
-            if (key === "Nome") Pessoa[key] = value;
-            });
-        } else if (name == "Telefone") {
-            Object.keys(Pessoa).forEach((key) => {
-            if (key === "Telefone") Pessoa[key] = value;
-            });
-        }
-        setValues({ ...values, Endereco,Pessoa });
-      };
-
-      const handleCheckChange = (e) => {
-        const {name, checked} = e.target;
-        setValues({...values, [name]: e.target.checked});
-        console.log(
-          "handleCheckChange " +
-            ">>name: " +
-            e.target.name +
-            " >>value: " +
-            e.target.value +
-            " >>checked: " +
-            e.target.checked
-        );
-        console.log(values);
-      };
-    
-      function handleSubmit(e) {
-        alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
-        console.log(values);
-        e.preventDefault();
-    
-        const response = fetch("https://localhost:44389/api/empresa/", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+          Pessoas: {
+            Nome: empresaResponse.data.pessoas[0].nome,
+            CPF: empresaResponse.data.pessoas[0].cpf,
+            Email: empresaResponse.data.pessoas[0].email,
+            DataNascimento: format(
+              new Date(empresaResponse.data.pessoas[0].dataNascimento),
+              "yyyy-MM-dd"
+            ),
+            Telefone: empresaResponse.data.pessoas[0].telefone,
           },
-          body: JSON.stringify(values),
-        })
-          .then((response) => response.json())
-          .then((response) => {
-            console.log(response);
-            if (
-              response == "Matéria atualizada" ||
-              response == "Matéria não atualizada"
-            ) {
-              console.log("Deu bom");
-              console.log(response);
-            } else {
-              console.log("Deu ruim");
-            }
-          });
+        }));
       }
+    },
+    [empresaResponse]
+  );
 
-      const classes = useStyles();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: e.target.value });
+    console.log({ name, value });
+  };
 
-      return (
-        <React.Fragment>
-          <main className={classes.layout}>
-            <Paper className={classes.paper}>
-              <div className={classes.titulo}>
-                <h1>Cadastro de Empresa</h1>
-              </div>
-              <form onSubmit={handleSubmit}>
-                  <Grid container spacing={3}>
-                      <Grid item xs={12} sm={2}>
-                        <TextField
-                            id="TipoEmpresa"
-                            name="TipoEmpresa"
-                            label="Tipo"
-                            select
-                            fullWidth
-                            value={values.TipoEmpresa}
-                            onChange={handleChange}
-                            
-                        >
-                            <MenuItem value="1">Física</MenuItem>    
-                            <MenuItem value="2">Jurídica</MenuItem>                            
-                        </TextField>                         
-                      </Grid>
-                  </Grid>
+  const handlePessoa = (e) => {
+    const { name, value } = e.target;
+    const Endereco = { ...values.Endereco };
+    const Pessoa = { ...values.Pessoas };
+    console.log(Pessoa);
+    var pessoa = [
+      {
+        Nome: Pessoa[0].Nome,
+        CPF: Pessoa[0].CPF,
+        CPF: Pessoa[0].CPF,
+        DataNascimento: Pessoa[0].DataNascimento,
+        Email: Pessoa[0].Email,
+        Telefone: Pessoa[0].Telefone,
+      },
+    ];
 
-                  <Grid container spacing={3}>
-                      <Grid item xs={12} sm={4}>
-                          <TextField 
-                             id="RazaoSocial"
-                             name="RazaoSocial"
-                             label="Nome"
-                             fullWidth
-                             onChange={handleChange}
-                             value={values.RazaoSocial}
-                          />
-                      </Grid>
-                      
-                      <Grid item xs={12} sm={4}>
-                          <TextField 
-                             id="CNPJ_CPF"
-                             name="CNPJ_CPF"                            
-                             label= {
-                                 (values.TipoEmpresa == "1") ? "CPF" : 
-                                 (values.TipoEmpresa == "2") ? "CNPJ" : "CNPJ OU CPF"}
-                             fullWidth
-                             onChange={handleChange}
-                             value={values.CNPJ_CPF}
-                          />
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                          <TextField 
-                             id="Telefone"
-                             name="Telefone"
-                             label="Telefone"
-                             fullWidth
-                             onChange={handleChange}
-                             value={values.Telefone}
-                          />
-                      </Grid>
-                  </Grid>
+    if (name == "Logradouro") {
+      Object.keys(Endereco).forEach((key) => {
+        if (key === "Logradouro") Endereco[key] = value;
+      });
+    } else if (name == "Numero") {
+      Object.keys(Endereco).forEach((key) => {
+        if (key === "Numero") Endereco[key] = value;
+      });
+    } else if (name == "Complemento") {
+      Object.keys(Endereco).forEach((key) => {
+        if (key === "Complemento") Endereco[key] = value;
+      });
+    } else if (name == "Bairro") {
+      Object.keys(Endereco).forEach((key) => {
+        if (key === "Bairro") Endereco[key] = value;
+      });
+    } else if (name == "Cidade") {
+      Object.keys(Endereco).forEach((key) => {
+        if (key === "Cidade") Endereco[key] = value;
+      });
+    } else if (name == "Estado") {
+      Object.keys(Endereco).forEach((key) => {
+        if (key === "Estado") Endereco[key] = value;
+      });
+    } else if (name == "CEP") {
+      Object.keys(Endereco).forEach((key) => {
+        if (key === "CEP") Endereco[key] = value;
+      });
+    } else if (name == "CPF") {
+      pessoa[0].CPF = value;
+    } else if (name == "Nome") {
+      pessoa[0].Nome = value;
+    } else if (name == "Telefone") {
+      pessoa[0].Telefone = value;
+    } else if (name == "Email") {
+      pessoa[0].Email = value;
+    } else if (name == "DataNascimento") {
+      pessoa[0].DataNascimento = value;
+    }
 
-                  <Grid container spacing={3}>                
-                      <Grid item xs={12} sm={4}>
-                        <TextField
+    setValues({ ...values, Endereco, Pessoas: pessoa });
+  };
+
+  const handleCheckChange = (e) => {
+    const { name, checked } = e.target;
+    setValues({ ...values, [name]: e.target.checked });
+    console.log(
+      "handleCheckChange " +
+        ">>name: " +
+        e.target.name +
+        " >>value: " +
+        e.target.value +
+        " >>checked: " +
+        e.target.checked
+    );
+    console.log(values);
+  };
+
+  function handleSubmit(e) {
+    alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
+    console.log(values);
+    e.preventDefault();
+
+    const response = fetch("https://localhost:44389/api/empresa/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        if (
+          response == "Empresa cadastrada" ||
+          response == "Empresa não cadastrada"
+        ) {
+          console.log("Deu bom");
+          console.log(response);
+        } else {
+          console.log("Deu ruim");
+        }
+      });
+  }
+
+  const classes = useStyles();
+
+  return (
+    <React.Fragment>
+      <main className={classes.layout}>
+        <Paper className={classes.paper}>
+          <div className={classes.titulo}>
+            <h1>Cadastro de Empresa</h1>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={2}>
+                <TextField
+                  id="TipoEmpresa"
+                  name="TipoEmpresa"
+                  label="Tipo"
+                  select
+                  fullWidth
+                  value={values.TipoEmpresa}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="1">Física</MenuItem>
+                  <MenuItem value="2">Jurídica</MenuItem>
+                </TextField>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  id="RazaoSocial"
+                  name="RazaoSocial"
+                  label="Nome"
+                  fullWidth
+                  onChange={handleChange}
+                  value={values.RazaoSocial}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  id="CNPJ_CPF"
+                  name="CNPJ_CPF"
+                  label={
+                    values.TipoEmpresa == "1"
+                      ? "CPF"
+                      : values.TipoEmpresa == "2"
+                      ? "CNPJ"
+                      : "CNPJ OU CPF"
+                  }
+                  fullWidth
+                  onChange={handleChange}
+                  value={values.CNPJ_CPF}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  id="Telefone"
+                  name="Telefone"
+                  label="Telefone"
+                  fullWidth
+                  onChange={handleChange}
+                  value={values.Telefone}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={4}>
+                <TextField
                   id="Endereco.Logradouro"
                   name="Logradouro"
-                  onChange={handleEndereco}
+                  onChange={handlePessoa}
                   value={values.Endereco.Logradouro}
                   label="Endereço"
                   fullWidth
-                        />
+                />
               </Grid>
-                      <Grid item xs={12} sm={1}>
+              <Grid item xs={12} sm={1}>
                 <TextField
                   id="Endereco.Numero"
                   name="Numero"
                   label="Nº"
-                  onChange={handleEndereco}
+                  onChange={handlePessoa}
                   value={values.Endereco.Numero}
                   fullWidth
                 />
               </Grid>
-                     <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={3}>
                 <TextField
                   id="Endereco.Complemento"
                   name="Complemento"
                   label="Complemento"
-                  onChange={handleEndereco}
+                  onChange={handlePessoa}
                   value={values.Endereco.Complemento}
                   fullWidth
                 />
               </Grid>
-                     <Grid item xs={12} sm={2}>
+              <Grid item xs={12} sm={2}>
                 <TextField
                   id="Endereco.Cidade"
                   name="Cidade"
                   label="Cidade"
-                  onChange={handleEndereco}
+                  onChange={handlePessoa}
                   value={values.Endereco.Cidade}
                   fullWidth
                 />
               </Grid>
-                     <Grid item xs={12} sm={2}>
+              <Grid item xs={12} sm={2}>
                 <TextField
                   id="Endereco.Bairro"
                   name="Bairro"
-                  onChange={handleEndereco}
+                  onChange={handlePessoa}
                   value={values.Endereco.Bairro}
                   label="Bairro"
                   fullWidth
                 />
               </Grid>
-                     <Grid item xs={12} sm={2}>
+              <Grid item xs={12} sm={2}>
                 <TextField
                   id="Endereco.Estado"
                   name="Estado"
                   label="Estado"
-                  onChange={handleEndereco}
+                  onChange={handlePessoa}
                   value={values.Endereco.Estado}
                   fullWidth
                   select
@@ -287,130 +346,143 @@ function CadastroEmpresa() {
                   <MenuItem value="TO">Tocantins</MenuItem>
                 </TextField>
               </Grid>
-                     <Grid item xs={12} sm={2}>
+              <Grid item xs={12} sm={2}>
                 <TextField
                   id="Endereco.CEP"
                   name="CEP"
                   label="CEP"
-                  onChange={handleEndereco}
+                  onChange={handlePessoa}
                   value={values.Endereco.CEP}
                   fullWidth
                 />
               </Grid>
-                  </Grid>
+            </Grid>
 
-                  <Grid container spacing={3}>                      
-                  <Grid item xs={12}>
-                      <br></br>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <br></br>
                 <div className={classes.subtitulo}>
                   <h4>Dados Usuário</h4>
-                  <Divider />                 
-                </div>              
-              <Grid item xs={12} sm={4}>
-                <FormLabel>Usar dados da empresa?</FormLabel>
+                  <Divider />
+                </div>
+                <Grid item xs={12} sm={4}>
+                  <FormLabel>Usar dados da empresa?</FormLabel>
 
-                <Switch
-                  color="primary"
-                  name="UsarDados"
-                  value={values.UsarDados}
-                  checked={values.UsarDados}
-                  onChange={handleCheckChange}
-                  inputProps={{ "aria-label": "primary checkbox" }}
+                  <Switch
+                    color="primary"
+                    name="UsarDados"
+                    value={values.UsarDados}
+                    checked={values.UsarDados}
+                    onChange={handleCheckChange}
+                    inputProps={{ "aria-label": "primary checkbox" }}
+                    fullWidth
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  id="Pessoa.Nome"
+                  name="Nome"
+                  label="Nome"
                   fullWidth
+                  onChange={handlePessoa}
+                  InputLabelProps={{
+                    shrink: true,
+                   }} 
+                  value={
+                    values.UsarDados ? values.RazaoSocial : values.Pessoas.Nome
+                  }
                 />
               </Grid>
 
-              </Grid>
-             
               <Grid item xs={12} sm={4}>
-                          <TextField 
-                             id="Pessoa.Nome"
-                             name="Nome"
-                             label="Nome"
-                             fullWidth
-                             onChange={handleEndereco}
-                             value={(values.UsarDados ? values.RazaoSocial : values.Pessoa.Nome)}
-                          />
-            </Grid>                      
-                      <Grid item xs={12} sm={4}>
-                          <TextField 
-                             id="Pessoa.CPF"
-                             name="CPF"                            
-                             label="CPF"
-                             fullWidth
-                             onChange={handleEndereco}
-                             value={(values.UsarDados ? values.CNPJ_CPF : values.Pessoa.CPF)}
-                            
-                          />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                      <TextField
+                <TextField
+                  id="Pessoa.CPF"
+                  name="CPF"
+                  label="CPF"                  
+                  fullWidth
+                  onChange={handlePessoa}
+                  InputLabelProps={{
+                    shrink: true,
+                   }} 
+                  value={
+                    values.UsarDados ? values.CNPJ_CPF : values.Pessoas.CPF
+                  }
+                  
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
                   id="Pessoa.DataNascimento"
-                  name="Pessoa.DataNascimento"
+                  name="DataNascimento"
                   label="Data Nascimento"
                   type="date"
-                  onChange={handleChange}
-                  value={values.Pessoa.DataNascimento}
+                  onChange={handlePessoa}
+                  value={values.Pessoas.DataNascimento}
+                   InputLabelProps={{
+                     shrink: true,
+                    }} 
+                  fullWidth
+                  
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  id="Pessoa.Email"
+                  name="Email"
+                  label="E-mail"
+                  fullWidth
+                  onChange={handlePessoa}
+                  value={values.Pessoas.Email}
+                  InputLabelProps={{
+                    shrink: true,
+                   }} 
+                  
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={2}>
+                <TextField
+                  id="Pessoa.Telefone"
+                  name="Telefone"
+                  label="Telefone"
+                  fullWidth
+                  onChange={handlePessoa}
+                  value={
+                    values.UsarDados ? values.Telefone : values.Pessoas.Telefone
+                  }
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  fullWidth
                 />
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                          <TextField 
-                             id="Pessoa.Email"
-                             name="Pessoa.Email"
-                             label="E-mail"
-                             fullWidth
-                             onChange={handleChange}
-                             value={values.Pessoa.Email}
-                          />
-                      </Grid>
+              </Grid>
+            </Grid>
 
-                      <Grid item xs={12} sm={2}>
-                          <TextField 
-                             id="Pessoa.Telefone"
-                             name="Telefone"
-                             label="Telefone"
-                             fullWidth
-                             onChange={handleEndereco}
-                             value={(values.UsarDados ? values.Telefone : values.Pessoa.Telefone)}
-                             InputLabelProps={{
-                               shrink: true,
-                             }}
-                          />
-                      </Grid>
-                      
-
-
-                  </Grid>
-
-
-
-                  <div classname={classes.buttons}>
-                  <Button
-                    variant="contained"
-                    color="inherit"
-                    className={classes.button}
-                  >
-                    Limpar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    className={classes.button}
-                  >
-                    Cadastrar
-                  </Button>
-                </div>
-              </form>
-            </Paper>
-          </main>
-        </React.Fragment>
-      );
-
+            <div classname={classes.buttons}>
+              <Button
+                variant="contained"
+                color="inherit"
+                className={classes.button}
+              >
+                Limpar
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className={classes.button}
+              >
+                Cadastrar
+              </Button>
+            </div>
+          </form>
+        </Paper>
+      </main>
+    </React.Fragment>
+  );
 }
 
 export default CadastroEmpresa;
