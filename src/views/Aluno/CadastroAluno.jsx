@@ -38,9 +38,9 @@ import { format } from 'date-fns';
 function CadastroAluno() {
   const { token } = useContext(StoreContext);
 
-  const materiasUrl = `https://localhost:44389/api/materia/${token.empresaId}`;
+  const materiasUrl = `https://localhost:44389/api/materiaPorEmpresa/${token.empresaId}`;
   const materiasResponse = useFetch(materiasUrl);
-
+  console.log("materias: ", materiasResponse.data)
   const servicosUrl = `https://localhost:44389/api/servicoPorEmpresa/${token.empresaId}`;
   const servicosResponse = useFetch(servicosUrl);
 
@@ -58,7 +58,7 @@ function CadastroAluno() {
  
 
   const initialValues = {
-    Id: "",
+    Id: 0,
     Nome: "",
     DataNascimento: "",
     Serie: "",
@@ -189,27 +189,7 @@ function CadastroAluno() {
     //adiciona materia no array
           MateriaAlunos.push({ MateriaId: materiaId });
           setValues({ ...values, MateriaAlunos });
-       } 
-
-        // //se nao existir nenhuma materia adicionada - BACKUP
-        // if (MateriaAlunos.length === 0) {
-        //   MateriaAlunos.push({ MateriaId: materiaId });
-        //   setValues({ ...values, MateriaAlunos });
-        //   console.log("entrei");
-        // } 
-        // // se existir
-        // else if (MateriaAlunos.length > 0) {
-        //   newValues = MateriaAlunos.filter((n) => n.MateriaId === materiaId);
-        //   if (newValues.length > 0) {
-        //     //se encontrar materiaId no array, faz filter e tira
-        //     MateriaAlunos = MateriaAlunos.filter((n) => n.MateriaId != materiaId);
-        //     setValues({ ...values, MateriaAlunos });
-        //   } else {
-        //     //se nao encontrar materiaId no array, da um push
-        //     MateriaAlunos.push({ MateriaId: materiaId });
-        //     setValues({ ...values, MateriaAlunos });
-        //   }
-        // }
+       }    
   };
 
   function checkMateria(id){
@@ -471,7 +451,7 @@ function CadastroAluno() {
                 </div>
               </Grid>
 
-              {/* <Grid item xs={12}>
+               <Grid item xs={12}>
                 { 
                 materiasResponse.data ? 
                 (
@@ -490,7 +470,7 @@ function CadastroAluno() {
                   />
                 ))) : false             
                   }
-              </Grid> */}
+              </Grid> 
 
               <Grid item xs={12}>
                 <div className={classes.subtitulo}>

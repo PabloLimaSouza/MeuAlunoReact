@@ -42,7 +42,7 @@ function CadastroServico() {
   const [loading, setLoading] = useState(true);
 
   const initialValues = {
-    Id: "",
+    Id: 0,
     Descricao: "",
     Valor: "",
     Fidelidade: false,

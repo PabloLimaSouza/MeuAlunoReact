@@ -1,0 +1,33 @@
+#financeiros {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 95%;    
+  }  
+  
+  #financeiros td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #financeiros tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #financeiros tr:hover {background-color: #ddd;}
+  
+  #financeiros th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #060b26;
+    color: white;
+  }
+
+  .lista-financeiros h1{
+    text-align: center;  
+  }
+
+  .btn-novo{    
+    text-align: right;    
+    width: 95%;
+    padding-left: 85%;    
+    padding-bottom: 1%;
+  }

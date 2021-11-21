@@ -17,6 +17,12 @@ export const MenuItem = [
         cName: 'nav-text'
     },
     {
+        title: 'Financeiro',
+        path: '/financeiros',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    },
+    {
         title: 'Serviços',
         path: '/servicos',
         icon: <AiIcons.AiFillHome/>,

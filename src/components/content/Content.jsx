@@ -14,6 +14,8 @@ import Aulas from "../../views/Aula/Aulas";
 import CadastroAula from "../../views/Aula/CadastroAula";
 import Empresas from "../../views/Empresa/Empresa";
 import CadastroEmpresa from "../../views/Empresa/CadastroEmpresa";
+import Financeiros from "../../views/Financeiro/Financeiros";
+import CadastroFinanceiro from "../../views/Financeiro/CadastroFinanceiro";
 
 const Content = (props) => (
   <div className="Geral"> 
@@ -32,6 +34,8 @@ const Content = (props) => (
           <Route path="/cadastroAula" component={CadastroAula}/>
           <Route path="/empresas" component={Empresas}/>
           <Route path="/cadastroEmpresa" component={CadastroEmpresa}/>
+          <Route path="/financeiros" component={Financeiros}/>
+          <Route path="/cadastroFinanceiro" component={CadastroFinanceiro}/>
 
         </Switch></div>   
   <div className="Footer">Todos direitos reservados @ 2021</div>   

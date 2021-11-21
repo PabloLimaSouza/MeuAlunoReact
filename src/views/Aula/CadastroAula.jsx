@@ -19,7 +19,7 @@ function CadastroAula(){
     const [loading, setLoading] = useState(true);  
 
     const initialValues = {
-      Id: "",
+      Id: 0,
       Dia: "",
       HoraInicio: "",
       HoraFim: "",

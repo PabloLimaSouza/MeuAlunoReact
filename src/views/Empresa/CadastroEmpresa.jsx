@@ -26,9 +26,10 @@ function CadastroEmpresa() {
   const [loading, setLoading] = useState(true);
 
   const person = { Nome: "", Telefone: "" };
+  const [disableFields, setDisable] = useState(false);
 
   const initialValues = {
-    //Id: "",
+    Id: 0,
     TipoEmpresa: "",
     UsarDados: false,
     CNPJ_CPF: "",
@@ -48,15 +49,18 @@ function CadastroEmpresa() {
 
   const [values, setValues] = useState(initialValues);
 
+  //atualizar campos do form quando é para editar empresa  
   useEffect(
     function () {
       if (empresaResponse.data != null) {
         setValues((prevState) => ({
-          TipoEmpresa: (empresaResponse.data.cnpJ_CPF).length < 12 ? "1" : "2" ,
+          Id: empresaResponse.data.id,
+          TipoEmpresa: empresaResponse.data.cnpJ_CPF.length < 12 ? "1" : "2",
           CNPJ_CPF: empresaResponse.data.cnpJ_CPF,
           RazaoSocial: empresaResponse.data.razaoSocial,
           Telefone: empresaResponse.data.telefone,
           Endereco: {
+            Id: empresaResponse.data.endereco.id,
             Logradouro: empresaResponse.data.endereco.logradouro,
             Numero: empresaResponse.data.endereco.numero,
             Complemento: empresaResponse.data.endereco.complemento,
@@ -76,6 +80,7 @@ function CadastroEmpresa() {
             Telefone: empresaResponse.data.pessoas[0].telefone,
           },
         }));
+        setDisable(true);
       }
     },
     [empresaResponse]
@@ -95,7 +100,6 @@ function CadastroEmpresa() {
     var pessoa = [
       {
         Nome: Pessoa[0].Nome,
-        CPF: Pessoa[0].CPF,
         CPF: Pessoa[0].CPF,
         DataNascimento: Pessoa[0].DataNascimento,
         Email: Pessoa[0].Email,
@@ -146,8 +150,17 @@ function CadastroEmpresa() {
     setValues({ ...values, Endereco, Pessoas: pessoa });
   };
 
-  const handleCheckChange = (e) => {
+  const funcUsarDadosEmpresa = (e) => {
     const { name, checked } = e.target;
+    const newPessoa = values;
+    
+    newPessoa.Pessoas = [{
+      Nome: values.RazaoSocial,
+      CPF: values.CNPJ_CPF,
+      Telefone: values.Telefone,    
+    }];
+    setValues({...values, Pessoas: newPessoa});
+
     setValues({ ...values, [name]: e.target.checked });
     console.log(
       "handleCheckChange " +
@@ -162,6 +175,14 @@ function CadastroEmpresa() {
   };
 
   function handleSubmit(e) {
+    console.log(editarEmpresaUrl);
+    //limpar pessoa/usuario da empresa
+    if (values.Id != 0) {
+      const valuesToSubmit = values;
+      valuesToSubmit.Pessoas = [];
+      setValues({ ...values, valuesToSubmit });
+    }
+
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);
     e.preventDefault();
@@ -373,7 +394,8 @@ function CadastroEmpresa() {
                     name="UsarDados"
                     value={values.UsarDados}
                     checked={values.UsarDados}
-                    onChange={handleCheckChange}
+                    disabled={disableFields}
+                    onChange={funcUsarDadosEmpresa}
                     inputProps={{ "aria-label": "primary checkbox" }}
                     fullWidth
                   />
@@ -388,10 +410,11 @@ function CadastroEmpresa() {
                   name="Nome"
                   label="Nome"
                   fullWidth
+                  disabled={disableFields}
                   onChange={handlePessoa}
                   InputLabelProps={{
                     shrink: true,
-                   }} 
+                  }}
                   value={
                     values.UsarDados ? values.RazaoSocial : values.Pessoas.Nome
                   }
@@ -402,16 +425,16 @@ function CadastroEmpresa() {
                 <TextField
                   id="Pessoa.CPF"
                   name="CPF"
-                  label="CPF"                  
+                  label="CPF"
                   fullWidth
+                  disabled={disableFields}
                   onChange={handlePessoa}
                   InputLabelProps={{
                     shrink: true,
-                   }} 
+                  }}
                   value={
                     values.UsarDados ? values.CNPJ_CPF : values.Pessoas.CPF
                   }
-                  
                 />
               </Grid>
               <Grid item xs={12} sm={3}>
@@ -421,12 +444,12 @@ function CadastroEmpresa() {
                   label="Data Nascimento"
                   type="date"
                   onChange={handlePessoa}
+                  disabled={disableFields}
                   value={values.Pessoas.DataNascimento}
-                   InputLabelProps={{
-                     shrink: true,
-                    }} 
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   fullWidth
-                  
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -434,13 +457,13 @@ function CadastroEmpresa() {
                   id="Pessoa.Email"
                   name="Email"
                   label="E-mail"
+                  disabled={disableFields}
                   fullWidth
                   onChange={handlePessoa}
                   value={values.Pessoas.Email}
                   InputLabelProps={{
                     shrink: true,
-                   }} 
-                  
+                  }}
                 />
               </Grid>
 
@@ -449,6 +472,7 @@ function CadastroEmpresa() {
                   id="Pessoa.Telefone"
                   name="Telefone"
                   label="Telefone"
+                  disabled={disableFields}
                   fullWidth
                   onChange={handlePessoa}
                   value={
@@ -466,6 +490,7 @@ function CadastroEmpresa() {
                 variant="contained"
                 color="inherit"
                 className={classes.button}
+                disabled={disableFields}
               >
                 Limpar
               </Button>
@@ -475,7 +500,7 @@ function CadastroEmpresa() {
                 type="submit"
                 className={classes.button}
               >
-                Cadastrar
+                {disableFields ? "Alterar" : "Cadastrar"}
               </Button>
             </div>
           </form>
