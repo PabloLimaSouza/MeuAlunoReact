@@ -76,7 +76,7 @@ function CadastroAluno() {
       Estado: "",
       CEP: "",
     },
-    EmpresaId: 1002,
+    EmpresaId: token.empresaId,
     ServicoId: "",
     MateriaAlunos: [],
   };

@@ -14,6 +14,7 @@ import {
   DialogActions,
   Dialog,
   Tooltip,
+  Collapse,
 } from "@material-ui/core";
 import StoreContext from "../../contexts/StoreContext";
 import { useFetch } from "../../hooks/useFetch";
@@ -31,6 +32,7 @@ function CadastroFinanceiro() {
   const responseAluno = useFetch(urlAlunos);
   const { token } = useContext(StoreContext);
   const [todos, setTodos] = useState(false);
+  const [tipoReceber,setTipoDoc] = useState(true)
 
   const editarFinanceiro = window.location.pathname.split("/");
   var editarFinanceiroUrl = "";
@@ -43,6 +45,7 @@ function CadastroFinanceiro() {
     Id: 0,
     AlunoId: 0,
     AlunoNome: "",
+    PessoaNome: "",
     DataVencimento: "",
     qtdProvisionar: 0,
     Valor: 0,
@@ -56,14 +59,14 @@ function CadastroFinanceiro() {
   const [open, setOpen] = useState(false);
 
   useEffect(
-    function () {
-      if (todos) {
-        setValues({ ...values, todosAlunos: true, qtdProvisionar: 0 });
-      } else setValues({ ...values, todosAlunos: false });
+    function(){
+      if(todos){
+        setValues({...values, AlunoNome: "", qtdProvisionar: ""})        
+      }
     },
     [todos]
-  );
-
+  )
+  
   useEffect(
     function () {
       if (responseEditarFinanceiro.data != null) {
@@ -71,6 +74,7 @@ function CadastroFinanceiro() {
           Id: responseEditarFinanceiro.data.id,
           AlunoId: responseEditarFinanceiro.data.alunoId,
           AlunoNome: responseEditarFinanceiro.data.nomeAluno,
+          PessoaNome: responseEditarFinanceiro.data.pessoaNome,
           DataVencimento: format(
             new Date(responseEditarFinanceiro.data.dataVencimento),
             "yyyy-MM-dd"
@@ -86,22 +90,49 @@ function CadastroFinanceiro() {
   );
 
   const handleChange = (e) => {
-    console.log(e.target);
+    console.log(e.target);    
     const { name, value } = e.target;
     if (value == "todos") {
       setTodos(true);
-      setValues({ ...values, AlunoId: 0 });
+      setValues({ ...values, AlunoId: 0 , AlunoNome: ""});
     } else if (name == "AlunoNome" && value !== "todos") {
       setTodos(false);
-      setValues({ ...values, [name]: e.target.value });
-    } else {
+      setValues({ ...values, [name]: e.target.value, AlunoId: e.target.value })
+      
+    } else if (name == "Tipo" && value != 1) {
+      setTipoDoc(false);
+      setValues({ ...values, [name]: e.target.value });    
+    } else if (name == "Tipo" && value != 2) {
+      setTipoDoc(true);
+      setValues({ ...values, [name]: e.target.value });    
+    }   
+    else {
       setValues({ ...values, [name]: e.target.value });
     }
   };
 
+  const handleCheckChange = (e) => {
+    const {name, checked} = e.target;
+    setValues({...values, [name]: e.target.checked});
+    if(checked){
+      setTodos(true);
+    } else{
+      setTodos(false);
+    }
+    console.log(
+      "handleCheckChange " +
+        ">>name: " +
+        e.target.name +
+        " >>value: " +
+        e.target.value +
+        " >>checked: " +
+        e.target.checked
+    );
+  };
+
   function showAlunos(alunos) {
     return responseAluno.data.map((aluno) => (
-      <MenuItem value={aluno.nome}>{aluno.nome}</MenuItem>
+      <MenuItem value={aluno.id}>{aluno.nome}</MenuItem>
     ));
   }
 
@@ -149,34 +180,73 @@ function CadastroFinanceiro() {
           </div>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={3}>
                 <TextField
-                  id="AlunoNome"
-                  name="AlunoNome"
-                  label="Alunos"
+                  id="Tipo"
+                  name="Tipo"
+                  label="Tipo"
                   onChange={handleChange}
-                  value={values.AlunoNome}
-                  disabled={ (values.Id != "") ? true : false}
+                  value={values.Tipo}                  
                   fullWidth
                   select
                   InputLabelProps={{
                     shrink: true,
                   }}
-                >
-                  {/* {
-                    (values.AlunoNome != "" ? (
-                      <MenuItem value={values.AlunoNome}>
-                        {values.AlunoNome}
-                      </MenuItem>
-                    ) : (
-                      <MenuItem value="todos">Todos</MenuItem>
-                    ),
-                    responseAluno.data ? showAlunos(responseAluno.data) : false)
-                  } */}
+                >                
 
-                    <MenuItem value="todos">Todos</MenuItem>                   
+                    <MenuItem value="1">Receber</MenuItem>                   
+                    <MenuItem value="2">Pagar</MenuItem> 
+                </TextField>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <Collapse in={tipoReceber ? true : false}>
+                <TextField
+                  id="AlunoNome"
+                  name="AlunoNome"
+                  label="Aluno"
+                  onChange={handleChange}
+                  value={values.AlunoNome}
+                  inputProps={{
+                    "data-id": `${values.AlunoId}`,
+                }}
+                  disabled={todos ? true : false}
+                  fullWidth
+                  select
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                >                                       
                     {responseAluno.data ? showAlunos(responseAluno.data) : false}
                 </TextField>
+                </Collapse> 
+                <Collapse in={tipoReceber ? false : true}>
+                <TextField
+                  id="PessoaNome"
+                  name="PessoaNome"
+                  label="Pessoa"
+                  onChange={handleChange}
+                  value={values.PessoaNome}                  
+                  fullWidth                  
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                >                   
+                </TextField>
+                </Collapse>
+                
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <FormLabel>Todos</FormLabel>
+                <Switch
+                  color="primary"
+                  name="Todos"
+                  value={values.todos}
+                  checked={values.todos}
+                  disabled={values.Tipo == 2 ? true : false}
+                  onChange={handleCheckChange}
+                  inputProps={{ "aria-label": "primary checkbox" }}
+                  fullWidth
+                />
               </Grid>
               <Grid item xs={3}>
                 <TextField
@@ -190,8 +260,10 @@ function CadastroFinanceiro() {
                     shrink: true,
                   }}
                 />
-              </Grid>
-              <Grid item xs={3}>
+              </Grid>              
+            </Grid>
+            <Grid container spacing={3}>
+            <Grid item xs={3}>
                 <TextField
                   id="Valor"
                   name="Valor"
@@ -203,8 +275,7 @@ function CadastroFinanceiro() {
                   }}
                 />
               </Grid>
-            </Grid>
-            <Grid container spacing={3}>
+            
               <Grid item xs={2}>
                 <TextField
                   id="FormaPagamento"
@@ -236,18 +307,13 @@ function CadastroFinanceiro() {
                     onChange={handleChange}
                     value={values.qtdProvisionar}
                     fullWidth
-                    disabled={
-                      values.Id > 0
-                        ? true
-                        : todos
-                        ? false
-                        : true
-                    }
+                    disabled={todos ? true : false}
                     select
                     InputLabelProps={{
                       shrink: true,
                     }}
                   >
+                    <MenuItem selected value="0">0</MenuItem>
                     <MenuItem value="1">1</MenuItem>
                     <MenuItem value="2">2</MenuItem>
                     <MenuItem value="3">3</MenuItem>

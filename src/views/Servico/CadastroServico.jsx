@@ -28,6 +28,7 @@ import { purple } from "@material-ui/core/colors";
 
 function CadastroServico() {
   const { token } = useContext(StoreContext);
+  console.log(token);
   const aulasUrl = "https://localhost:44389/api/aulaPorEmpresa/" + token.empresaId + "";
   const aulasResponse = useFetch(aulasUrl);
 
@@ -48,7 +49,7 @@ function CadastroServico() {
     Fidelidade: false,
     TipoMulta: "",
     ValorMulta: "",
-    EmpresaId: "1002",
+    EmpresaId: token.empresaId,
     QtdAulas: "",
     ServicosAulas: [],
   };

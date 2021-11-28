@@ -11,14 +11,14 @@ export const MenuItem = [
         cName: 'nav-text'
     },
     {
-        title: 'Alunos',
-        path: '/alunos',
+        title: 'Empresas',
+        path: '/empresas',
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
     },
     {
-        title: 'Financeiro',
-        path: '/financeiros',
+        title: 'Aulas',
+        path: '/aulas',
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
     },
@@ -35,15 +35,15 @@ export const MenuItem = [
         cName: 'nav-text'
     },
     {
-        title: 'Aulas',
-        path: '/aulas',
+        title: 'Alunos',
+        path: '/alunos',
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
     },
     {
-        title: 'Empresas',
-        path: '/empresas',
+        title: 'Financeiro',
+        path: '/financeiros',
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
-    },
+    }   
 ]

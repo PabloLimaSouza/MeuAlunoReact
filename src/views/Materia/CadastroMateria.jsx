@@ -3,16 +3,21 @@ import React, { useState, useContext, useEffect } from "react";
 import StoreContext from "../../contexts/StoreContext";
 import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
+import { useHistory, Route } from "react-router-dom";
 
 function CadastroMateria() {
   const { token } = useContext(StoreContext);
-
+  const { history } = useHistory();
       //montar URL para editar matéria
       var editarMateriaUrl = "";    
       const editarMateriaId = window.location.pathname.split("/");
       if (editarMateriaId[2] != null){
         editarMateriaUrl =  `https://localhost:44389/api/materia/${editarMateriaId[2]}`;      
       }
+
+  function listaMaterias(){
+      history.push("/materias");
+  }
   
       const materiaResponse = useFetch(editarMateriaUrl);
       const [loading, setLoading] = useState(true);  
@@ -61,12 +66,11 @@ function CadastroMateria() {
         console.log(response);
         if (
           response == "Matéria atualizada" ||
-          response == "Matéria não atualizada"
+          response == "Matéria cadastrada"
         ) {
-          console.log("Deu bom");
-          console.log(response);
+         window.alert('Sucesso!');      
         } else {
-          console.log("Deu ruim");
+          window.alert('Erro!');
         }
       });
   }
@@ -109,7 +113,7 @@ function CadastroMateria() {
                 Cadastrar
               </Button>
             </div>
-          </form>
+          </form>        
         </Paper>
       </main>
     </React.Fragment>
