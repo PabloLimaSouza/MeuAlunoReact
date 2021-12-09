@@ -1,19 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  Formik,
-  Field,
-  Form,
-  useFormik,
-  FieldArray,
-  getActiveElement,
-} from "formik";
 import { useFetch } from "../../hooks/useFetch";
 import StoreContext from "../../contexts/StoreContext";
 import Checkbox from "@material-ui/core/Checkbox";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
-import { cpfMask, currencyMask, onlyLetters, phoneMask } from "../../utils/mask";
+import { cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
 
 import {
   Button,
@@ -30,11 +21,19 @@ import {
   TextField,
   Typography,
   withStyles,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Dialog,
+  Tooltip,
 } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
 import { purple } from "@material-ui/core/colors";
 import { findAllByAltText } from "@testing-library/dom";
 import { format } from 'date-fns';
+import { useHistory } from "react-router";
+
 
 function CadastroAluno() {
   const { token } = useContext(StoreContext);
@@ -52,10 +51,13 @@ function CadastroAluno() {
     editarAlunoUrl = `https://localhost:44389/api/aluno/${editarAlunoId[2]}`;
   }
 
+  const history = useHistory();
+
   const alunoResponse = useFetch(editarAlunoUrl);
   const [loading, setLoading] = useState(true);
   const [checked, setChecked] = useState(false);
-
+  const [open, setOpen] = useState(false);
+  const [isFormValid,setIsFormValid] = useState(false);
 
 
   const initialValues = {
@@ -83,6 +85,78 @@ function CadastroAluno() {
   };
 
   const [values, setValues] = useState(initialValues);
+
+  const alertas = {
+    text: "",
+    title: ""
+  }
+
+  const [mensagem, setMensagem] = useState(alertas);
+
+  const handleClickOpen = () => {
+    validadorForm();    
+    if (isFormValid) {
+      handleSubmit();      
+    } 
+  };
+
+  const validadorForm = () => {
+    if(values.Nome == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar nome do aluno" });
+      setOpen(true);      
+    } else if(values.DataNascimento == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar data de nascimento do aluno" });
+      setOpen(true); 
+    } else if(values.Serie == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar a série do aluno" });
+      setOpen(true); 
+    } else if(values.Escola == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nome da escola do aluno" });
+      setOpen(true); 
+    } else if(values.NomeResponsavel == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nome do responsável pelo aluno" });
+      setOpen(true); 
+    } else if(values.CPFResponsavel == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CPF do responsável pelo aluno" });
+      setOpen(true); 
+    } else if(values.TelefoneResponsavel == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o telefone do responsável pelo aluno" });
+      setOpen(true); 
+    } else if(values.EmailResponsavel == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o e-mail do responsável pelo aluno" });
+      setOpen(true); 
+    } else if(values.Endereco.Logradouro == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o logradouro do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Numero == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o número do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Cidade == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar a cidade do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Bairro == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o bairro do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Estado == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o estado do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.CEP == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CEP do endereço" });
+      setOpen(true); 
+    } else if(values.MateriaAlunos.length == 0){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar pelo menos uma matéria" });
+      setOpen(true); 
+    } else if(values.ServicoId == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar o serviço contratado" });
+      setOpen(true); 
+    } else {
+      setIsFormValid(true);
+    }
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(
     function () {
@@ -206,9 +280,8 @@ function CadastroAluno() {
   }
 
   function handleSubmit(e) {
-    alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));
-    console.log(values);
-    e.preventDefault();
+    alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));   
+    console.log(values);   
 
     const response = fetch(`https://localhost:44389/api/aluno/`, {
       method: "POST",
@@ -220,11 +293,14 @@ function CadastroAluno() {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response == "Aluno Cadastrado") {
-          console.log("Deu bom");
-          console.log(response);
-        } else {
-          console.log("Deu ruim");
+        console.log(response);
+        if (response === "Aluno cadastrado") {
+          setMensagem({ ...values, title: "Sucesso!", text: response })
+          setOpen(true);
+         } 
+        else {
+          setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar aluno" })
+          setOpen(true);
         }
       });
   }
@@ -252,6 +328,7 @@ function CadastroAluno() {
                   id="Nome"
                   name="Nome"
                   label="Nome Aluno"
+                  required="true"
                   fullWidth
                   onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Nome}
@@ -263,6 +340,7 @@ function CadastroAluno() {
                   name="DataNascimento"
                   label="Data Nascimento"
                   type="date"
+                  required="true"
                   onChange={handleChange}
                   value={values.DataNascimento}
                   InputLabelProps={{
@@ -276,6 +354,7 @@ function CadastroAluno() {
                   id="Serie"
                   name="Serie"
                   label="Serie"
+                  required="true"
                   onChange={handleChange}
                   value={values.Serie}
                   fullWidth
@@ -286,6 +365,7 @@ function CadastroAluno() {
                   id="Escola"
                   name="Escola"
                   label="Escola"
+                  required="true"
                   onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Escola}
                   fullWidth
@@ -296,6 +376,7 @@ function CadastroAluno() {
                   id="NomeResponsavel"
                   name="NomeResponsavel"
                   label="Nome Responsável"
+                  required="true"
                   fullWidth
                   onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.NomeResponsavel}
@@ -306,6 +387,7 @@ function CadastroAluno() {
                   id="CPFResponsavel"
                   name="CPFResponsavel"
                   label="CPF"
+                  required="true"
                   onChange={(e) => { handleChange(cpfMask(e)) }}
                   value={values.CPFResponsavel}
                   fullWidth
@@ -319,6 +401,7 @@ function CadastroAluno() {
                   id="TelefoneResponsavel"
                   name="TelefoneResponsavel"
                   label="Telefone"
+                  required="true"
                   onChange={(e) => { handleChange(phoneMask(e)) }}
                   value={values.TelefoneResponsavel}
                   fullWidth
@@ -333,6 +416,7 @@ function CadastroAluno() {
                   name="EmailResponsavel"
                   label="E-mail"
                   onChange={handleChange}
+                  required="true"
                   value={values.EmailResponsavel}
                   fullWidth
                   InputLabelProps={{
@@ -350,6 +434,7 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Logradouro"
                   name="Logradouro"
+                  required="true"
                   onChange={handleEndereco}
                   value={values.Endereco.Logradouro}
                   label="Logradouro"
@@ -361,6 +446,8 @@ function CadastroAluno() {
                   id="Endereco.Numero"
                   name="Numero"
                   label="Nº"
+                  type="number"
+                  required="true"
                   onChange={handleEndereco}
                   value={values.Endereco.Numero}
                   fullWidth
@@ -381,6 +468,7 @@ function CadastroAluno() {
                   id="Endereco.Cidade"
                   name="Cidade"
                   label="Cidade"
+                  required="true"
                   onChange={handleEndereco}
                   value={values.Endereco.Cidade}
                   fullWidth
@@ -390,6 +478,7 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Bairro"
                   name="Bairro"
+                  required="true"
                   onChange={handleEndereco}
                   value={values.Endereco.Bairro}
                   label="Bairro"
@@ -401,6 +490,7 @@ function CadastroAluno() {
                   id="Endereco.Estado"
                   name="Estado"
                   label="Estado"
+                  required="true"
                   onChange={handleEndereco}
                   value={values.Endereco.Estado}
                   fullWidth
@@ -440,6 +530,7 @@ function CadastroAluno() {
                   id="Endereco.CEP"
                   name="CEP"
                   label="CEP"
+                  required="true"
                   onChange={handleEndereco}
                   value={values.Endereco.CEP}
                   fullWidth
@@ -452,7 +543,7 @@ function CadastroAluno() {
                 </div>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12}>                
                 {
                   materiasResponse.data ?
                     (
@@ -461,8 +552,7 @@ function CadastroAluno() {
                           control={
                             <Checkbox
                               name={`MateriaAlunos${[]}.MateriaId`}
-                              onChange={handleMateria}
-                              //onChange={(e) => handleMateria(e)}
+                              onChange={handleMateria}                              
                               value={`index:${j},id:${mat.id}`}
                               checked={checkMateria(mat.id)}
                             />
@@ -471,6 +561,7 @@ function CadastroAluno() {
                         />
                       ))) : false
                 }
+                
               </Grid>
 
               <Grid item xs={12}>
@@ -486,6 +577,7 @@ function CadastroAluno() {
                   label="Servico Contratado"
                   onChange={handleChange}
                   name="ServicoId"
+                  required="true"
                   value={values.ServicoId}
 
                 >
@@ -510,8 +602,8 @@ function CadastroAluno() {
               </Button>
               <Button
                 variant="contained"
-                color="primary"
-                type="submit"
+                color="primary"                
+                onClick={handleClickOpen}
                 className={classes.button}
               >
                 Cadastrar
@@ -519,6 +611,22 @@ function CadastroAluno() {
             </div>
           </form>
         </Paper>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{mensagem.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {mensagem.text}
+            </DialogContentText>
+          </DialogContent>
+          {(mensagem.text == "Aluno cadastrado") ?     
+          <Button onClick={() => { handleClose(); history.push("/alunos"); }}>Ok</Button>
+           : <Button onClick={handleClose}>Ok</Button>}          
+        </Dialog>
       </main>
     </React.Fragment>
   );

@@ -386,9 +386,6 @@ function CadastroFinanceiro() {
               </DialogActions>)
               : <Button onClick={() => { handleClose(); history.push("/financeiros"); }}>Ok</Button>
           }
-
-
-
         </Dialog>
       </main>
     </React.Fragment>

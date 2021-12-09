@@ -27,9 +27,33 @@ export const cpfMask = (e) => {
 }
 
 export const phoneMask = (e) => {
-    e.target.maxLength = 11; 
-    let value = e.target.value;     
-    value = value.replace(/\D/g, "");           
+    let value = e.target.value; 
+    value = value.replace(/\D/g,"");
+    value = value.replace(/^0/,"");
+    if (value.length > 10) {
+        // 11+ digits. Format as 5+4.
+        value = value.replace(/^(\d\d)(\d{5})(\d{4}).*/,"($1) $2-$3");
+    }
+    else if (value.length > 5) {
+        // 6..10 digits. Format as 4+4
+        value = value.replace(/^(\d\d)(\d{4})(\d{0,4}).*/,"($1) $2-$3");
+    }
+    else if (value.length > 2) {
+        // 3..5 digits. Add (0XX..)
+        value = value.replace(/^(\d\d)(\d{0,5})/,"($1) $2");
+    }
+    else {
+        // 0..2 digits. Just add (0XX
+        value = value.replace(/^(\d*)/, "($1");
+    }
+    e.target.value = value;
+    return e;               
+    
+}
+
+export const onlyNumbersMax5 = (e) => {
+    let value = e.target.value;
+    value = value.replace(/[^a-z\s]+/i, '');       
     e.target.value = value;
     return e;
 }
