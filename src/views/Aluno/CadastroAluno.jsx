@@ -13,6 +13,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
+import { cpfMask, currencyMask, onlyLetters, phoneMask } from "../../utils/mask";
 
 import {
   Button,
@@ -53,9 +54,9 @@ function CadastroAluno() {
 
   const alunoResponse = useFetch(editarAlunoUrl);
   const [loading, setLoading] = useState(true);
-  const [checked,setChecked] = useState(false);
-  
- 
+  const [checked, setChecked] = useState(false);
+
+
 
   const initialValues = {
     Id: 0,
@@ -87,12 +88,12 @@ function CadastroAluno() {
     function () {
       if (alunoResponse.data != null) {
         setLoading(false);
-     
+
         var materias = []
         alunoResponse.data.materiaAlunos.map((materia => (
-          materias.push({MateriaId: materia.materiaId})
+          materias.push({ MateriaId: materia.materiaId })
         )))
-        
+
         setValues((prevState) => ({
           Id: alunoResponse.data.id,
           Nome: alunoResponse.data.nome,
@@ -115,7 +116,7 @@ function CadastroAluno() {
           ServicoId: alunoResponse.data.servicoId,
           EmpresaId: alunoResponse.data.empresaId,
           MateriaAlunos: materias,
-        }));        
+        }));
       }
     },
     [alunoResponse]
@@ -158,13 +159,13 @@ function CadastroAluno() {
       Object.keys(Endereco).forEach((key) => {
         if (key === "CEP") Endereco[key] = value;
       });
-    } 
+    }
 
     setValues({ ...values, Endereco });
   };
 
   const handleMateria = (e) => {
-    const { name, value, checked } = e.target;    
+    const { name, value, checked } = e.target;
 
     var MateriaAlunos = [...values.MateriaAlunos]; //matérias que tem atualmente
     console.log(MateriaAlunos);
@@ -178,30 +179,30 @@ function CadastroAluno() {
     var newValues = "";
 
     //se desmarcar checkbox da matéria
-    if (checked === false){
-       //se encontrar materiaId no array, faz filter e tira
+    if (checked === false) {
+      //se encontrar materiaId no array, faz filter e tira
       MateriaAlunos = MateriaAlunos.filter((n) => n.MateriaId != materiaId);
       setValues({ ...values, MateriaAlunos });
     }
 
     //se marcar checkbox da matéria
-        if (checked === true){
-    //adiciona materia no array
-          MateriaAlunos.push({ MateriaId: materiaId });
-          setValues({ ...values, MateriaAlunos });
-       }    
+    if (checked === true) {
+      //adiciona materia no array
+      MateriaAlunos.push({ MateriaId: materiaId });
+      setValues({ ...values, MateriaAlunos });
+    }
   };
 
-  function checkMateria(id){
-    var checkMateria = [...values.MateriaAlunos]    
+  function checkMateria(id) {
+    var checkMateria = [...values.MateriaAlunos]
     var matIds = []
-    checkMateria.map((mat,i) => (
+    checkMateria.map((mat, i) => (
       matIds.push(Object.values(mat))
-    ))      
-    if( matIds.find(e => e == id) ){  
+    ))
+    if (matIds.find(e => e == id)) {
       return true
-    } else    
-    return false    
+    } else
+      return false
   }
 
   function handleSubmit(e) {
@@ -252,7 +253,7 @@ function CadastroAluno() {
                   name="Nome"
                   label="Nome Aluno"
                   fullWidth
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Nome}
                 />
               </Grid>
@@ -285,7 +286,7 @@ function CadastroAluno() {
                   id="Escola"
                   name="Escola"
                   label="Escola"
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Escola}
                   fullWidth
                 />
@@ -296,7 +297,7 @@ function CadastroAluno() {
                   name="NomeResponsavel"
                   label="Nome Responsável"
                   fullWidth
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.NomeResponsavel}
                 />
               </Grid>
@@ -305,7 +306,7 @@ function CadastroAluno() {
                   id="CPFResponsavel"
                   name="CPFResponsavel"
                   label="CPF"
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(cpfMask(e)) }}
                   value={values.CPFResponsavel}
                   fullWidth
                   InputLabelProps={{
@@ -318,14 +319,14 @@ function CadastroAluno() {
                   id="TelefoneResponsavel"
                   name="TelefoneResponsavel"
                   label="Telefone"
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(phoneMask(e)) }}
                   value={values.TelefoneResponsavel}
                   fullWidth
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
-              </Grid>
+              </Grid>              
               <Grid item xs={12} sm={4}>
                 <TextField
                   id="EmailResponsavel"
@@ -451,26 +452,26 @@ function CadastroAluno() {
                 </div>
               </Grid>
 
-               <Grid item xs={12}>
-                { 
-                materiasResponse.data ? 
-                (
-                materiasResponse.data.map((mat, j) => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        name={`MateriaAlunos${[]}.MateriaId`}
-                        onChange={handleMateria}
-                        //onChange={(e) => handleMateria(e)}
-                        value={`index:${j},id:${mat.id}`}
-                        checked={checkMateria(mat.id)}                        
-                      />
-                    }
-                    label={mat.nome}
-                  />
-                ))) : false             
-                  }
-              </Grid> 
+              <Grid item xs={12}>
+                {
+                  materiasResponse.data ?
+                    (
+                      materiasResponse.data.map((mat, j) => (
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              name={`MateriaAlunos${[]}.MateriaId`}
+                              onChange={handleMateria}
+                              //onChange={(e) => handleMateria(e)}
+                              value={`index:${j},id:${mat.id}`}
+                              checked={checkMateria(mat.id)}
+                            />
+                          }
+                          label={mat.nome}
+                        />
+                      ))) : false
+                }
+              </Grid>
 
               <Grid item xs={12}>
                 <div className={classes.subtitulo}>
@@ -486,15 +487,15 @@ function CadastroAluno() {
                   onChange={handleChange}
                   name="ServicoId"
                   value={values.ServicoId}
-                  
+
                 >
                   {servicosResponse.data ? (
-                    
-                      servicosResponse.data.map((serv) => (
-                        <MenuItem value={serv.id}>
-                          {serv.descricao + " - Valor: R$" + serv.valor}
-                        </MenuItem>
-                      ))) : false
+
+                    servicosResponse.data.map((serv) => (
+                      <MenuItem value={serv.id}>
+                        {serv.descricao + " - Valor: R$" + serv.valor}
+                      </MenuItem>
+                    ))) : false
                   }
                 </Select>
               </Grid>
