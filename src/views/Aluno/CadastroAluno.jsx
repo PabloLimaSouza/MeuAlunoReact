@@ -3,34 +3,22 @@ import { useFetch } from "../../hooks/useFetch";
 import StoreContext from "../../contexts/StoreContext";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
-import { cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
+import { cpfMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
 
 import {
   Button,
   Divider,
-  FormControl,
-  FormLabel,
-  Grid,
-  InputLabel,
-  ListItemText,
+  Grid,  
   MenuItem,
   Paper,
   Select,
-  Switch,
   TextField,
-  Typography,
-  withStyles,
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions,
   Dialog,
-  Tooltip,
 } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
-import { purple } from "@material-ui/core/colors";
-import { findAllByAltText } from "@testing-library/dom";
 import { format } from 'date-fns';
 import { useHistory } from "react-router";
 
@@ -54,8 +42,6 @@ function CadastroAluno() {
   const history = useHistory();
 
   const alunoResponse = useFetch(editarAlunoUrl);
-  const [loading, setLoading] = useState(true);
-  const [checked, setChecked] = useState(false);
   const [open, setOpen] = useState(false);
   
   const initialValues = {
@@ -100,52 +86,52 @@ function CadastroAluno() {
   };
 
   const validadorForm = () => {
-    if(values.Nome == ""){
+    if(values.Nome ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar nome do aluno" });
       setOpen(true);      
-    } else if(values.DataNascimento == ""){
+    } else if(values.DataNascimento ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar data de nascimento do aluno" });
       setOpen(true); 
-    } else if(values.Serie == ""){
+    } else if(values.Serie ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar a série do aluno" });
       setOpen(true); 
-    } else if(values.Escola == ""){
+    } else if(values.Escola ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nome da escola do aluno" });
       setOpen(true); 
-    } else if(values.NomeResponsavel == ""){
+    } else if(values.NomeResponsavel ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nome do responsável pelo aluno" });
       setOpen(true); 
-    } else if(values.CPFResponsavel == ""){
+    } else if(values.CPFResponsavel ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CPF do responsável pelo aluno" });
       setOpen(true); 
-    } else if(values.TelefoneResponsavel == ""){
+    } else if(values.TelefoneResponsavel ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o telefone do responsável pelo aluno" });
       setOpen(true); 
-    } else if(values.EmailResponsavel == ""){
+    } else if(values.EmailResponsavel ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o e-mail do responsável pelo aluno" });
       setOpen(true); 
-    } else if(values.Endereco.Logradouro == ""){
+    } else if(values.Endereco.Logradouro ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o logradouro do endereço" });
       setOpen(true); 
-    } else if(values.Endereco.Numero == ""){
+    } else if(values.Endereco.Numero ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o número do endereço" });
       setOpen(true); 
-    } else if(values.Endereco.Cidade == ""){
+    } else if(values.Endereco.Cidade ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar a cidade do endereço" });
       setOpen(true); 
-    } else if(values.Endereco.Bairro == ""){
+    } else if(values.Endereco.Bairro ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o bairro do endereço" });
       setOpen(true); 
-    } else if(values.Endereco.Estado == ""){
+    } else if(values.Endereco.Estado ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o estado do endereço" });
       setOpen(true); 
-    } else if(values.Endereco.CEP == ""){
+    } else if(values.Endereco.CEP ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CEP do endereço" });
       setOpen(true); 
-    } else if(values.MateriaAlunos.length == 0){
+    } else if(values.MateriaAlunos.length === 0){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar pelo menos uma matéria" });
       setOpen(true); 
-    } else if(values.ServicoId == ""){
+    } else if(values.ServicoId ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar o serviço contratado" });
       setOpen(true); 
     } else {
@@ -159,8 +145,7 @@ function CadastroAluno() {
 
   useEffect(
     function () {
-      if (alunoResponse.data != null) {
-        setLoading(false);
+      if (alunoResponse.data != null) {        
 
         var materias = []
         alunoResponse.data.materiaAlunos.map((materia => (
@@ -204,31 +189,31 @@ function CadastroAluno() {
     const { name, value } = e.target;
     const Endereco = { ...values.Endereco };
 
-    if (name == "Logradouro") {
+    if (name === "Logradouro") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Logradouro") Endereco[key] = value;
       });
-    } else if (name == "Numero") {
+    } else if (name === "Numero") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Numero") Endereco[key] = value;
       });
-    } else if (name == "Complemento") {
+    } else if (name === "Complemento") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Complemento") Endereco[key] = value;
       });
-    } else if (name == "Bairro") {
+    } else if (name === "Bairro") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Bairro") Endereco[key] = value;
       });
-    } else if (name == "Cidade") {
+    } else if (name === "Cidade") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Cidade") Endereco[key] = value;
       });
-    } else if (name == "Estado") {
+    } else if (name === "Estado") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Estado") Endereco[key] = value;
       });
-    } else if (name == "CEP") {
+    } else if (name === "CEP") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "CEP") Endereco[key] = value;
       });

@@ -1,10 +1,9 @@
 import React from "react";
 import "./Content.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import CadastroAluno from "../../views/Aluno/CadastroAluno";
 import Alunos from "../../views/Aluno/Alunos";
 import Menu from "../menu/Menu";
-import Login from "../../views/Usuario/Login";
 import Header from "./Header";
 import CadastroServico from "../../views/Servico/CadastroServico";
 import Servicos from "../../views/Servico/Servicos";
@@ -16,6 +15,8 @@ import Empresas from "../../views/Empresa/Empresa";
 import CadastroEmpresa from "../../views/Empresa/CadastroEmpresa";
 import Financeiros from "../../views/Financeiro/Financeiros";
 import CadastroFinanceiro from "../../views/Financeiro/CadastroFinanceiro";
+import CadastroUsuario from "../../views/Usuario/CadastroUsuario";
+import Usuarios from "../../views/Usuario/Usuarios";
 
 const Content = (props) => (
   <div className="Geral"> 
@@ -36,28 +37,11 @@ const Content = (props) => (
           <Route path="/cadastroEmpresa" component={CadastroEmpresa}/>
           <Route path="/financeiros" component={Financeiros}/>
           <Route path="/cadastroFinanceiro" component={CadastroFinanceiro}/>
+          <Route path="/usuarios" component={Usuarios}/>
+          <Route path="/cadastroUsuario" component={CadastroUsuario}/>
 
         </Switch></div>   
   <div className="Footer">Todos direitos reservados @ 2021</div>   
- 
-
-     {/* <div className="Header">
-      <Header />
-    </div>
-    <div className="Menu">
-      <Menu/>
-    </div> */}
-
-    {/* <div className="Content">
-      <Menu />
-
-      <div className="paginaAtual">
-        <Switch>
-          <Route path="/cadastroAluno" component={Aluno} />
-          <Route path="/alunos" component={Alunos} />
-        </Switch>
-      </div>
-    </div>  */}
   </div>
 );
 

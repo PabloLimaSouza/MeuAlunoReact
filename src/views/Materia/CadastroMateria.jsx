@@ -1,15 +1,14 @@
 import { Button, Grid, Paper, TextField,
   DialogTitle,
   DialogContent,
-  DialogContentText,
-  DialogActions,
+  DialogContentText,  
   Dialog,
-  Tooltip, } from "@material-ui/core";
+  } from "@material-ui/core";
 import React, { useState, useContext, useEffect } from "react";
 import StoreContext from "../../contexts/StoreContext";
 import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
-import { useHistory, Route } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function CadastroMateria() {
   const { token } = useContext(StoreContext);  

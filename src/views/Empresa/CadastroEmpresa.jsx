@@ -309,7 +309,7 @@ function CadastroEmpresa() {
           <div className={classes.titulo}>
             <h1>Cadastro de Empresa</h1>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={2}>
                 <TextField

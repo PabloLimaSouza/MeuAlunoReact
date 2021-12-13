@@ -1,7 +1,5 @@
 import React ,{useState} from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
+import { Link } from "react-router-dom";
 import { MenuItem } from './MenuItem'
 
 

@@ -45,5 +45,11 @@ export const MenuItem = [
         path: '/financeiros',
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
+    },
+    {
+        title: 'Usuários',
+        path: '/usuarios',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
     }   
 ]
