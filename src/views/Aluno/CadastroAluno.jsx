@@ -57,9 +57,7 @@ function CadastroAluno() {
   const [loading, setLoading] = useState(true);
   const [checked, setChecked] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isFormValid,setIsFormValid] = useState(false);
-
-
+  
   const initialValues = {
     Id: 0,
     Nome: "",
@@ -93,11 +91,12 @@ function CadastroAluno() {
 
   const [mensagem, setMensagem] = useState(alertas);
 
-  const handleClickOpen = () => {
-    validadorForm();    
-    if (isFormValid) {
+  const handleClickOpen = () => {      
+    if (validadorForm()) {
       handleSubmit();      
-    } 
+    } else {
+      console.log("form inválido");
+    }
   };
 
   const validadorForm = () => {
@@ -150,7 +149,7 @@ function CadastroAluno() {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar o serviço contratado" });
       setOpen(true); 
     } else {
-      setIsFormValid(true);
+      return true;
     }
   }
 
