@@ -327,7 +327,7 @@ function CadastroAluno() {
                   id="Nome"
                   name="Nome"
                   label="Nome Aluno"
-                  required="true"
+                  
                   fullWidth
                   onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Nome}
@@ -339,7 +339,7 @@ function CadastroAluno() {
                   name="DataNascimento"
                   label="Data Nascimento"
                   type="date"
-                  required="true"
+                  
                   onChange={handleChange}
                   value={values.DataNascimento}
                   InputLabelProps={{
@@ -353,7 +353,7 @@ function CadastroAluno() {
                   id="Serie"
                   name="Serie"
                   label="Serie"
-                  required="true"
+                  
                   onChange={handleChange}
                   value={values.Serie}
                   fullWidth
@@ -364,7 +364,7 @@ function CadastroAluno() {
                   id="Escola"
                   name="Escola"
                   label="Escola"
-                  required="true"
+                  
                   onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Escola}
                   fullWidth
@@ -375,7 +375,7 @@ function CadastroAluno() {
                   id="NomeResponsavel"
                   name="NomeResponsavel"
                   label="Nome Responsável"
-                  required="true"
+                  
                   fullWidth
                   onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.NomeResponsavel}
@@ -386,7 +386,7 @@ function CadastroAluno() {
                   id="CPFResponsavel"
                   name="CPFResponsavel"
                   label="CPF"
-                  required="true"
+                  
                   onChange={(e) => { handleChange(cpfMask(e)) }}
                   value={values.CPFResponsavel}
                   fullWidth
@@ -400,7 +400,7 @@ function CadastroAluno() {
                   id="TelefoneResponsavel"
                   name="TelefoneResponsavel"
                   label="Telefone"
-                  required="true"
+                  
                   onChange={(e) => { handleChange(phoneMask(e)) }}
                   value={values.TelefoneResponsavel}
                   fullWidth
@@ -415,7 +415,7 @@ function CadastroAluno() {
                   name="EmailResponsavel"
                   label="E-mail"
                   onChange={handleChange}
-                  required="true"
+                  
                   value={values.EmailResponsavel}
                   fullWidth
                   InputLabelProps={{
@@ -433,7 +433,7 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Logradouro"
                   name="Logradouro"
-                  required="true"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.Logradouro}
                   label="Logradouro"
@@ -444,10 +444,8 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Numero"
                   name="Numero"
-                  label="Nº"
-                  type="number"
-                  required="true"
-                  onChange={handleEndereco}
+                  label="Nº"                  
+                  onChange={(e) => { handleEndereco(onlyNumbersMax5(e)) }}
                   value={values.Endereco.Numero}
                   fullWidth
                 />
@@ -467,7 +465,7 @@ function CadastroAluno() {
                   id="Endereco.Cidade"
                   name="Cidade"
                   label="Cidade"
-                  required="true"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.Cidade}
                   fullWidth
@@ -477,7 +475,7 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Bairro"
                   name="Bairro"
-                  required="true"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.Bairro}
                   label="Bairro"
@@ -489,7 +487,7 @@ function CadastroAluno() {
                   id="Endereco.Estado"
                   name="Estado"
                   label="Estado"
-                  required="true"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.Estado}
                   fullWidth
@@ -529,7 +527,7 @@ function CadastroAluno() {
                   id="Endereco.CEP"
                   name="CEP"
                   label="CEP"
-                  required="true"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.CEP}
                   fullWidth
@@ -576,7 +574,7 @@ function CadastroAluno() {
                   label="Servico Contratado"
                   onChange={handleChange}
                   name="ServicoId"
-                  required="true"
+                  
                   value={values.ServicoId}
 
                 >

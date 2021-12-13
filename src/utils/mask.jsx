@@ -52,8 +52,36 @@ export const phoneMask = (e) => {
 }
 
 export const onlyNumbersMax5 = (e) => {
+    e.target.maxLength = 5;
     let value = e.target.value;
-    value = value.replace(/[^a-z\s]+/i, '');       
+    value = value.replace(/\D/g, ""); 
     e.target.value = value;
     return e;
 }
+
+export const onlyNumbersMax2 = (e) => {
+    e.target.maxLength = 2;
+    let value = e.target.value;
+    value = value.replace(/\D/g, ""); 
+    e.target.value = value;
+    return e;
+}
+
+export const horarioMask = (e) => {
+    e.target.maxLength = 5;
+    let value = e.target.value;
+    value = value.replace(/\D/g, ""); 
+    value = value.replace(/(\d)(\d{2})$/, "$1:$2");
+    e.target.value = value;
+    return e;
+}
+
+export const cepMask = (e) => {
+    e.target.maxLength = 9; 
+    let value = e.target.value;     
+    value = value.replace(/\D/g, "");
+    value = value.replace(/(\d)(\d{3})$/, "$1-$2");    
+    e.target.value = value;
+    return e;
+}
+

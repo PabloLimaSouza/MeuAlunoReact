@@ -1,4 +1,10 @@
-import { Button, Grid, Paper, TextField } from "@material-ui/core";
+import { Button, Grid, Paper, TextField,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Dialog,
+  Tooltip, } from "@material-ui/core";
 import React, { useState, useContext, useEffect } from "react";
 import StoreContext from "../../contexts/StoreContext";
 import useStyles from "../Styles/useStyles";
@@ -6,18 +12,17 @@ import { useFetch } from "../../hooks/useFetch";
 import { useHistory, Route } from "react-router-dom";
 
 function CadastroMateria() {
-  const { token } = useContext(StoreContext);
-  const { history } = useHistory();
+  const { token } = useContext(StoreContext);  
+  const [open, setOpen] = useState(false);
+  const history = useHistory();
       //montar URL para editar matéria
+      var editando = false;
       var editarMateriaUrl = "";    
       const editarMateriaId = window.location.pathname.split("/");
       if (editarMateriaId[2] != null){
-        editarMateriaUrl =  `https://localhost:44389/api/materia/${editarMateriaId[2]}`;      
+        editarMateriaUrl =  `https://localhost:44389/api/materia/${editarMateriaId[2]}`;  
+        editando = true;    
       }
-
-  function listaMaterias(){
-      history.push("/materias");
-  }
   
       const materiaResponse = useFetch(editarMateriaUrl);
       const [loading, setLoading] = useState(true);  
@@ -29,6 +34,34 @@ function CadastroMateria() {
   };
 
   const [values, setValues] = useState(initialValues);
+
+  const alertas = {
+    text: "",
+    title: ""
+  }
+
+  const [mensagem, setMensagem] = useState(alertas);
+
+  const handleClickOpen = () => {      
+    if (validadorForm()) {
+      handleSubmit();      
+    } else {
+      console.log("form inválido");
+    }
+  };
+
+  const validadorForm = () => {
+    if(values.Nome == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar nome da matéria" });
+      setOpen(true);      
+    } else {
+      return true;
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(
     function(){
@@ -50,8 +83,7 @@ function CadastroMateria() {
 
   function handleSubmit(e) {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
-    console.log(values);
-    e.preventDefault();
+    console.log(values);    
 
     const response = fetch("https://localhost:44389/api/materia/", {
       method: "POST",
@@ -63,14 +95,13 @@ function CadastroMateria() {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-        if (
-          response == "Matéria atualizada" ||
-          response == "Matéria cadastrada"
-        ) {
-         window.alert('Sucesso!');      
-        } else {
-          window.alert('Erro!');
+        if (response === "Matéria cadastrada" || response === "Matéria atualizada") {
+          setMensagem({ ...values, title: "Sucesso!", text: response })
+          setOpen(true);
+         } 
+        else {
+          setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar matéria" })
+          setOpen(true);
         }
       });
   }
@@ -83,7 +114,7 @@ function CadastroMateria() {
           <div className={classes.titulo}>
             <h1>Cadastro de Matéria</h1>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form >
               <Grid container spacing={3}>
                   <Grid item xs={12}>
                       <TextField 
@@ -96,25 +127,46 @@ function CadastroMateria() {
                       />
                   </Grid>
               </Grid>
-              <div classname={classes.buttons}>
-              <Button
-                variant="contained"
-                color="inherit"
-                className={classes.button}
-              >
-                Limpar
-              </Button>
+              <div className={classes.buttons}>
+              {editando
+              ? false
+              : <Button
+              variant="contained"
+              color="inherit"
+              className={classes.button}
+            >
+              Limpar
+            </Button>}
+             
               <Button
                 variant="contained"
                 color="primary"
-                type="submit"
+                onClick={handleClickOpen}
                 className={classes.button}
               >
-                Cadastrar
+                {editando ? "Atualizar" : "Cadastrar"}
               </Button>
             </div>
           </form>        
         </Paper>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{mensagem.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {mensagem.text}
+            </DialogContentText>
+          </DialogContent>          
+
+          {(mensagem.text == "Matéria cadastrada" || mensagem.text == "Matéria atualizada") ?     
+            <Button onClick={() => { handleClose(); history.push("/materias"); }}>Ok</Button>
+             : <Button onClick={handleClose}>Ok</Button>} 
+          
+        </Dialog>
       </main>
     </React.Fragment>
   );

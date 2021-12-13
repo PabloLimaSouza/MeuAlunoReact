@@ -38,10 +38,10 @@ function CadastroFinanceiro() {
 
   const editarFinanceiro = window.location.pathname.split("/");
   var editarFinanceiroUrl = "";
-  var editarFin = false;
+  var editando = false;
   if (editarFinanceiro[2] != null) {
     editarFinanceiroUrl = `https://localhost:44389/api/cadastroFinanceiro/${editarFinanceiro[2]}`;
-    editarFin = true;
+    editando = true;
   }
   const responseEditarFinanceiro = useFetch(editarFinanceiroUrl);
 
@@ -276,7 +276,7 @@ function CadastroFinanceiro() {
                 </Collapse>
 
               </Grid>
-              {(editarFin)
+              {(editando)
               ? false
               : <Grid item xs={12} sm={2}>
               <FormLabel>Todos</FormLabel>
@@ -341,7 +341,7 @@ function CadastroFinanceiro() {
                   <MenuItem value="cartão">Cartão</MenuItem>
                 </TextField>
               </Grid>
-              {(editarFin)
+              {(editando)
               ? false
               :               <Grid item xs={2}>
               <Tooltip
@@ -379,7 +379,7 @@ function CadastroFinanceiro() {
             </Grid>}
             </Grid>
             <div className={classes.buttons}>
-              {editarFin
+              {editando
               ? false
               : <Button
               variant="contained"
@@ -395,7 +395,7 @@ function CadastroFinanceiro() {
                 onClick={handleClickOpen}
                 className={classes.button}
               >
-                {editarFin ? "Atualizar" : "Cadastrar"}
+                {editando ? "Atualizar" : "Cadastrar"}
               </Button>
             </div>
           </form>
@@ -420,7 +420,7 @@ function CadastroFinanceiro() {
               </DialogActions>)
               : false}
 
-          {(mensagem.text == "Financeiro gerado com sucesso." || mensagem.text == "Financeiro atualizado com sucesso") ?     
+          {(mensagem.text == "Financeiro gerado com sucesso." || mensagem.text == "Financeiro atualizado com sucesso.") ?     
             <Button onClick={() => { handleClose(); history.push("/financeiros"); }}>Ok</Button>
              : <Button onClick={handleClose}>Ok</Button>} 
           
