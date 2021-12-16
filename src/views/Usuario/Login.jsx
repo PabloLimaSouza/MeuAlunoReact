@@ -8,13 +8,6 @@ function initialState() {
   return { Login: "", Senha: "" };
 }
 
-function login(values) {
-  if (values.Login !== '') {
-    return { token: values};
-  }
-  return { error: 'Usuário ou senha inválido' };
-}
-
 const UserLogin = () => {
   const [values, setValues] = useState(initialState);
   const [error, setError] = useState(null);
@@ -34,7 +27,7 @@ const UserLogin = () => {
   function onSubmit(event) {
     event.preventDefault();   
     
-    const response = fetch("https://localhost:44389/api/usuario", {
+    const response = fetch("https://localhost:44389/api/usuario/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -44,18 +37,17 @@ const UserLogin = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response.login !== "") {                  
-         const { token, error } = login(response); 
-         setToken(token);
-         return history.push("/");
-         console.log(token) ;   
-         console.log('deubom');                  
+        if (response.login != null) {          
+         setToken(response);         
+         console.log(token);
+         return history.push("/");                        
         } else {
           console.log("Deu ruim");
+          console.log(response);
+          setError(response);
         }
-      });   
-      
-    setError(error);
+      });         
+    
     setValues(initialState);
   }
 

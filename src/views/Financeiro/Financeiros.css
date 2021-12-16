@@ -25,6 +25,20 @@
     text-align: center;  
   }
 
+  .filtro-financeiros{
+    text-align: center;
+    padding-right: 5%; 
+    padding-bottom: 2%;
+    padding-top: 2%;
+    width: 95%; 
+  }
+
+  .filtro-financeiros .btn-pesquisar{    
+    background-position: center;    
+    height: 2rem;
+    margin-top: 12%;
+  }
+
   .btn-novo{    
     text-align: right;    
     width: 95%;

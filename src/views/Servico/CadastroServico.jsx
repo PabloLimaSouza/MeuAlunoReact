@@ -210,7 +210,7 @@ const handleChangeAula = (e) => {
 };
 
 function handleSubmit(e) {
-  alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));
+  setLoading(true);
 
   const response = fetch("https://localhost:44389/api/servico", {
     method: "POST",
@@ -229,7 +229,10 @@ function handleSubmit(e) {
         setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar serviço" })
         setOpen(true);
       }
-    });
+    })
+    .then(() => {
+      setLoading(false);
+    })
 }
 
 const classes = useStyles();
@@ -386,6 +389,7 @@ return (
               color="primary"
               onClick={handleClickOpen}
               className={classes.button}
+              disabled={loading}
             >
               Cadastrar
             </Button>

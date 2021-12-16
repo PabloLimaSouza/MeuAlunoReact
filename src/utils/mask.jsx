@@ -4,12 +4,22 @@ export const currencyMask = (e) => {
     let value = e.target.value;
     value = value.replace(/\D/g, "");
     value = value.replace(/(\d)(\d{2})$/, "$1,$2");
-    value = value.replace(/(?=(\d{3})+(\D))\B/g, ".")
+    //quando tem . o backend nao está aceitando converter para decimal
+    //value = value.replace(/(?=(\d{3})+(\D))\B/g, ".")
     e.target.value = value;
     return e;
 }
 
+export const currencyMaskList = (e) => {
+    let value = e;    
+    value = value.replace('.', ",");
+    value = value.replace(/(?=(\d{3})+(\D))\B/g, ".") 
+    e = value;
+    return e;
+}
+
 export const onlyLetters = (e) => {
+    e.target.maxLength = 100;
     let value = e.target.value;
     value = value.replace(/[^a-z\s]+/i, '');       
     e.target.value = value;

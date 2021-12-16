@@ -9,12 +9,13 @@ import "./Alunos.css";
 import { Button } from "@material-ui/core";
 
 const Alunos = (props) => {
-  const url = "https://localhost:44389/api/aluno";
-  const method = 'get';
-  const response = useFetch(url);
-  const history = useHistory();
   const { token } = useContext(StoreContext); 
-  console.log(token);
+
+  const url = `https://localhost:44389/api/alunoPorEmpresa/${token.empresaId}`;
+  const method = "get";
+  const response = useFetch(url, method);
+
+  const history = useHistory();  
 
   function novoAluno(){
    history.push('/cadastroAluno');

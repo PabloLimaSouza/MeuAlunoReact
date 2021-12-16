@@ -7,7 +7,7 @@ import { Button } from "@material-ui/core";
 
 const Servicos = () => {
   const { token } = useContext(StoreContext); 
-  const url = "https://localhost:44389/api/servico/";  
+  const url = `https://localhost:44389/api/servicoPorEmpresa/${token.empresaId}`;  
   const response = useFetch(url);
   const history = useHistory();
   

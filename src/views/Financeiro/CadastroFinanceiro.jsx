@@ -15,7 +15,7 @@ import {
   Dialog,
   Tooltip,
   Collapse,
-  InputAdornment
+  InputAdornment    
 } from "@material-ui/core";
 import StoreContext from "../../contexts/StoreContext";
 import { useFetch } from "../../hooks/useFetch";
@@ -24,6 +24,7 @@ import et from "date-fns/esm/locale/et/index.js";
 import { parseJSON } from "date-fns";
 import { format } from "date-fns";
 import { currencyMask, onlyLetters } from "../../utils/mask";
+import { setDayOfYear } from "date-fns/esm";
 
 function CadastroFinanceiro() {
   const classes = useStyles();
@@ -33,6 +34,7 @@ function CadastroFinanceiro() {
   const responseAluno = useFetch(urlAlunos);
   const { token } = useContext(StoreContext);
   const [todos, setTodos] = useState(false);
+  const [loading,setLoading] = useState(false);
   const [tipoReceber, setTipoDoc] = useState(true);
   const history = useHistory();
 
@@ -58,6 +60,7 @@ function CadastroFinanceiro() {
     EmpresaId: token.EmpresaId,
     todosAlunos: false,
     Tipo: "",
+    EmpresaId: token.empresaId,
   };
 
   const [values, setValues] = useState(initialValues);
@@ -70,29 +73,57 @@ function CadastroFinanceiro() {
   const [mensagem, setMensagem] = useState(alertas);
 
   const [open, setOpen] = useState(false);
-   
+
   const validadorForm = () => {
-    if(values.AlunoNome == "" && values.PessoaNome == "" && todos == false){
+    if (values.AlunoNome == "" && values.PessoaNome == "" && todos == false) {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar um aluno ou informar uma pessoa" });
-      setOpen(true);   
-    } else if(values.Valor == ""){
+      setOpen(true);
+    } else if (values.Valor == "") {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar valor" });
-      setOpen(true); 
-    } else if(values.FormaPagamento == ""){
+      setOpen(true);
+    } else if (values.FormaPagamento == "") {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar valor" });
-      setOpen(true); 
-    } else if(values.DataVencimento == ""){
-    setMensagem({ ...values, title: "Alerta!", text: "Necessário informar data de vencimento" });
-    setOpen(true); 
+      setOpen(true);
+    } else if (values.DataVencimento == "") {
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar data de vencimento" });
+      setOpen(true);
     } else {
       return true;
+    }
+  }
+
+  const getDialogActions = (e) => {       
+    if (e === "Atenção!"){
+      return (
+        <DialogActions>
+              <Button onClick={() =>{ setTodos(false); handleClose()}}>Não</Button>
+              <Button onClick={handleClose} autoFocus>Sim</Button>
+            </DialogActions>
+      )
+    } 
+    else if(e === "Sucesso!") {
+      return (
+        <DialogActions>
+      <Button onClick={() => { handleClose(); history.push("/financeiros"); }}>Ok</Button>
+      </DialogActions>
+      )
+      
+    } else {
+      return (
+          <DialogActions>
+          <Button onClick={handleClose}>Ok</Button>
+      </DialogActions>
+      )    
     }
   }
 
   useEffect(
     function () {
       if (todos) {
-        setValues({ ...values, AlunoNome: "", qtdProvisionar: "" })
+        setValues({ ...values, AlunoNome: "", qtdProvisionar: 0, todosAlunos: true })
+      }
+      if (!todos) {
+        setValues({ ...values, todosAlunos: false })
       }
     },
     [todos]
@@ -126,13 +157,8 @@ function CadastroFinanceiro() {
   const handleChange = (e) => {
     console.log(e.target);
     const { name, value } = e.target;
-    if (value == "todos") {
-      setTodos(true);
-      setValues({ ...values, AlunoId: 0, AlunoNome: "" });
-    } else if (name == "AlunoNome" && value !== "todos") {
-      setTodos(false);
+    if (name == "AlunoNome") {
       setValues({ ...values, [name]: e.target.value, AlunoId: e.target.value })
-
     } else if (name == "Tipo" && value != 1) {
       setTipoDoc(false);
       setValues({ ...values, [name]: e.target.value });
@@ -145,24 +171,17 @@ function CadastroFinanceiro() {
     }
   };
 
-  const handleCheckChange = (e) => {
-    const { name, checked } = e.target;
-    setValues({ ...values, [name]: e.target.checked });
-    if (checked) {
-      setTodos(true);
-      setMensagem({ ...values, title: "Alerta!", text: "Essa ação irá gerar um CRE para cada aluno. Deseja continuar?" })
+  const handleCheckChange = () => {
+    setTodos(!todos);
+    if (!todos) {
+      setTodos(!todos);
+      setValues({ ...values, AlunoId: 0, AlunoNome: "" });
+      setMensagem({ ...values, title: "Atenção!", text: "Essa ação irá gerar um CRE (contas a receber) para cada aluno. Deseja continuar?" })
+      setOpen(true);
     } else {
-      setTodos(false);
+      setTodos(!todos);
     }
-    console.log(
-      "handleCheckChange " +
-      ">>name: " +
-      e.target.name +
-      " >>value: " +
-      e.target.value +
-      " >>checked: " +
-      e.target.checked
-    );
+
   };
 
   function showAlunos(alunos) {
@@ -171,14 +190,10 @@ function CadastroFinanceiro() {
     ));
   }
 
-  const handleClickOpen = () => {    
+  const handleClickOpen = () => {
     if (validadorForm()) {
-      handleSubmit();      
-    }   
-    if (todos == true && validadorForm()) {
-      setOpen(true);
-    } 
-    else {
+      handleSubmit();
+    } else {
       console.log("form inválido");
     }
   };
@@ -187,12 +202,10 @@ function CadastroFinanceiro() {
     setOpen(false);
   };
 
-  function handleSubmit(e) {
-    console.log(token);
-    alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
-    console.log(JSON.stringify(values));
-
-    const response = fetch("https://localhost:44389/api/financeiro", {
+  function handleSubmit(e) {  
+    setLoading(true);  
+    
+    const response = fetch("https://localhost:44389/api/financeiro/cadastrar", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -202,13 +215,16 @@ function CadastroFinanceiro() {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response != null) {
+        if (response != null && response.errors == null) {
           setMensagem({ ...values, title: "Sucesso!", text: response })
-          setOpen(true);
+          setOpen(true);          
         } else {
           setMensagem({ ...values, title: "Erro!", text: "Erro ao gerar documento(s)" })
           setOpen(true);
         }
+      })
+      .then(() => {
+        setLoading(false);
       })
   }
 
@@ -256,7 +272,7 @@ function CadastroFinanceiro() {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                  >                                   
+                  >
                     {responseAluno.data ? showAlunos(responseAluno.data) : false}
                   </TextField>
                 </Collapse>
@@ -265,33 +281,33 @@ function CadastroFinanceiro() {
                     id="PessoaNome"
                     name="PessoaNome"
                     label="Pessoa"
-                    onChange={(e) => handleChange(onlyLetters(e))}   
-                    value={values.PessoaNome}                              
-                    fullWidth                 
+                    onChange={(e) => handleChange(onlyLetters(e))}
+                    value={values.PessoaNome}
+                    fullWidth
                     InputLabelProps={{
                       shrink: true,
                     }}
-                  >              
+                  >
                   </TextField>
                 </Collapse>
 
               </Grid>
               {(editando)
-              ? false
-              : <Grid item xs={12} sm={2}>
-              <FormLabel>Todos</FormLabel>
-              <Switch
-                color="primary"
-                name="Todos"
-                value={values.todos}
-                checked={values.todos}
-                disabled={values.Tipo == 2 ? true : false}
-                onChange={handleCheckChange}
-                inputProps={{ "aria-label": "primary checkbox" }}
-                fullWidth
-              />
-              </Grid>}
-              
+                ? false
+                : <Grid item xs={12} sm={2}>
+                  <FormLabel>Todos</FormLabel>
+                  <Switch
+                    color="primary"
+                    name="todos"
+                    value={todos}
+                    checked={todos}
+                    disabled={values.Tipo == 2 ? true : false}
+                    onChange={handleCheckChange}
+                    inputProps={{ "aria-label": "primary checkbox" }}
+                    fullWidth
+                  />
+                </Grid>}
+
               <Grid item xs={3}>
                 <TextField
                   id="DataVencimento"
@@ -313,7 +329,7 @@ function CadastroFinanceiro() {
                   name="Valor"
                   label="Valor"
                   value={values.Valor}
-                  onChange={(e) => handleChange(currencyMask(e))}                  
+                  onChange={(e) => handleChange(currencyMask(e))}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -321,7 +337,7 @@ function CadastroFinanceiro() {
                     startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                   }}
                 />
-              </Grid>                
+              </Grid>
               <Grid item xs={2}>
                 <TextField
                   id="FormaPagamento"
@@ -333,7 +349,7 @@ function CadastroFinanceiro() {
                   select
                   InputLabelProps={{
                     shrink: true,
-                  }}                 
+                  }}
                 >
                   <MenuItem value="boleto">Boleto</MenuItem>
                   <MenuItem value="pix">PIX</MenuItem>
@@ -342,64 +358,65 @@ function CadastroFinanceiro() {
                 </TextField>
               </Grid>
               {(editando)
-              ? false
-              :               <Grid item xs={2}>
-              <Tooltip
-                title="Não pode ser usado para todos alunos"
-                placement="top-end"
-              >
-                <TextField
-                  id="qtdProvisionar"
-                  name="qtdProvisionar"
-                  label="Provisionar"
-                  onChange={handleChange}
-                  value={values.qtdProvisionar}
-                  fullWidth
-                  disabled={todos ? true : false}
-                  select
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                >
-                  <MenuItem selected value="0">0</MenuItem>
-                  <MenuItem value="1">1</MenuItem>
-                  <MenuItem value="2">2</MenuItem>
-                  <MenuItem value="3">3</MenuItem>
-                  <MenuItem value="4">4</MenuItem>
-                  <MenuItem value="5">5</MenuItem>
-                  <MenuItem value="6">6</MenuItem>
-                  <MenuItem value="7">7</MenuItem>
-                  <MenuItem value="8">8</MenuItem>
-                  <MenuItem value="9">9</MenuItem>
-                  <MenuItem value="10">10</MenuItem>
-                  <MenuItem value="11">11</MenuItem>
-                  <MenuItem value="12">12</MenuItem>
-                </TextField>
-              </Tooltip>
-            </Grid>}
+                ? false
+                : <Grid item xs={2}>
+                  <Tooltip
+                    title="Não pode ser usado para todos alunos"
+                    placement="top-end"
+                  >
+                    <TextField
+                      id="qtdProvisionar"
+                      name="qtdProvisionar"
+                      label="Provisionar"
+                      onChange={handleChange}
+                      value={values.qtdProvisionar}
+                      fullWidth
+                      disabled={todos ? true : false}
+                      select
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    >
+                      <MenuItem selected value="0">0</MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                      <MenuItem value="6">6</MenuItem>
+                      <MenuItem value="7">7</MenuItem>
+                      <MenuItem value="8">8</MenuItem>
+                      <MenuItem value="9">9</MenuItem>
+                      <MenuItem value="10">10</MenuItem>
+                      <MenuItem value="11">11</MenuItem>
+                      <MenuItem value="12">12</MenuItem>
+                    </TextField>
+                  </Tooltip>
+                </Grid>}
             </Grid>
             <div className={classes.buttons}>
               {editando
-              ? false
-              : <Button
-              variant="contained"
-              color="inherit"
-              className={classes.button}
-            >
-              Limpar
-            </Button>}
-             
+                ? false
+                : <Button
+                  variant="contained"
+                  color="inherit"
+                  className={classes.button}
+                >
+                  Limpar
+                </Button>}
+
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleClickOpen}
                 className={classes.button}
+                disabled={loading}
               >
                 {editando ? "Atualizar" : "Cadastrar"}
               </Button>
             </div>
           </form>
-          <div></div>
+          
         </Paper>
         <Dialog
           open={open}
@@ -413,17 +430,7 @@ function CadastroFinanceiro() {
               {mensagem.text}
             </DialogContentText>
           </DialogContent>
-          {(todos && validadorForm()) ? 
-             (<DialogActions>
-                <Button onClick={handleClose}>Não</Button>
-                <Button onClick={handleSubmit} autoFocus>Sim</Button>
-              </DialogActions>)
-              : false}
-
-          {(mensagem.text == "Financeiro gerado com sucesso." || mensagem.text == "Financeiro atualizado com sucesso.") ?     
-            <Button onClick={() => { handleClose(); history.push("/financeiros"); }}>Ok</Button>
-             : <Button onClick={handleClose}>Ok</Button>} 
-          
+            {getDialogActions(mensagem.title)}
         </Dialog>
       </main>
     </React.Fragment>
