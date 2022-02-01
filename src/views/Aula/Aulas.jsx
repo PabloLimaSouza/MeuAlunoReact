@@ -6,10 +6,10 @@ import { useFetch } from "../../hooks/useFetch";
 import "./Aulas.css"
 
 function Aulas() {
-  const { token } = useContext(StoreContext);
-  const url = `https://localhost:44389/api/aulaPorEmpresa/${token.empresaId}`;
+  const { token, userLogged } = useContext(StoreContext);
+  const url = `https://localhost:44389/api/aulaPorEmpresa/${userLogged.empresaId}`;
   const method = "get";
-  const response = useFetch(url, method);
+  const response = useFetch(url, method,token);
 
   const history = useHistory();
 

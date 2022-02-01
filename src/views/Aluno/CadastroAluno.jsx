@@ -24,13 +24,13 @@ import { useHistory } from "react-router";
 
 
 function CadastroAluno() {
-  const { token } = useContext(StoreContext);
+  const { token, userLogged } = useContext(StoreContext);
 
-  const materiasUrl = `https://localhost:44389/api/materiaPorEmpresa/${token.empresaId}`;
-  const materiasResponse = useFetch(materiasUrl);
+  const materiasUrl = `https://localhost:44389/api/materiaPorEmpresa/${userLogged.empresaId}`;
+  const materiasResponse = useFetch(materiasUrl,"get",token);
   console.log("materias: ", materiasResponse.data)
-  const servicosUrl = `https://localhost:44389/api/servicoPorEmpresa/${token.empresaId}`;
-  const servicosResponse = useFetch(servicosUrl);
+  const servicosUrl = `https://localhost:44389/api/servicoPorEmpresa/${userLogged.empresaId}`;
+  const servicosResponse = useFetch(servicosUrl,"get",token);
 
   const editarAlunoId = window.location.pathname.split("/");
   var editarAlunoUrl = "";
@@ -41,7 +41,7 @@ function CadastroAluno() {
 
   const history = useHistory();
 
-  const alunoResponse = useFetch(editarAlunoUrl);
+  const alunoResponse = useFetch(editarAlunoUrl,"get",token);
   const [open, setOpen] = useState(false);
   
   const initialValues = {
@@ -63,7 +63,7 @@ function CadastroAluno() {
       Estado: "",
       CEP: "",
     },
-    EmpresaId: token.empresaId,
+    EmpresaId: userLogged.empresaId,
     ServicoId: "",
     MateriaAlunos: [],
   };
@@ -270,6 +270,7 @@ function CadastroAluno() {
     const response = fetch(`https://localhost:44389/api/aluno/`, {
       method: "POST",
       headers: {
+        Authorization: 'Bearer '+token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },

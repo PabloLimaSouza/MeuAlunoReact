@@ -12,6 +12,7 @@ const UserLogin = () => {
   const [values, setValues] = useState(initialState);
   const [error, setError] = useState(null);
   const { setToken } = useContext(StoreContext);
+  const { setUserLogged} = useContext(StoreContext);
   const history = useHistory();
   const {token} = '';
 
@@ -37,13 +38,15 @@ const UserLogin = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response.login != null) {          
-         setToken(response);         
-         console.log(token);
+        if (response.jwt != null && response.dadosUsuario.login != null) {          
+         setToken(response.jwt);
+         setUserLogged(response.dadosUsuario);         
          return history.push("/");                        
         } else {
           console.log("Deu ruim");
-          console.log(response);
+          console.log(response.jwt);
+          console.log(response.dadosUsuario);
+          //setToken(response.jwt);
           setError(response);
         }
       });         
@@ -63,6 +66,7 @@ const UserLogin = () => {
             name="Login"
             onChange={onChange}
             value={values.Login}
+            required
           />
         </div>
         <div className="user-login__form-control">
@@ -73,6 +77,7 @@ const UserLogin = () => {
             name="Senha"
             onChange={onChange}
             value={values.Senha}
+            required
           />
         </div>
         {error && <div className="user-login__error">{error}</div>}

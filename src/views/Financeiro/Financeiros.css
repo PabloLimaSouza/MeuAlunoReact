@@ -25,6 +25,7 @@
     text-align: center;  
   }
 
+  
   .filtro-financeiros{
     text-align: center;
     padding-right: 5%; 
@@ -40,6 +41,13 @@
   }
 
   .btn-novo{    
+    text-align: right;    
+    width: 95%;
+    padding-left: 85%;    
+    padding-bottom: 1%;
+  }
+
+  .btn-liquidar{    
     text-align: right;    
     width: 95%;
     padding-left: 85%;    

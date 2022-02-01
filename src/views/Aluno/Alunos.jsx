@@ -9,11 +9,10 @@ import "./Alunos.css";
 import { Button } from "@material-ui/core";
 
 const Alunos = (props) => {
-  const { token } = useContext(StoreContext); 
+  const { token, userLogged } = useContext(StoreContext); 
 
-  const url = `https://localhost:44389/api/alunoPorEmpresa/${token.empresaId}`;
-  const method = "get";
-  const response = useFetch(url, method);
+  const url = `https://localhost:44389/api/alunoPorEmpresa/${userLogged.empresaId}`;  
+  const response = useFetch(url,"get",token);
 
   const history = useHistory();  
 

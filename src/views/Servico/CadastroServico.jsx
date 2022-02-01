@@ -36,9 +36,9 @@ import { purple } from "@material-ui/core/colors";
 import { currencyMask, onlyLetters } from "../../utils/mask";
 
 function CadastroServico() {
-  const { token } = useContext(StoreContext);
-  const aulasUrl = `https://localhost:44389/api/aulaPorEmpresa/${token.empresaId}`;
-  const aulasResponse = useFetch(aulasUrl);
+  const { token, userLogged } = useContext(StoreContext);
+  const aulasUrl = `https://localhost:44389/api/aulaPorEmpresa/${userLogged.empresaId}`;
+  const aulasResponse = useFetch(aulasUrl,"get",token);
   const history = useHistory();
   const editarServicoId = window.location.pathname.split("/");
   var editarServicoUrl = "";
@@ -47,8 +47,8 @@ function CadastroServico() {
     editarServicoUrl = `https://localhost:44389/api/servico/${editarServicoId[2]}`;
   }
 
-  const servicoResponse = useFetch(editarServicoUrl);
-  const [loading, setLoading] = useState(true);
+  const servicoResponse = useFetch(editarServicoUrl,"get",token);
+  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     Id: 0,
@@ -57,7 +57,7 @@ function CadastroServico() {
     Fidelidade: false,
     TipoMulta: "",
     ValorMulta: "",
-    EmpresaId: token.empresaId,
+    EmpresaId: userLogged.empresaId,
     QtdAulas: "",
     ServicosAulas: [],
   };
@@ -215,6 +215,7 @@ function handleSubmit(e) {
   const response = fetch("https://localhost:44389/api/servico", {
     method: "POST",
     headers: {
+      Authorization: 'Bearer  '+token,
       Accept: "application/json",
       "Content-Type": "application/json",
     },

@@ -23,7 +23,7 @@ const Content = (props) => (
 
   <div className="Header"><Header/></div>   
   <div className="Menu"><Menu/></div>   
-  <div className="PaginaAtual">
+  <div className="PaginaAtual">    
   <Switch>
           <Route path="/cadastroAluno" component={CadastroAluno} />
           <Route path="/alunos" component={Alunos} />

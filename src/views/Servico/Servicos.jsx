@@ -6,13 +6,12 @@ import StoreContext from "../../contexts/StoreContext";
 import { Button } from "@material-ui/core";
 
 const Servicos = () => {
-  const { token } = useContext(StoreContext); 
-  const url = `https://localhost:44389/api/servicoPorEmpresa/${token.empresaId}`;  
-  const response = useFetch(url);
   const history = useHistory();
+  const { token, userLogged } = useContext(StoreContext); 
+  const url = `https://localhost:44389/api/servicoPorEmpresa/${userLogged.empresaId}`;  
+  const method = "get"
+  const response = useFetch(url,method,token); 
   
-  
-
   function novoServico() {
     history.push("/cadastroServico");
   }

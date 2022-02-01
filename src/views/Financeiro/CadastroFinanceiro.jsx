@@ -29,10 +29,12 @@ import { setDayOfYear } from "date-fns/esm";
 function CadastroFinanceiro() {
   const classes = useStyles();
   var CurrencyFormat = require("react-currency-format");
+  const { token, userLogged } = useContext(StoreContext);
 
-  const urlAlunos = "https://localhost:44389/api/aluno";
-  const responseAluno = useFetch(urlAlunos);
-  const { token } = useContext(StoreContext);
+  const urlAlunos = `https://localhost:44389/api/alunoPorEmpresa/${userLogged.empresaId}`;
+ 
+  
+  const responseAluno = useFetch(urlAlunos,"get",token);
   const [todos, setTodos] = useState(false);
   const [loading,setLoading] = useState(false);
   const [tipoReceber, setTipoDoc] = useState(true);
@@ -45,7 +47,7 @@ function CadastroFinanceiro() {
     editarFinanceiroUrl = `https://localhost:44389/api/cadastroFinanceiro/${editarFinanceiro[2]}`;
     editando = true;
   }
-  const responseEditarFinanceiro = useFetch(editarFinanceiroUrl);
+  const responseEditarFinanceiro = useFetch(editarFinanceiroUrl,"get",token);
 
   const initialValues = {
     Id: 0,
@@ -57,10 +59,9 @@ function CadastroFinanceiro() {
     Valor: "",
     FormaPagamento: "",
     Situacao: 1,
-    EmpresaId: token.EmpresaId,
+    EmpresaId: userLogged.empresaId,
     todosAlunos: false,
     Tipo: "",
-    EmpresaId: token.empresaId,
   };
 
   const [values, setValues] = useState(initialValues);
@@ -185,6 +186,7 @@ function CadastroFinanceiro() {
   };
 
   function showAlunos(alunos) {
+    console.log(responseAluno.data);
     return responseAluno.data.map((aluno) => (
       <MenuItem value={aluno.id}>{aluno.nome}</MenuItem>
     ));
@@ -206,6 +208,7 @@ function CadastroFinanceiro() {
     setLoading(true);  
     
     const response = fetch("https://localhost:44389/api/financeiro/cadastrar", {
+      Authorization: 'Bearer '+token,    
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -268,7 +271,7 @@ function CadastroFinanceiro() {
                     }}
                     disabled={todos ? true : false}
                     fullWidth
-                    select
+                    select                    
                     InputLabelProps={{
                       shrink: true,
                     }}

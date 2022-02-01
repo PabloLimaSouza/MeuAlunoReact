@@ -17,7 +17,7 @@ import { horarioMask, onlyNumbersMax5 } from '../../utils/mask';
 
 
 function CadastroAula(){
-    const { token } = useContext(StoreContext);
+    const { token, userLogged } = useContext(StoreContext);
     const url = "https://localhost:44389/api/aula/";  
     const history = useHistory();
     const [open, setOpen] = useState(false);
@@ -30,7 +30,7 @@ function CadastroAula(){
       editando = true;      
     }
 
-    const aulaResponse = useFetch(editarAulaUrl);
+    const aulaResponse = useFetch(editarAulaUrl,"get",token);
     const [loading, setLoading] = useState(true);  
 
     const initialValues = {
@@ -39,7 +39,7 @@ function CadastroAula(){
       HoraInicio: "",
       HoraFim: "",
       Vagas: "",
-      EmpresaId: token.empresaId,
+      EmpresaId: userLogged.empresaId,
   }
 
   const alertas = {
@@ -109,6 +109,7 @@ function CadastroAula(){
         const response = fetch("https://localhost:44389/api/aula", {
         method: "POST",
         headers: {
+          Authorization: 'Bearer '+token,
           Accept: "application/json",
           "Content-Type": "application/json",
         },

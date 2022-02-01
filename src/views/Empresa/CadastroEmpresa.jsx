@@ -24,16 +24,19 @@ import { useHistory } from "react-router";
 import { cepMask, cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
 
 
+
 function CadastroEmpresa() {
+  const { token } = useContext(StoreContext);
   var editando = false;
   var editarEmpresaUrl = "";
+  var method = "get";
   const editarEmpresaId = window.location.pathname.split("/");
   if (editarEmpresaId[2] != null) {
     editarEmpresaUrl = `https://localhost:44389/api/empresa/${editarEmpresaId[2]}`;
     editando = true;
   }
 
-  const empresaResponse = useFetch(editarEmpresaUrl);
+  const empresaResponse = useFetch(editarEmpresaUrl,method,token);
   const [loading, setLoading] = useState(true);
 
   const history = useHistory();
@@ -282,6 +285,7 @@ function CadastroEmpresa() {
     const response = fetch("https://localhost:44389/api/empresa/", {
       method: "POST",
       headers: {
+        Authorization: 'Bearer '+token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -610,7 +614,7 @@ function CadastroEmpresa() {
           </DialogContent>          
 
           {(mensagem.text == "Empresa cadastrada com sucesso" || mensagem.text == "Empresa atualizada") ?     
-            <Button onClick={() => { handleClose(); history.push("/materias"); }}>Ok</Button>
+            <Button onClick={() => { handleClose(); history.push("/empresas"); }}>Ok</Button>
              : <Button onClick={handleClose}>Ok</Button>} 
           
         </Dialog>

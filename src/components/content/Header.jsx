@@ -17,6 +17,7 @@ import { useHistory } from "react-router";
 
 const Header = () => {
   const { token, setToken } = useContext(StoreContext);
+  const { userLogged, setUserLogged } = useContext(StoreContext);
 
   const classes = useStyles();
   const history = useHistory();
@@ -24,17 +25,17 @@ const Header = () => {
   if (token != null) {
 
     const showEmpresas = () => {
-      return token.empresa.map((emp) => (
+      return userLogged.empresa.map((emp) => (
         <MenuItem value={emp.id}>{emp.razaoSocial}</MenuItem>
       ));
     }
 
     const handleChange = (e) => {
       const { name, value } = e.target;
-      var newEmpresa = token.empresa.filter((emp) => (
+      var newEmpresa = userLogged.empresa.filter((emp) => (
         emp.id == value
       ))     
-      setToken({ ...token, empresaId: newEmpresa[0].id, empresaNome: newEmpresa[0].razaoSocial })
+      setUserLogged({ ...userLogged, empresaId: newEmpresa[0].id, empresaNome: newEmpresa[0].razaoSocial })
       history.push('/');      
     }
 
@@ -50,9 +51,9 @@ const Header = () => {
             name="empresaNome"
             onChange={handleChange}
             label="Empresa"
-            value={token.empresaId}            
+            value={userLogged.empresaId}            
           >
-            {token.empresa.length > 0
+            {userLogged.empresa.length > 0
               ? showEmpresas()
               : false}
           </Select>
@@ -60,7 +61,7 @@ const Header = () => {
 
 
         <label>Olá </label>
-        <strong>{token.pessoaNome}</strong>
+        <strong>{userLogged.pessoaNome}</strong>
 
         <button type="button" onClick={() => setToken(null)}>Sair</button>
       </div>

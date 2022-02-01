@@ -4,12 +4,15 @@ import useStorage from '../utils/useStorage'
 
 const StoreProvider = ({ children }) => {
   const [token, setToken] = useStorage('token');
+  const [userLogged, setUserLogged] = useStorage('userLogged');
 
   return (
     <Context.Provider
       value={{
         token,
         setToken,
+        userLogged,
+        setUserLogged,
       }}
     >
       {children}

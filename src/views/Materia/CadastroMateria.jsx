@@ -23,7 +23,7 @@ function CadastroMateria() {
         editando = true;    
       }
   
-      const materiaResponse = useFetch(editarMateriaUrl);
+      const materiaResponse = useFetch(editarMateriaUrl,"get",token);
       const [loading, setLoading] = useState(true);  
 
   const initialValues = {

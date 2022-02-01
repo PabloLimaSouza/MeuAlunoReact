@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Dialog, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem, TextField } from "@material-ui/core";
+import { Button, Checkbox, Dialog, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem, TextField, TablePagination, Table } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
 import StoreContext from "../../contexts/StoreContext";
 import { useFetch } from "../../hooks/useFetch";
@@ -10,15 +10,15 @@ import CurrencyFormat from 'react-currency-format';
 import { onlyLetters, currencyMask, currencyMaskList } from "../../utils/mask";
 
 const Financeiros = () => {
-  const { token } = useContext(StoreContext);
+  const { token, userLogged } = useContext(StoreContext);
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(false);
 
 
 
-  const url = `https://localhost:44389/api/financeiroPorEmpresa/${token.empresaId}`;
-  const response = useFetch(url);
+  const url = `https://localhost:44389/api/financeiroPorEmpresa/${userLogged.empresaId}`;
+  const response = useFetch(url,"get",token);
   const [listaFinanceiros, setListaFinanceiros] = useState("");
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Financeiros = () => {
     Pessoa: "",
     Tipo: "",
     Situacao: "",
-    EmpresaId: token.empresaId
+    EmpresaId: userLogged.empresaId
   }
 
   const alertas = {
@@ -86,9 +86,10 @@ const Financeiros = () => {
   }
 
   function handlePesquisar(e) {
-    const response = fetch("https://localhost:44389/api/financeiro/buscar", {
+    const response = fetch("https://localhost:44389/api/financeiro/buscar", {  
       method: "POST",
       headers: {
+        Authorization: 'Bearer  '+token,  
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -118,8 +119,13 @@ const Financeiros = () => {
       return (
         console.log(financeiros),
         financeiros.map((financeiro) => (
-          <tr onClick={() => editarFinanceiro(financeiro.id)}>
-
+          // <tr onClick={() => editarFinanceiro(financeiro.id)}>
+          <tr>
+            <td onClick="">
+              <Checkbox
+              size="small"
+              />
+              </td> 
             <td key={financeiro.id}>{financeiro.id}</td>
             <td key="tipo">{financeiro.tipo === 1 ? "Receber" : "Pagar"}</td>
             <td key="pessoaNome">{financeiro.pessoaNome}</td>
@@ -134,8 +140,7 @@ const Financeiros = () => {
     return false
   }
 
-  return (
-
+  return (    
     <div className="lista-financeiros">
       <h1>Financeiro</h1>
 
@@ -222,7 +227,7 @@ const Financeiros = () => {
             >
               <MenuItem value="0">Todos</MenuItem>
               <MenuItem value="1">Abertos</MenuItem>
-              <MenuItem value="2">Fechados</MenuItem>
+              <MenuItem value="2">Liquidados</MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12} sm={1}>
@@ -243,6 +248,7 @@ const Financeiros = () => {
       <table id="financeiros">
         <tbody>
           <tr>
+            <th></th>
             <th>Id</th>
             <th>Tipo</th>
             <th>Pessoa</th>
@@ -254,8 +260,23 @@ const Financeiros = () => {
           {listaFinanceiros ?
             showFinanceiros(listaFinanceiros)
             : false}
-        </tbody>
+            
+        </tbody>  
+              
       </table>
+      
+      
+      <div className={`btn-liquidar ${classes.button}`}>              
+
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleClickOpen}
+                className={classes.button}                
+              >
+                Liquidar
+              </Button>
+      </div>     
 
       <Dialog
         open={open}
@@ -271,7 +292,10 @@ const Financeiros = () => {
         </DialogContent>
         <Button onClick={handleClose}>Ok</Button>
       </Dialog>
-    </div>
+    </div>   
+    
+    
+    
   );
 }
 

@@ -7,11 +7,10 @@ import { Button } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
 
 function Materias() {
-  const { token } = useContext(StoreContext);
+  const { token, userLogged } = useContext(StoreContext);
 
-  const url = `https://localhost:44389/api/materiaPorEmpresa/${token.empresaId}`;
-  const method = "get";
-  const response = useFetch(url, method);
+  const url = `https://localhost:44389/api/materiaPorEmpresa/${userLogged.empresaId}`;  
+  const response = useFetch(url,"get",token);
 
   const history = useHistory();
 
