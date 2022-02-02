@@ -22,7 +22,7 @@ const Financeiros = () => {
   const [listaFinanceiros, setListaFinanceiros] = useState("");
 
   useEffect(() => {
-    setListaFinanceiros(response.data);
+    setListaFinanceiros(response.data);    
   }, [response])
 
   var CurrencyFormat = require('react-currency-format');
@@ -75,10 +75,47 @@ const Financeiros = () => {
   };
 
   const [filtroValues, setFiltroValues] = useState(filtros);
+  const [itemSelecionado, setItemSelecionado] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFiltroValues({ ...filtroValues, [name]: value });
+  }
+
+  const handleCheckChange = (e) => {    
+    const { name, checked } = e.target;
+
+    var itens = [...itemSelecionado]; //matérias que tem atualmente
+
+    if(checked){
+      itens.push(name);      
+    }
+    else{      
+      itens = itens.filter((n) => n != name);
+    }
+    setItemSelecionado(itens);
+  };
+  
+  function liquidar() {    
+    const response = fetch("https://localhost:44389/api/financeiro/liquidar", {  
+      method: "POST",
+      headers: {
+        Authorization: 'Bearer  '+token,  
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(itemSelecionado),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response != null) {
+          setMensagem({ ...values, title: "Sucesso!", text: "Documentos liquidados." });
+          setOpen(true);
+        } else {
+          setMensagem({ ...values, title: "Erro!", text: "Não foi possível liquidar os documentos selecionados." });
+          setOpen(true);
+        }
+      });
   }
 
   const show = () => {
@@ -103,7 +140,7 @@ const Financeiros = () => {
           setMensagem({ ...values, title: "Erro!", text: "Nenhum documento encontrado com o filtro utilizado" });
           setOpen(true);
         }
-      })
+      });
   }
 
   function editarFinanceiro(id) {
@@ -121,11 +158,18 @@ const Financeiros = () => {
         financeiros.map((financeiro) => (
           // <tr onClick={() => editarFinanceiro(financeiro.id)}>
           <tr>
-            <td onClick="">
+            {financeiro.situacao == 1 ? 
+            (
+              <td id="checkbox">
+            
               <Checkbox
+              name={financeiro.id}
+              onClick={handleCheckChange}
               size="small"
               />
               </td> 
+            ) : <td></td>}             
+            
             <td key={financeiro.id}>{financeiro.id}</td>
             <td key="tipo">{financeiro.tipo === 1 ? "Receber" : "Pagar"}</td>
             <td key="pessoaNome">{financeiro.pessoaNome}</td>
@@ -271,7 +315,7 @@ const Financeiros = () => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleClickOpen}
+                onClick={liquidar}
                 className={classes.button}                
               >
                 Liquidar
@@ -290,11 +334,9 @@ const Financeiros = () => {
             {mensagem.text}
           </DialogContentText>
         </DialogContent>
-        <Button onClick={handleClose}>Ok</Button>
+        <Button onClick={() => { handleClose(); window.location.reload(); }}>Ok</Button>
       </Dialog>
     </div>   
-    
-    
     
   );
 }

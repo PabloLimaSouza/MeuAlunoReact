@@ -21,6 +21,10 @@
     color: white;
   }
 
+  #checkbox {
+    width: 1rem;
+  }
+
   .lista-financeiros h1{
     text-align: center;  
   }
