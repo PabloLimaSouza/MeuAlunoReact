@@ -15,7 +15,7 @@ const Usuarios = () => {
 
 
 
-  const url = `https://localhost:44389/api/usuariosPorEmpresa/${token.empresaId}`;
+  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/usuariosPorEmpresa/${token.empresaId}`;
   const response = useFetch(url);
 
 

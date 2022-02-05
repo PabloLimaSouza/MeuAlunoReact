@@ -9,7 +9,7 @@ import StoreContext from "../../contexts/StoreContext";
 function Empresa() {
 
     const { token } = useContext(StoreContext);
-    const url = "https://localhost:44389/api/empresa";
+    const url = "http://raphaelfogaca-002-site1.itempurl.com/api/empresa";
     const method = "get";     
     const response = useFetch(url,method,token);
     const history = useHistory(); 

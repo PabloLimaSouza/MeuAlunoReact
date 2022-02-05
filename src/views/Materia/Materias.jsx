@@ -9,7 +9,7 @@ import useStyles from "../Styles/useStyles";
 function Materias() {
   const { token, userLogged } = useContext(StoreContext);
 
-  const url = `https://localhost:44389/api/materiaPorEmpresa/${userLogged.empresaId}`;  
+  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/materiaPorEmpresa/${userLogged.empresaId}`;  
   const response = useFetch(url,"get",token);
 
   const history = useHistory();

@@ -20,11 +20,11 @@ function CadastroUsuario() {
     var editarUsuarioUrl = "";
     const editarUsuarioId = window.location.pathname.split("/");
     if (editarUsuarioId[2] != null) {
-        editarUsuarioUrl = `https://localhost:44389/api/usuarioPorId/${editarUsuarioId[2]}`;
+        editarUsuarioUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/usuarioPorId/${editarUsuarioId[2]}`;
         editando = true;
     }
 
-    const listaEmpresas = useFetch(`https://localhost:44389/api/empresa`);
+    const listaEmpresas = useFetch(`http://raphaelfogaca-002-site1.itempurl.com/api/empresa`);
     var listaPessoas = "";  
 
     const initialValues = {
@@ -58,7 +58,7 @@ function CadastroUsuario() {
     }, [responsePessoas]);
 
     const CarregarPessoas = () => {        
-        var response = fetch(`https://localhost:44389/api/pessoasPorEmpresa/${values.EmpresaId}`)
+        var response = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/pessoasPorEmpresa/${values.EmpresaId}`)
         .then(resp => resp.json())
         .then(json => setResponse({
             data: json,
@@ -168,7 +168,7 @@ function CadastroUsuario() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);    
 
-    const response = fetch("https://localhost:44389/api/usuario/", {
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/", {
       method: "POST",
       headers: {
         Accept: "application/json",

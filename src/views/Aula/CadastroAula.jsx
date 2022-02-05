@@ -18,7 +18,7 @@ import { horarioMask, onlyNumbersMax5 } from '../../utils/mask';
 
 function CadastroAula(){
     const { token, userLogged } = useContext(StoreContext);
-    const url = "https://localhost:44389/api/aula/";  
+    const url = "http://raphaelfogaca-002-site1.itempurl.com/api/aula/";  
     const history = useHistory();
     const [open, setOpen] = useState(false);
     //montar URL para editar aula
@@ -26,7 +26,7 @@ function CadastroAula(){
     var editarAulaUrl = "";    
     const editarAulaId = window.location.pathname.split("/");
     if (editarAulaId[2] != null){
-      editarAulaUrl =  `https://localhost:44389/api/aula/${editarAulaId[2]}`;
+      editarAulaUrl =  `http://raphaelfogaca-002-site1.itempurl.com/api/aula/${editarAulaId[2]}`;
       editando = true;      
     }
 
@@ -106,7 +106,7 @@ function CadastroAula(){
         alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
         console.log(values);
 
-        const response = fetch("https://localhost:44389/api/aula", {
+        const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/aula", {
         method: "POST",
         headers: {
           Authorization: 'Bearer '+token,

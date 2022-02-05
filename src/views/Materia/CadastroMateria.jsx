@@ -11,7 +11,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from "react-router-dom";
 
 function CadastroMateria() {
-  const { token } = useContext(StoreContext);  
+  const { token, userLogged } = useContext(StoreContext);  
   const [open, setOpen] = useState(false);
   const history = useHistory();
       //montar URL para editar matéria
@@ -19,7 +19,7 @@ function CadastroMateria() {
       var editarMateriaUrl = "";    
       const editarMateriaId = window.location.pathname.split("/");
       if (editarMateriaId[2] != null){
-        editarMateriaUrl =  `https://localhost:44389/api/materia/${editarMateriaId[2]}`;  
+        editarMateriaUrl =  `http://raphaelfogaca-002-site1.itempurl.com/api/materia/${editarMateriaId[2]}`;  
         editando = true;    
       }
   
@@ -29,7 +29,7 @@ function CadastroMateria() {
   const initialValues = {
     Id: 0,
     Nome: "",
-    EmpresaId: token.empresaId,
+    EmpresaId: userLogged.empresaId,
   };
 
   const [values, setValues] = useState(initialValues);
@@ -84,7 +84,8 @@ function CadastroMateria() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);    
 
-    const response = fetch("https://localhost:44389/api/materia/", {
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/materia/", {
+      Authorization: 'Bearer '+token,    
       method: "POST",
       headers: {
         Accept: "application/json",

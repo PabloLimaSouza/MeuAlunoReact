@@ -37,14 +37,14 @@ import { currencyMask, onlyLetters } from "../../utils/mask";
 
 function CadastroServico() {
   const { token, userLogged } = useContext(StoreContext);
-  const aulasUrl = `https://localhost:44389/api/aulaPorEmpresa/${userLogged.empresaId}`;
+  const aulasUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/aulaPorEmpresa/${userLogged.empresaId}`;
   const aulasResponse = useFetch(aulasUrl,"get",token);
   const history = useHistory();
   const editarServicoId = window.location.pathname.split("/");
   var editarServicoUrl = "";
 
   if (editarServicoId[2] != null) {
-    editarServicoUrl = `https://localhost:44389/api/servico/${editarServicoId[2]}`;
+    editarServicoUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/servico/${editarServicoId[2]}`;
   }
 
   const servicoResponse = useFetch(editarServicoUrl,"get",token);
@@ -212,7 +212,7 @@ const handleChangeAula = (e) => {
 function handleSubmit(e) {
   setLoading(true);
 
-  const response = fetch("https://localhost:44389/api/servico", {
+  const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/servico", {
     method: "POST",
     headers: {
       Authorization: 'Bearer  '+token,

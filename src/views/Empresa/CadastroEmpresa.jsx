@@ -32,7 +32,7 @@ function CadastroEmpresa() {
   var method = "get";
   const editarEmpresaId = window.location.pathname.split("/");
   if (editarEmpresaId[2] != null) {
-    editarEmpresaUrl = `https://localhost:44389/api/empresa/${editarEmpresaId[2]}`;
+    editarEmpresaUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/empresa/${editarEmpresaId[2]}`;
     editando = true;
   }
 
@@ -282,7 +282,7 @@ function CadastroEmpresa() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);
 
-    const response = fetch("https://localhost:44389/api/empresa/", {
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/empresa/", {
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

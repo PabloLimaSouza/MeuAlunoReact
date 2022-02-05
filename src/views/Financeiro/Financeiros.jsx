@@ -17,7 +17,7 @@ const Financeiros = () => {
 
 
 
-  const url = `https://localhost:44389/api/financeiroPorEmpresa/${userLogged.empresaId}`;
+  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/financeiroPorEmpresa/${userLogged.empresaId}`;
   const response = useFetch(url,"get",token);
   const [listaFinanceiros, setListaFinanceiros] = useState("");
 
@@ -97,7 +97,7 @@ const Financeiros = () => {
   };
   
   function liquidar() {    
-    const response = fetch("https://localhost:44389/api/financeiro/liquidar", {  
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/financeiro/liquidar", {  
       method: "POST",
       headers: {
         Authorization: 'Bearer  '+token,  
@@ -123,7 +123,7 @@ const Financeiros = () => {
   }
 
   function handlePesquisar(e) {
-    const response = fetch("https://localhost:44389/api/financeiro/buscar", {  
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/financeiro/buscar", {  
       method: "POST",
       headers: {
         Authorization: 'Bearer  '+token,  

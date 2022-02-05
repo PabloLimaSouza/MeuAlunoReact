@@ -26,17 +26,17 @@ import { useHistory } from "react-router";
 function CadastroAluno() {
   const { token, userLogged } = useContext(StoreContext);
 
-  const materiasUrl = `https://localhost:44389/api/materiaPorEmpresa/${userLogged.empresaId}`;
+  const materiasUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/materiaPorEmpresa/${userLogged.empresaId}`;
   const materiasResponse = useFetch(materiasUrl,"get",token);
   console.log("materias: ", materiasResponse.data)
-  const servicosUrl = `https://localhost:44389/api/servicoPorEmpresa/${userLogged.empresaId}`;
+  const servicosUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/servicoPorEmpresa/${userLogged.empresaId}`;
   const servicosResponse = useFetch(servicosUrl,"get",token);
 
   const editarAlunoId = window.location.pathname.split("/");
   var editarAlunoUrl = "";
 
   if (editarAlunoId[2] != null) {
-    editarAlunoUrl = `https://localhost:44389/api/aluno/${editarAlunoId[2]}`;
+    editarAlunoUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/aluno/${editarAlunoId[2]}`;
   }
 
   const history = useHistory();
@@ -267,7 +267,7 @@ function CadastroAluno() {
     alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));   
     console.log(values);   
 
-    const response = fetch(`https://localhost:44389/api/aluno/`, {
+    const response = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/aluno/`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

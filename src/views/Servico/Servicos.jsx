@@ -8,7 +8,7 @@ import { Button } from "@material-ui/core";
 const Servicos = () => {
   const history = useHistory();
   const { token, userLogged } = useContext(StoreContext); 
-  const url = `https://localhost:44389/api/servicoPorEmpresa/${userLogged.empresaId}`;  
+  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/servicoPorEmpresa/${userLogged.empresaId}`;  
   const method = "get"
   const response = useFetch(url,method,token); 
   

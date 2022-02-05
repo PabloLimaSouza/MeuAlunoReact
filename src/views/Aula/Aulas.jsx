@@ -7,7 +7,7 @@ import "./Aulas.css"
 
 function Aulas() {
   const { token, userLogged } = useContext(StoreContext);
-  const url = `https://localhost:44389/api/aulaPorEmpresa/${userLogged.empresaId}`;
+  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/aulaPorEmpresa/${userLogged.empresaId}`;
   const method = "get";
   const response = useFetch(url, method,token);
 
