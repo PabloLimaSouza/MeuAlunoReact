@@ -48,8 +48,8 @@ function CadastroUsuario() {
     })
 
     useEffect( () => {        
-      //const responsePessoas = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
-      const responsePessoas = fetch(`https://localhost:44389/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
+      const responsePessoas = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
+      //const responsePessoas = fetch(`https://localhost:44389/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
         method: "GET",
         headers: {
           Authorization: 'Bearer '+token,
@@ -158,8 +158,8 @@ function CadastroUsuario() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);    
 
-    //const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/", {
-      const response = fetch("https://localhost:44389/api/usuario/", {
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/", {
+      //const response = fetch("https://localhost:44389/api/usuario/", {
       method: "POST",
       headers: {
         Accept: "application/json",
