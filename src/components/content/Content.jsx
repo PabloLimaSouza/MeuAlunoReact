@@ -17,6 +17,8 @@ import Financeiros from "../../views/Financeiro/Financeiros";
 import CadastroFinanceiro from "../../views/Financeiro/CadastroFinanceiro";
 import CadastroUsuario from "../../views/Usuario/CadastroUsuario";
 import Usuarios from "../../views/Usuario/Usuarios";
+import Home from "../../views/Home/Home";
+
 
 const Content = (props) => (
   <div className="Geral"> 
@@ -39,6 +41,7 @@ const Content = (props) => (
           <Route path="/cadastroFinanceiro" component={CadastroFinanceiro}/>
           <Route path="/usuarios" component={Usuarios}/>
           <Route path="/cadastroUsuario" component={CadastroUsuario}/>
+          <Route path="/" component={Home}/>
 
         </Switch></div>   
   <div className="Footer">Todos direitos reservados @ 2021</div>   

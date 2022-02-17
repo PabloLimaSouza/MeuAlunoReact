@@ -84,10 +84,10 @@ function CadastroMateria() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);    
 
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/materia/", {
-      Authorization: 'Bearer '+token,    
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/materia/", {          
       method: "POST",
       headers: {
+        Authorization: 'Bearer '+token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },

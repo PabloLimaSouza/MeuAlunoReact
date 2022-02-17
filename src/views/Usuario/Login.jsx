@@ -28,7 +28,8 @@ const UserLogin = () => {
   function onSubmit(event) {
     event.preventDefault();   
     
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/login", {
+    //const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/login", {
+      const response = fetch("https://localhost:44389/api/usuario/login", {
       method: "POST",
       headers: {
         Accept: "application/json",

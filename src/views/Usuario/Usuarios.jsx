@@ -9,13 +9,13 @@ import "./Usuarios.css";
 
 
 const Usuarios = () => {
-  const { token } = useContext(StoreContext);
+  const { token, userLogged } = useContext(StoreContext);
   const classes = useStyles();
   const history = useHistory();
+console.log(token);
+console.log(userLogged);
 
-
-
-  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/usuariosPorEmpresa/${token.empresaId}`;
+  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/usuariosPorEmpresa/${userLogged.empresaId}`;
   const response = useFetch(url);
 
 

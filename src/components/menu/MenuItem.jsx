@@ -3,7 +3,7 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 
-export const MenuItem = [
+export const MenuItemAdmin = [
     {
         title: 'Home',
         path: '/',
@@ -52,4 +52,43 @@ export const MenuItem = [
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
     }   
+]
+
+export const MenuItemCliente = [
+    {
+        title: 'Home',
+        path: '/',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    },  
+    {
+        title: 'Matérias',
+        path: '/materias',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    },  
+    {
+        title: 'Aulas',
+        path: '/aulas',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Serviços',
+        path: '/servicos',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    },    
+    {
+        title: 'Alunos',
+        path: '/alunos',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Financeiro',
+        path: '/financeiros',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    },       
 ]

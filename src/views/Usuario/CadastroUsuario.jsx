@@ -4,10 +4,11 @@ import {
     DialogContentText,  
     Dialog,
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from "react-router-dom";
+import StoreContext from "../../contexts/StoreContext";
 
 function CadastroUsuario() {
 
@@ -15,6 +16,7 @@ function CadastroUsuario() {
 
     const [open, setOpen] = useState(false);
     const history = useHistory();
+    const { token, userLogged } = useContext(StoreContext);
 
     var editando = false;
     var editarUsuarioUrl = "";
@@ -24,11 +26,11 @@ function CadastroUsuario() {
         editando = true;
     }
 
-    const listaEmpresas = useFetch(`http://raphaelfogaca-002-site1.itempurl.com/api/empresa`);
+    const listaEmpresas = useFetch(`http://raphaelfogaca-002-site1.itempurl.com/api/empresa`,"get",token);
     var listaPessoas = "";  
 
     const initialValues = {
-        Id: "",
+        Id: 0,
         TipoUsuario: "",
         EmpresaId: "",
         PessoaId: "",
@@ -46,25 +48,25 @@ function CadastroUsuario() {
     })
 
     useEffect( () => {        
-          CarregarPessoas();
-          console.log(responsePessoas.data);                   
+      //const responsePessoas = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
+      const responsePessoas = fetch(`https://localhost:44389/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
+        method: "GET",
+        headers: {
+          Authorization: 'Bearer '+token,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }})
+        .then(resp => resp.json())
+        .then(json => setResponse({
+                data: json,
+                loading: false
+            }));                              
     }, [values.EmpresaId]);
 
     useEffect( () => {
-     
-        listaPessoas = responsePessoas.data;
-        console.log(responsePessoas.data); 
-                 
-    }, [responsePessoas]);
+      console.log(responsePessoas.data);
+    },[responsePessoas])
 
-    const CarregarPessoas = () => {        
-        var response = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/pessoasPorEmpresa/${values.EmpresaId}`)
-        .then(resp => resp.json())
-        .then(json => setResponse({
-            data: json,
-            loading: false
-        }))       
-    };
   const responseEditarUsuario = useFetch(editarUsuarioUrl);
     
   useEffect(
@@ -83,6 +85,7 @@ function CadastroUsuario() {
       }
     },[responseEditarUsuario]
   );
+
     const showPessoas = () => {
         return  responsePessoas.data ? 
          (
@@ -105,19 +108,6 @@ function CadastroUsuario() {
             ))
         ) : false
     };
-
-    useEffect(
-        function() {
-            if(editando == false){
-              if (values.PessoaId != null && listaPessoas != null){
-                const loginPessoaSelecionada = responsePessoas.data.filter(pessoa => pessoa.id == values.PessoaId).map(pessoaSelecionada => (
-                console.log(pessoaSelecionada.email),
-                setValues({...values, Login: pessoaSelecionada.email})
-                ));
-            }            
-        }            
-        },[values.PessoaId]
-    );
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -168,7 +158,8 @@ function CadastroUsuario() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);    
 
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/", {
+    //const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/", {
+      const response = fetch("https://localhost:44389/api/usuario/", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -326,8 +317,8 @@ function CadastroUsuario() {
             </DialogContentText>
           </DialogContent>          
 
-          {(mensagem.text == "Matéria cadastrada" || mensagem.text == "Matéria atualizada") ?     
-            <Button onClick={() => { handleClose(); history.push("/materias"); }}>Ok</Button>
+          {(mensagem.text == "Usuário cadastrado com sucesso" || mensagem.text == "Usuário atualizado com sucesso") ?     
+            <Button onClick={() => { handleClose(); history.push("/usuarios"); }}>Ok</Button>
              : <Button onClick={handleClose}>Ok</Button>} 
           
         </Dialog>
