@@ -4,13 +4,12 @@ import { useHistory } from "react-router-dom";
 import "./Servicos.css";
 import StoreContext from "../../contexts/StoreContext";
 import { Button } from "@material-ui/core";
+import { url } from "../../../src/variaveis";
 
 const Servicos = () => {
   const history = useHistory();
   const { token, userLogged } = useContext(StoreContext); 
-  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/servicoPorEmpresa/${userLogged.empresaId}`;  
-  const method = "get"
-  const response = useFetch(url,method,token); 
+  const response = useFetch(`${ url }/api/servicoPorEmpresa/${userLogged.empresaId}`,"get",token); 
   
   function novoServico() {
     history.push("/cadastroServico");

@@ -3,6 +3,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from 'react-router-dom';
 import StoreContext from '../../contexts/StoreContext';
 import { format } from 'date-fns';
+import { url } from "../../../src/variaveis";
 
 
 import "./Alunos.css";
@@ -11,8 +12,7 @@ import { Button } from "@material-ui/core";
 const Alunos = (props) => {
   const { token, userLogged } = useContext(StoreContext); 
 
-  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/alunoPorEmpresa/${userLogged.empresaId}`;  
-  const response = useFetch(url,"get",token);
+  const response = useFetch(`${ url }/api/alunoPorEmpresa/${userLogged.empresaId}`,"get",token);
 
   const history = useHistory();  
 

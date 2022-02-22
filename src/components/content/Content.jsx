@@ -18,11 +18,12 @@ import CadastroFinanceiro from "../../views/Financeiro/CadastroFinanceiro";
 import CadastroUsuario from "../../views/Usuario/CadastroUsuario";
 import Usuarios from "../../views/Usuario/Usuarios";
 import Home from "../../views/Home/Home";
+import CadastroContrato from "../../views/Contratos/CadastroContrato";
+import Contratos from "../../views/Contratos/Contratos";
 
 
 const Content = (props) => (
-  <div className="Geral"> 
-
+  <div className="Geral">
   <div className="Header"><Header/></div>   
   <div className="Menu"><Menu/></div>   
   <div className="PaginaAtual">    
@@ -41,9 +42,11 @@ const Content = (props) => (
           <Route path="/cadastroFinanceiro" component={CadastroFinanceiro}/>
           <Route path="/usuarios" component={Usuarios}/>
           <Route path="/cadastroUsuario" component={CadastroUsuario}/>
+          <Route path="/cadastroContrato" component={CadastroContrato}/>
+          <Route path="/contratos" component={Contratos}/>
           <Route path="/" component={Home}/>
-
-        </Switch></div>   
+  </Switch>
+  </div>   
   <div className="Footer">Todos direitos reservados @ 2021</div>   
   </div>
 );

@@ -4,6 +4,7 @@ import StoreContext from "../../contexts/StoreContext";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { cpfMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
+import { url } from "../../../src/variaveis";
 
 import {
   Button,
@@ -26,17 +27,17 @@ import { useHistory } from "react-router";
 function CadastroAluno() {
   const { token, userLogged } = useContext(StoreContext);
 
-  const materiasUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/materiaPorEmpresa/${userLogged.empresaId}`;
+  const materiasUrl = `${ url }/api/materiaPorEmpresa/${userLogged.empresaId}`;
   const materiasResponse = useFetch(materiasUrl,"get",token);
   console.log("materias: ", materiasResponse.data)
-  const servicosUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/servicoPorEmpresa/${userLogged.empresaId}`;
+  const servicosUrl = `${ url }/api/servicoPorEmpresa/${userLogged.empresaId}`;
   const servicosResponse = useFetch(servicosUrl,"get",token);
 
   const editarAlunoId = window.location.pathname.split("/");
   var editarAlunoUrl = "";
 
   if (editarAlunoId[2] != null) {
-    editarAlunoUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/aluno/${editarAlunoId[2]}`;
+    editarAlunoUrl = `${ url }/api/aluno/${editarAlunoId[2]}`;
   }
 
   const history = useHistory();
@@ -267,7 +268,7 @@ function CadastroAluno() {
     alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));   
     console.log(values);   
 
-    const response = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/aluno/`, {
+    const response = fetch(`${ url }/api/aluno/`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

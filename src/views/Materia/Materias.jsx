@@ -5,12 +5,12 @@ import { useHistory } from 'react-router-dom'
 import "./Materias.css"
 import { Button } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
+import { url } from "../../../src/variaveis";
 
 function Materias() {
   const { token, userLogged } = useContext(StoreContext);
 
-  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/materiaPorEmpresa/${userLogged.empresaId}`;  
-  const response = useFetch(url,"get",token);
+  const response = useFetch(`${ url }/api/materiaPorEmpresa/${userLogged.empresaId}`,"get",token);
 
   const history = useHistory();
 

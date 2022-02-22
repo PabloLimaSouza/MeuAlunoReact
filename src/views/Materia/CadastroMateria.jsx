@@ -4,6 +4,7 @@ import { Button, Grid, Paper, TextField,
   DialogContentText,  
   Dialog,
   } from "@material-ui/core";
+import { url } from "../../../src/variaveis";
 import React, { useState, useContext, useEffect } from "react";
 import StoreContext from "../../contexts/StoreContext";
 import useStyles from "../Styles/useStyles";
@@ -19,7 +20,7 @@ function CadastroMateria() {
       var editarMateriaUrl = "";    
       const editarMateriaId = window.location.pathname.split("/");
       if (editarMateriaId[2] != null){
-        editarMateriaUrl =  `http://raphaelfogaca-002-site1.itempurl.com/api/materia/${editarMateriaId[2]}`;  
+        editarMateriaUrl =  `${url}/api/materia/${editarMateriaId[2]}`;  
         editando = true;    
       }
   
@@ -84,7 +85,7 @@ function CadastroMateria() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);    
 
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/materia/", {          
+    const response = fetch(`${url}/api/materia/`, {          
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

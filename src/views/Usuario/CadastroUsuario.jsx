@@ -9,6 +9,7 @@ import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from "react-router-dom";
 import StoreContext from "../../contexts/StoreContext";
+import { url } from "../../../src/variaveis";
 
 function CadastroUsuario() {
 
@@ -22,11 +23,11 @@ function CadastroUsuario() {
     var editarUsuarioUrl = "";
     const editarUsuarioId = window.location.pathname.split("/");
     if (editarUsuarioId[2] != null) {
-        editarUsuarioUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/usuarioPorId/${editarUsuarioId[2]}`;
+        editarUsuarioUrl = `${ url }/api/usuarioPorId/${editarUsuarioId[2]}`;
         editando = true;
     }
 
-    const listaEmpresas = useFetch(`http://raphaelfogaca-002-site1.itempurl.com/api/empresa`,"get",token);
+    const listaEmpresas = useFetch(`${ url }/api/empresa`,"get",token);
     var listaPessoas = "";  
 
     const initialValues = {
@@ -48,7 +49,7 @@ function CadastroUsuario() {
     })
 
     useEffect( () => {        
-      const responsePessoas = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
+      const responsePessoas = fetch(`${ url }/api/pessoasPorEmpresa/${userLogged.EmpresaId}`, {          
       //const responsePessoas = fetch(`https://localhost:44389/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
         method: "GET",
         headers: {
@@ -158,7 +159,7 @@ function CadastroUsuario() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);    
 
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/", {
+    const response = fetch(`${ url }/api/usuario/`, {
       //const response = fetch("https://localhost:44389/api/usuario/", {
       method: "POST",
       headers: {

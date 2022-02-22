@@ -25,13 +25,14 @@ import { parseJSON } from "date-fns";
 import { format } from "date-fns";
 import { currencyMask, onlyLetters } from "../../utils/mask";
 import { setDayOfYear } from "date-fns/esm";
+import { url } from "../../../src/variaveis";
 
 function CadastroFinanceiro() {
   const classes = useStyles();
   var CurrencyFormat = require("react-currency-format");
   const { token, userLogged } = useContext(StoreContext);
 
-  const urlAlunos = `http://raphaelfogaca-002-site1.itempurl.com/api/alunoPorEmpresa/${userLogged.empresaId}`;
+  const urlAlunos = `${ url }/api/alunoPorEmpresa/${userLogged.empresaId}`;
  
   
   const responseAluno = useFetch(urlAlunos,"get",token);
@@ -44,7 +45,7 @@ function CadastroFinanceiro() {
   var editarFinanceiroUrl = "";
   var editando = false;
   if (editarFinanceiro[2] != null) {
-    editarFinanceiroUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/cadastroFinanceiro/${editarFinanceiro[2]}`;
+    editarFinanceiroUrl = `${ url }/api/cadastroFinanceiro/${editarFinanceiro[2]}`;
     editando = true;
   }
   const responseEditarFinanceiro = useFetch(editarFinanceiroUrl,"get",token);
@@ -207,7 +208,7 @@ function CadastroFinanceiro() {
   function handleSubmit(e) {  
     setLoading(true);  
     
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/financeiro/cadastrar", {
+    const response = fetch(`${ url }/api/financeiro/cadastrar`, {
       Authorization: 'Bearer '+token,    
       method: "POST",
       headers: {

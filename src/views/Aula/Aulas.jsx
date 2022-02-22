@@ -4,12 +4,12 @@ import { useHistory } from "react-router";
 import StoreContext from "../../contexts/StoreContext";
 import { useFetch } from "../../hooks/useFetch";
 import "./Aulas.css"
+import { url } from "../../../src/variaveis";
+
 
 function Aulas() {
-  const { token, userLogged } = useContext(StoreContext);
-  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/aulaPorEmpresa/${userLogged.empresaId}`;
-  const method = "get";
-  const response = useFetch(url, method,token);
+  const { token, userLogged } = useContext(StoreContext); 
+  const response = useFetch(`${ url }/api/aulaPorEmpresa/${userLogged.empresaId}`, "get",token);
 
   const history = useHistory();
 

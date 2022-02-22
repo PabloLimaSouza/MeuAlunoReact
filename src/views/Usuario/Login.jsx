@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import StoreContext from "../../contexts/StoreContext";
+import { url } from "../../../src/variaveis";
 
 import "./Login.css";
 
@@ -27,8 +28,7 @@ const UserLogin = () => {
 
   function onSubmit(event) {
     event.preventDefault();   
-    
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/login", {
+    const response = fetch(`${ url }/api/usuario/login`, {
       //const response = fetch("https://localhost:44389/api/usuario/login", {
       method: "POST",
       headers: {

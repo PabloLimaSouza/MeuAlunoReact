@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { url } from "../../../src/variaveis";
 import StoreContext from "../../contexts/StoreContext";
 import {
   Button,
@@ -29,14 +30,13 @@ function CadastroEmpresa() {
   const { token } = useContext(StoreContext);
   var editando = false;
   var editarEmpresaUrl = "";
-  var method = "get";
   const editarEmpresaId = window.location.pathname.split("/");
   if (editarEmpresaId[2] != null) {
-    editarEmpresaUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/empresa/${editarEmpresaId[2]}`;
+    editarEmpresaUrl = `${ url }/api/empresa/${editarEmpresaId[2]}`;
     editando = true;
   }
 
-  const empresaResponse = useFetch(editarEmpresaUrl,method,token);
+  const empresaResponse = useFetch(editarEmpresaUrl,"get",token);
   const [loading, setLoading] = useState(true);
 
   const history = useHistory();
@@ -282,7 +282,7 @@ function CadastroEmpresa() {
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);
 
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/empresa/", {
+    const response = fetch(`${ url }/api/empresa/`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

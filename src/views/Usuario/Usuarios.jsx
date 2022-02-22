@@ -6,6 +6,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from 'react-router-dom';
 import { format } from 'date-fns';
 import "./Usuarios.css";
+import { url } from "../../../src/variaveis";
 
 
 const Usuarios = () => {
@@ -15,10 +16,8 @@ const Usuarios = () => {
 console.log(token);
 console.log(userLogged);
 
-  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/usuariosPorEmpresa/${userLogged.empresaId}`;
-  const response = useFetch(url);
-
-
+  const response = useFetch(`${ url }/api/usuariosPorEmpresa/${userLogged.empresaId}`,"get",token);
+  
   const initialValues = {
     TipoUsuario: "",
     EmpresaId: "",

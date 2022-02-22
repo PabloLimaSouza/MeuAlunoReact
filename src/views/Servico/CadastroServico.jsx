@@ -34,17 +34,17 @@ import {
 import useStyles from "../Styles/useStyles";
 import { purple } from "@material-ui/core/colors";
 import { currencyMask, onlyLetters } from "../../utils/mask";
+import { url } from "../../../src/variaveis";
 
 function CadastroServico() {
   const { token, userLogged } = useContext(StoreContext);
-  const aulasUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/aulaPorEmpresa/${userLogged.empresaId}`;
-  const aulasResponse = useFetch(aulasUrl,"get",token);
+  const aulasResponse = useFetch(`${ url }/api/aulaPorEmpresa/${userLogged.empresaId}`,"get",token);
   const history = useHistory();
   const editarServicoId = window.location.pathname.split("/");
   var editarServicoUrl = "";
 
   if (editarServicoId[2] != null) {
-    editarServicoUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/servico/${editarServicoId[2]}`;
+    editarServicoUrl = `${ url }/api/servico/${editarServicoId[2]}`;
   }
 
   const servicoResponse = useFetch(editarServicoUrl,"get",token);
@@ -212,7 +212,7 @@ const handleChangeAula = (e) => {
 function handleSubmit(e) {
   setLoading(true);
 
-  const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/servico", {
+  const response = fetch(`${ url }/api/servico`, {
     method: "POST",
     headers: {
       Authorization: 'Bearer  '+token,

@@ -14,11 +14,10 @@ import StoreContext from "../../contexts/StoreContext";
 import { useFetch } from '../../hooks/useFetch';
 import { useHistory } from "react-router";
 import { horarioMask, onlyNumbersMax5 } from '../../utils/mask';
-
+import { url } from "../../../src/variaveis";
 
 function CadastroAula(){
-    const { token, userLogged } = useContext(StoreContext);
-    const url = "http://raphaelfogaca-002-site1.itempurl.com/api/aula/";  
+    const { token, userLogged } = useContext(StoreContext);      
     const history = useHistory();
     const [open, setOpen] = useState(false);
     //montar URL para editar aula
@@ -26,7 +25,7 @@ function CadastroAula(){
     var editarAulaUrl = "";    
     const editarAulaId = window.location.pathname.split("/");
     if (editarAulaId[2] != null){
-      editarAulaUrl =  `http://raphaelfogaca-002-site1.itempurl.com/api/aula/${editarAulaId[2]}`;
+      editarAulaUrl =  `${ url }/api/aula/${editarAulaId[2]}`;
       editando = true;      
     }
 
@@ -106,7 +105,7 @@ function CadastroAula(){
         alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
         console.log(values);
 
-        const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/aula", {
+        const response = fetch(`${ url }/api/aula`, {
         method: "POST",
         headers: {
           Authorization: 'Bearer '+token,

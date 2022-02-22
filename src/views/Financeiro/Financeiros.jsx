@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import "./Financeiros.css";
 import CurrencyFormat from 'react-currency-format';
 import { onlyLetters, currencyMask, currencyMaskList } from "../../utils/mask";
+import { url } from "../../../src/variaveis";
 
 const Financeiros = () => {
   const { token, userLogged } = useContext(StoreContext);
@@ -15,10 +16,7 @@ const Financeiros = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
 
-
-
-  const url = `http://raphaelfogaca-002-site1.itempurl.com/api/financeiroPorEmpresa/${userLogged.empresaId}`;
-  const response = useFetch(url,"get",token);
+  const response = useFetch(`${ url }/api/financeiroPorEmpresa/${userLogged.empresaId}`,"get",token);
   const [listaFinanceiros, setListaFinanceiros] = useState("");
 
   useEffect(() => {
@@ -97,7 +95,7 @@ const Financeiros = () => {
   };
   
   function liquidar() {    
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/financeiro/liquidar", {  
+    const response = fetch(`${ url }/api/financeiro/liquidar`, {  
       method: "POST",
       headers: {
         Authorization: 'Bearer  '+token,  
@@ -123,7 +121,7 @@ const Financeiros = () => {
   }
 
   function handlePesquisar(e) {
-    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/financeiro/buscar", {  
+    const response = fetch(`${ url }/api/financeiro/buscar`, {  
       method: "POST",
       headers: {
         Authorization: 'Bearer  '+token,  

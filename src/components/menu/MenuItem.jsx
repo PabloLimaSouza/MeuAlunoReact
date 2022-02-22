@@ -51,7 +51,13 @@ export const MenuItemAdmin = [
         path: '/usuarios',
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
-    }   
+    },
+    {
+        title: 'Contratos',
+        path: '/contratos',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    }  
 ]
 
 export const MenuItemCliente = [
@@ -90,5 +96,11 @@ export const MenuItemCliente = [
         path: '/financeiros',
         icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
-    },       
+    },    
+    {
+        title: 'Contratos',
+        path: '/contratos',
+        icon: <AiIcons.AiFillHome/>,
+        cName: 'nav-text'
+    }        
 ]

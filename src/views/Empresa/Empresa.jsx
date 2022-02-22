@@ -4,14 +4,12 @@ import "./Empresas.css";
 import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from 'react-router-dom';
 import StoreContext from "../../contexts/StoreContext";
-
+import { url } from "../../../src/variaveis";
 
 function Empresa() {
 
-    const { token } = useContext(StoreContext);
-    const url = "http://raphaelfogaca-002-site1.itempurl.com/api/empresa";
-    const method = "get";     
-    const response = useFetch(url,method,token);
+    const { token } = useContext(StoreContext); 
+    const response = useFetch(`${ url }/api/empresa`,"get",token);
     const history = useHistory(); 
 
     console.log(token);
