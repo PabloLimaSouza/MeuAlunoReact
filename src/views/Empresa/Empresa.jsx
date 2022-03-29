@@ -1,16 +1,20 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React ,{ useContext } from "react";
 import "./Empresas.css";
 import { useFetch } from "../../hooks/useFetch";
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+import StoreContext from "../../contexts/StoreContext";
 
 
 function Empresa() {
 
-    const url = "https://localhost:44389/api/empresa";
-    const method = "get";
-    const response = useFetch(url,method);
-    const history = useHistory();
+    const { token } = useContext(StoreContext);
+    const url = "http://raphaelfogaca-002-site1.itempurl.com/api/empresa";
+    const method = "get";     
+    const response = useFetch(url,method,token);
+    const history = useHistory(); 
+
+    console.log(token);
 
     function editarEmpresa(id){
         history.push(`/cadastroEmpresa/${id}`)

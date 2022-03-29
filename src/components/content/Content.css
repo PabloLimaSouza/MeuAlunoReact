@@ -18,7 +18,7 @@
     text-align: right;
     padding-right: 30px;
     padding-top: 10px;
-}
+} 
 
 
 /*MENU INICIO*/
@@ -111,20 +111,16 @@
     padding-right: 5px;
 }
 
-.Header select{
-    font-size: 18px;
-    padding-right: 40px;
-}
-
 .Header button{    
-    border: thick;
-    border-radius: 1rem;
+    border-style: solid;
+    border-width: medium;
+    border-radius: 5px;
     color: black;
     padding: 15px 20px;
     text-align: center;
     text-decoration: none;
     font-size: 16px;    
-    cursor: pointer;
+    cursor: pointer;    
 }
 
 .Header button:hover{    
@@ -134,4 +130,17 @@
 
 .Header strong{
     padding-right: 20px;
+}
+
+.Header .MuiInputBase-input{
+    color:rgb(90, 120, 146);
+    position: relative;
+    padding-top: 5%;
+    font-size: 18px;
+    min-width: 20rem;
+    text-align: center;
+    border-style: solid;
+    border-width: medium;
+    border-radius: 5px;
+    background-color: #f5f5f5;
 }

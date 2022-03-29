@@ -1,21 +1,36 @@
 import React, { useContext, useState, useEffect } from 'react'
 import useStyles from "../Styles/useStyles";
-import { Button, Grid, Paper, TextField } from "@material-ui/core";
+import { Button, 
+  Grid,
+  Paper,
+  TextField,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Dialog,
+  Tooltip, } from "@material-ui/core";
 import StoreContext from "../../contexts/StoreContext";
 import { useFetch } from '../../hooks/useFetch';
+import { useHistory } from "react-router";
+import { horarioMask, onlyNumbersMax5 } from '../../utils/mask';
+
 
 function CadastroAula(){
-    const { token } = useContext(StoreContext);
-    const url = "https://localhost:44389/api/aula/";  
-    
+    const { token, userLogged } = useContext(StoreContext);
+    const url = "http://raphaelfogaca-002-site1.itempurl.com/api/aula/";  
+    const history = useHistory();
+    const [open, setOpen] = useState(false);
     //montar URL para editar aula
+    var editando = false;
     var editarAulaUrl = "";    
     const editarAulaId = window.location.pathname.split("/");
     if (editarAulaId[2] != null){
-      editarAulaUrl =  `https://localhost:44389/api/aula/${editarAulaId[2]}`;      
+      editarAulaUrl =  `http://raphaelfogaca-002-site1.itempurl.com/api/aula/${editarAulaId[2]}`;
+      editando = true;      
     }
 
-    const aulaResponse = useFetch(editarAulaUrl);
+    const aulaResponse = useFetch(editarAulaUrl,"get",token);
     const [loading, setLoading] = useState(true);  
 
     const initialValues = {
@@ -24,8 +39,45 @@ function CadastroAula(){
       HoraInicio: "",
       HoraFim: "",
       Vagas: "",
-      EmpresaId: token.empresaId,
+      EmpresaId: userLogged.empresaId,
   }
+
+  const alertas = {
+    text: "",
+    title: ""
+  }
+
+  const [mensagem, setMensagem] = useState(alertas);
+
+  const handleClickOpen = () => {      
+    if (validadorForm()) {
+      handleSubmit();      
+    } else {
+      console.log("form inválido");
+    }
+  };
+
+  const validadorForm = () => {
+    if(values.Dia == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar dia da aula" });
+      setOpen(true);      
+    } else if(values.HoraInicio == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar horário de inicio" });
+      setOpen(true);      
+    } else if(values.HoraFim == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar horário de fim" });
+      setOpen(true);      
+    } else if(values.Vagas == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar quantidade de vagas" });
+      setOpen(true);      
+    } else {
+      return true;
+    }
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
     useEffect(
       function(){
@@ -53,11 +105,11 @@ function CadastroAula(){
     function handleSubmit(e) {
         alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
         console.log(values);
-        e.preventDefault();
 
-        const response = fetch("https://localhost:44389/api/aula", {
+        const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/aula", {
         method: "POST",
         headers: {
+          Authorization: 'Bearer '+token,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -65,14 +117,13 @@ function CadastroAula(){
       })
         .then((response) => response.json())
         .then((response) => {
-          if (
-            response == "Aula cadastrada" ||
-            response == "Aula atualizada"
-          ) {
-            console.log("Deu bom");
-            console.log(response);
-          } else {
-            console.log("Deu ruim");
+          if (response === "Aula cadastrada" || response === "Aula atualizada") {
+            setMensagem({ ...values, title: "Sucesso!", text: response })
+            setOpen(true);
+           } 
+          else {
+            setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar aula" })
+            setOpen(true);
           }
         });
     }
@@ -102,7 +153,7 @@ function CadastroAula(){
                              id="HoraInicio"
                              name="HoraInicio"
                              label="Hora Inicio"                             
-                             onChange={handleChange}
+                             onChange={(e) => {handleChange(horarioMask(e))}}
                              value={values.HoraInicio}
                           />
                       </Grid>
@@ -111,7 +162,7 @@ function CadastroAula(){
                              id="HoraFim"
                              name="HoraFim"
                              label="Hora Fim"                             
-                             onChange={handleChange}
+                             onChange={(e) => {handleChange(horarioMask(e))}}
                              value={values.HoraFim}
                           />
                       </Grid>
@@ -120,30 +171,51 @@ function CadastroAula(){
                              id="Vagas"
                              name="Vagas"
                              label="Qtd. Vagas"                             
-                             onChange={handleChange}
+                             onChange={(e) => {handleChange(onlyNumbersMax5(e))}}
                              value={values.Vagas}
                           />
                       </Grid>
                   </Grid>
-                  <div classname={classes.buttons}>
-                  <Button
-                    variant="contained"
-                    color="inherit"
-                    className={classes.button}
-                  >
-                    Limpar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    className={classes.button}
-                  >
-                    Cadastrar
-                  </Button>
-                </div>
+                  <div className={classes.buttons}>
+              {editando
+              ? false
+              : <Button
+              variant="contained"
+              color="inherit"
+              className={classes.button}
+            >
+              Limpar
+            </Button>}
+             
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleClickOpen}
+                className={classes.button}
+              >
+                {editando ? "Atualizar" : "Cadastrar"}
+              </Button>
+            </div>
               </form>
             </Paper>
+            <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{mensagem.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {mensagem.text}
+            </DialogContentText>
+          </DialogContent>          
+
+          {(mensagem.text == "Aula cadastrada" || mensagem.text == "Aula atualizada") ?     
+            <Button onClick={() => { handleClose(); history.push("/aulas"); }}>Ok</Button>
+             : <Button onClick={handleClose}>Ok</Button>} 
+          
+        </Dialog>
           </main>
         </React.Fragment>
       );

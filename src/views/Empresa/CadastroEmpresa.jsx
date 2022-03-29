@@ -9,21 +9,37 @@ import {
   Divider,
   Switch,
   FormLabel,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Dialog,
+  Tooltip,
 } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
 import { MenuItem } from "@material-ui/core";
 import { format } from "date-fns";
+import { useHistory } from "react-router";
+import { cepMask, cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
+
+
 
 function CadastroEmpresa() {
+  const { token } = useContext(StoreContext);
+  var editando = false;
   var editarEmpresaUrl = "";
+  var method = "get";
   const editarEmpresaId = window.location.pathname.split("/");
   if (editarEmpresaId[2] != null) {
-    editarEmpresaUrl = `https://localhost:44389/api/empresa/${editarEmpresaId[2]}`;
+    editarEmpresaUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/empresa/${editarEmpresaId[2]}`;
+    editando = true;
   }
 
-  const empresaResponse = useFetch(editarEmpresaUrl);
+  const empresaResponse = useFetch(editarEmpresaUrl,method,token);
   const [loading, setLoading] = useState(true);
+
+  const history = useHistory();
 
   const person = { Nome: "", Telefone: "" };
   const [disableFields, setDisable] = useState(false);
@@ -44,14 +60,94 @@ function CadastroEmpresa() {
       Estado: "",
       CEP: "",
     },
-    Pessoas: [person],
+    Pessoa: {
+        Nome: "",
+        CPF: "",
+        DataNascimento: "",
+        Email: "",
+        Telefone: "",        
+    },
   };
 
   const [values, setValues] = useState(initialValues);
+  const alertas = {
+    text: "",
+    title: ""
+  }
+
+  const [mensagem, setMensagem] = useState(alertas);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {      
+    if (validadorForm()) {
+      handleSubmit();      
+    } else {
+      console.log("form inválido");
+    }
+  };
+
+  const validadorForm = () => {
+    console.log(values);
+    if(values.TipoEmpresa == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o tipo da empresa" });
+      setOpen(true);      
+    } else if(values.RazaoSocial == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar nome da empresa" });
+      setOpen(true);  
+    } else if(values.CNPJ_CPF == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar CNPJ ou CPF da empresa" });
+      setOpen(true);  
+    } else if(values.Telefone == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nº de telefone da empresa" });
+      setOpen(true); 
+    } else if(values.Endereco.Logradouro == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o logradouro do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Numero == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o número do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Cidade == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar a cidade do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Bairro == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o bairro do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Estado == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o estado do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.CEP == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CEP do endereço" });
+      setOpen(true); 
+    } else if(values.Pessoa.Nome == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nome da pessoa" });
+      setOpen(true); 
+    } else if(values.Pessoa.CPF == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CPF da pessoa" });
+      setOpen(true); 
+    } else if(values.Pessoa.DataNascimento == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar a data de nascimento da pessoa" });
+      setOpen(true); 
+    } else if(values.Pessoa.Email == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o e-mail da pessoa" });
+      setOpen(true); 
+    } else if(values.Pessoa.Telefone == ""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o telefone da pessoa" });
+      setOpen(true); 
+    }
+    else {
+      return true;
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   //atualizar campos do form quando é para editar empresa  
   useEffect(
     function () {
+      console.log(empresaResponse.data);
       if (empresaResponse.data != null) {
         setValues((prevState) => ({
           Id: empresaResponse.data.id,
@@ -69,7 +165,7 @@ function CadastroEmpresa() {
             Estado: empresaResponse.data.endereco.estado,
             CEP: empresaResponse.data.endereco.cep,
           },
-          Pessoas: {
+          Pessoa: {
             Nome: empresaResponse.data.pessoas[0].nome,
             CPF: empresaResponse.data.pessoas[0].cpf,
             Email: empresaResponse.data.pessoas[0].email,
@@ -95,17 +191,8 @@ function CadastroEmpresa() {
   const handlePessoa = (e) => {
     const { name, value } = e.target;
     const Endereco = { ...values.Endereco };
-    const Pessoa = { ...values.Pessoas };
+    const Pessoa = { ...values.Pessoa };
     console.log(Pessoa);
-    var pessoa = [
-      {
-        Nome: Pessoa[0].Nome,
-        CPF: Pessoa[0].CPF,
-        DataNascimento: Pessoa[0].DataNascimento,
-        Email: Pessoa[0].Email,
-        Telefone: Pessoa[0].Telefone,
-      },
-    ];
 
     if (name == "Logradouro") {
       Object.keys(Endereco).forEach((key) => {
@@ -136,30 +223,39 @@ function CadastroEmpresa() {
         if (key === "CEP") Endereco[key] = value;
       });
     } else if (name == "CPF") {
-      pessoa[0].CPF = value;
+      Object.keys(Pessoa).forEach((key) => {
+        if (key === "CPF") Pessoa[key] = value;
+      }); 
     } else if (name == "Nome") {
-      pessoa[0].Nome = value;
-    } else if (name == "Telefone") {
-      pessoa[0].Telefone = value;
+      Object.keys(Pessoa).forEach((key) => {
+        if (key === "Nome") Pessoa[key] = value;
+      }); 
     } else if (name == "Email") {
-      pessoa[0].Email = value;
+      Object.keys(Pessoa).forEach((key) => {
+        if (key === "Email") Pessoa[key] = value;
+      }); 
+    } else if (name == "Telefone") {
+      Object.keys(Pessoa).forEach((key) => {
+        if (key === "Telefone") Pessoa[key] = value;
+      }); 
     } else if (name == "DataNascimento") {
-      pessoa[0].DataNascimento = value;
-    }
-
-    setValues({ ...values, Endereco, Pessoas: pessoa });
+      Object.keys(Pessoa).forEach((key) => {
+        if (key === "DataNascimento") Pessoa[key] = value;
+      }); 
+    }    
+    setValues({ ...values, Endereco, Pessoa});
   };
 
   const funcUsarDadosEmpresa = (e) => {
     const { name, checked } = e.target;
     const newPessoa = values;
     
-    newPessoa.Pessoas = [{
+    newPessoa.Pessoa = {
       Nome: values.RazaoSocial,
       CPF: values.CNPJ_CPF,
       Telefone: values.Telefone,    
-    }];
-    setValues({...values, Pessoas: newPessoa});
+    };
+    setValues({...values, Pessoa: newPessoa});
 
     setValues({ ...values, [name]: e.target.checked });
     console.log(
@@ -179,17 +275,17 @@ function CadastroEmpresa() {
     //limpar pessoa/usuario da empresa
     if (values.Id != 0) {
       const valuesToSubmit = values;
-      valuesToSubmit.Pessoas = [];
+      //valuesToSubmit.Pessoa = [];
       setValues({ ...values, valuesToSubmit });
     }
 
     alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
     console.log(values);
-    e.preventDefault();
 
-    const response = fetch("https://localhost:44389/api/empresa/", {
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/empresa/", {
       method: "POST",
       headers: {
+        Authorization: 'Bearer '+token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -197,15 +293,13 @@ function CadastroEmpresa() {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-        if (
-          response == "Empresa cadastrada" ||
-          response == "Empresa não cadastrada"
-        ) {
-          console.log("Deu bom");
-          console.log(response);
-        } else {
-          console.log("Deu ruim");
+        if (response === "Empresa cadastrada com sucesso" || response === "Empresa atualizada") {
+          setMensagem({ ...values, title: "Sucesso!", text: response })
+          setOpen(true);
+         } 
+        else {
+          setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar empresa" })
+          setOpen(true);
         }
       });
   }
@@ -219,7 +313,7 @@ function CadastroEmpresa() {
           <div className={classes.titulo}>
             <h1>Cadastro de Empresa</h1>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={2}>
                 <TextField
@@ -261,7 +355,7 @@ function CadastroEmpresa() {
                       : "CNPJ OU CPF"
                   }
                   fullWidth
-                  onChange={handleChange}
+                  onChange={(e) => {handleChange(cpfMask(e))}}
                   value={values.CNPJ_CPF}
                 />
               </Grid>
@@ -271,7 +365,7 @@ function CadastroEmpresa() {
                   name="Telefone"
                   label="Telefone"
                   fullWidth
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(phoneMask(e)) }}
                   value={values.Telefone}
                 />
               </Grid>
@@ -284,7 +378,7 @@ function CadastroEmpresa() {
                   name="Logradouro"
                   onChange={handlePessoa}
                   value={values.Endereco.Logradouro}
-                  label="Endereço"
+                  label="Logradouro"
                   fullWidth
                 />
               </Grid>
@@ -293,7 +387,7 @@ function CadastroEmpresa() {
                   id="Endereco.Numero"
                   name="Numero"
                   label="Nº"
-                  onChange={handlePessoa}
+                  onChange={(e) => { handlePessoa(onlyNumbersMax5(e)) }}
                   value={values.Endereco.Numero}
                   fullWidth
                 />
@@ -372,7 +466,7 @@ function CadastroEmpresa() {
                   id="Endereco.CEP"
                   name="CEP"
                   label="CEP"
-                  onChange={handlePessoa}
+                  onChange={(e) => { handlePessoa(cepMask(e)) }}
                   value={values.Endereco.CEP}
                   fullWidth
                 />
@@ -411,12 +505,12 @@ function CadastroEmpresa() {
                   label="Nome"
                   fullWidth
                   disabled={disableFields}
-                  onChange={handlePessoa}
+                  onChange={(e) => { handlePessoa(onlyLetters(e)) }}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   value={
-                    values.UsarDados ? values.RazaoSocial : values.Pessoas.Nome
+                    values.UsarDados ? values.RazaoSocial : values.Pessoa.Nome
                   }
                 />
               </Grid>
@@ -428,12 +522,12 @@ function CadastroEmpresa() {
                   label="CPF"
                   fullWidth
                   disabled={disableFields}
-                  onChange={handlePessoa}
+                  onChange={(e) => { handlePessoa(cpfMask(e)) }}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   value={
-                    values.UsarDados ? values.CNPJ_CPF : values.Pessoas.CPF
+                    values.UsarDados ? values.CNPJ_CPF : values.Pessoa.CPF
                   }
                 />
               </Grid>
@@ -445,7 +539,7 @@ function CadastroEmpresa() {
                   type="date"
                   onChange={handlePessoa}
                   disabled={disableFields}
-                  value={values.Pessoas.DataNascimento}
+                  value={values.Pessoa.DataNascimento}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -460,7 +554,7 @@ function CadastroEmpresa() {
                   disabled={disableFields}
                   fullWidth
                   onChange={handlePessoa}
-                  value={values.Pessoas.Email}
+                  value={values.Pessoa.Email}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -474,9 +568,9 @@ function CadastroEmpresa() {
                   label="Telefone"
                   disabled={disableFields}
                   fullWidth
-                  onChange={handlePessoa}
+                  onChange={(e) => { handlePessoa(phoneMask(e)) }}
                   value={
-                    values.UsarDados ? values.Telefone : values.Pessoas.Telefone
+                    values.UsarDados ? values.Telefone : values.Pessoa.Telefone
                   }
                   InputLabelProps={{
                     shrink: true,
@@ -485,25 +579,45 @@ function CadastroEmpresa() {
               </Grid>
             </Grid>
 
-            <div classname={classes.buttons}>
-              <Button
-                variant="contained"
-                color="inherit"
-                className={classes.button}
-                disabled={disableFields}
-              >
-                Limpar
-              </Button>
+            <div className={classes.buttons}>
+              {editando
+              ? false
+              : <Button
+              variant="contained"
+              color="inherit"
+              className={classes.button}
+            >
+              Limpar
+            </Button>}
+             
               <Button
                 variant="contained"
                 color="primary"
-                type="submit"
+                onClick={handleClickOpen}
                 className={classes.button}
               >
-                {disableFields ? "Alterar" : "Cadastrar"}
+                {editando ? "Atualizar" : "Cadastrar"}
               </Button>
             </div>
           </form>
+          <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{mensagem.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {mensagem.text}
+            </DialogContentText>
+          </DialogContent>          
+
+          {(mensagem.text == "Empresa cadastrada com sucesso" || mensagem.text == "Empresa atualizada") ?     
+            <Button onClick={() => { handleClose(); history.push("/empresas"); }}>Ok</Button>
+             : <Button onClick={handleClose}>Ok</Button>} 
+          
+        </Dialog>
         </Paper>
       </main>
     </React.Fragment>

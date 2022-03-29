@@ -1,62 +1,49 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  Formik,
-  Field,
-  Form,
-  useFormik,
-  FieldArray,
-  getActiveElement,
-} from "formik";
 import { useFetch } from "../../hooks/useFetch";
 import StoreContext from "../../contexts/StoreContext";
 import Checkbox from "@material-ui/core/Checkbox";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
+import { cpfMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
 
 import {
   Button,
   Divider,
-  FormControl,
-  FormLabel,
-  Grid,
-  InputLabel,
-  ListItemText,
+  Grid,  
   MenuItem,
   Paper,
   Select,
-  Switch,
   TextField,
-  Typography,
-  withStyles,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  Dialog,
 } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
-import { purple } from "@material-ui/core/colors";
-import { findAllByAltText } from "@testing-library/dom";
 import { format } from 'date-fns';
+import { useHistory } from "react-router";
+
 
 function CadastroAluno() {
-  const { token } = useContext(StoreContext);
+  const { token, userLogged } = useContext(StoreContext);
 
-  const materiasUrl = `https://localhost:44389/api/materiaPorEmpresa/${token.empresaId}`;
-  const materiasResponse = useFetch(materiasUrl);
+  const materiasUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/materiaPorEmpresa/${userLogged.empresaId}`;
+  const materiasResponse = useFetch(materiasUrl,"get",token);
   console.log("materias: ", materiasResponse.data)
-  const servicosUrl = `https://localhost:44389/api/servicoPorEmpresa/${token.empresaId}`;
-  const servicosResponse = useFetch(servicosUrl);
+  const servicosUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/servicoPorEmpresa/${userLogged.empresaId}`;
+  const servicosResponse = useFetch(servicosUrl,"get",token);
 
   const editarAlunoId = window.location.pathname.split("/");
   var editarAlunoUrl = "";
 
   if (editarAlunoId[2] != null) {
-    editarAlunoUrl = `https://localhost:44389/api/aluno/${editarAlunoId[2]}`;
+    editarAlunoUrl = `http://raphaelfogaca-002-site1.itempurl.com/api/aluno/${editarAlunoId[2]}`;
   }
 
-  const alunoResponse = useFetch(editarAlunoUrl);
-  const [loading, setLoading] = useState(true);
-  const [checked,setChecked] = useState(false);
-  
- 
+  const history = useHistory();
 
+  const alunoResponse = useFetch(editarAlunoUrl,"get",token);
+  const [open, setOpen] = useState(false);
+  
   const initialValues = {
     Id: 0,
     Nome: "",
@@ -76,23 +63,95 @@ function CadastroAluno() {
       Estado: "",
       CEP: "",
     },
-    EmpresaId: token.empresaId,
+    EmpresaId: userLogged.empresaId,
     ServicoId: "",
     MateriaAlunos: [],
   };
 
   const [values, setValues] = useState(initialValues);
 
+  const alertas = {
+    text: "",
+    title: ""
+  }
+
+  const [mensagem, setMensagem] = useState(alertas);
+
+  const handleClickOpen = () => {      
+    if (validadorForm()) {
+      handleSubmit();      
+    } else {
+      console.log("form inválido");
+    }
+  };
+
+  const validadorForm = () => {
+    if(values.Nome ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar nome do aluno" });
+      setOpen(true);      
+    } else if(values.DataNascimento ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar data de nascimento do aluno" });
+      setOpen(true); 
+    } else if(values.Serie ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar a série do aluno" });
+      setOpen(true); 
+    } else if(values.Escola ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nome da escola do aluno" });
+      setOpen(true); 
+    } else if(values.NomeResponsavel ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nome do responsável pelo aluno" });
+      setOpen(true); 
+    } else if(values.CPFResponsavel ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CPF do responsável pelo aluno" });
+      setOpen(true); 
+    } else if(values.TelefoneResponsavel ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o telefone do responsável pelo aluno" });
+      setOpen(true); 
+    } else if(values.EmailResponsavel ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o e-mail do responsável pelo aluno" });
+      setOpen(true); 
+    } else if(values.Endereco.Logradouro ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o logradouro do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Numero ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o número do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Cidade ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar a cidade do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Bairro ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o bairro do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.Estado ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o estado do endereço" });
+      setOpen(true); 
+    } else if(values.Endereco.CEP ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CEP do endereço" });
+      setOpen(true); 
+    } else if(values.MateriaAlunos.length === 0){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar pelo menos uma matéria" });
+      setOpen(true); 
+    } else if(values.ServicoId ===""){
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar o serviço contratado" });
+      setOpen(true); 
+    } else {
+      return true;
+    }
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   useEffect(
     function () {
-      if (alunoResponse.data != null) {
-        setLoading(false);
-     
+      if (alunoResponse.data != null) {        
+
         var materias = []
         alunoResponse.data.materiaAlunos.map((materia => (
-          materias.push({MateriaId: materia.materiaId})
+          materias.push({ MateriaId: materia.materiaId })
         )))
-        
+
         setValues((prevState) => ({
           Id: alunoResponse.data.id,
           Nome: alunoResponse.data.nome,
@@ -115,7 +174,7 @@ function CadastroAluno() {
           ServicoId: alunoResponse.data.servicoId,
           EmpresaId: alunoResponse.data.empresaId,
           MateriaAlunos: materias,
-        }));        
+        }));
       }
     },
     [alunoResponse]
@@ -130,41 +189,41 @@ function CadastroAluno() {
     const { name, value } = e.target;
     const Endereco = { ...values.Endereco };
 
-    if (name == "Logradouro") {
+    if (name === "Logradouro") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Logradouro") Endereco[key] = value;
       });
-    } else if (name == "Numero") {
+    } else if (name === "Numero") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Numero") Endereco[key] = value;
       });
-    } else if (name == "Complemento") {
+    } else if (name === "Complemento") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Complemento") Endereco[key] = value;
       });
-    } else if (name == "Bairro") {
+    } else if (name === "Bairro") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Bairro") Endereco[key] = value;
       });
-    } else if (name == "Cidade") {
+    } else if (name === "Cidade") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Cidade") Endereco[key] = value;
       });
-    } else if (name == "Estado") {
+    } else if (name === "Estado") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "Estado") Endereco[key] = value;
       });
-    } else if (name == "CEP") {
+    } else if (name === "CEP") {
       Object.keys(Endereco).forEach((key) => {
         if (key === "CEP") Endereco[key] = value;
       });
-    } 
+    }
 
     setValues({ ...values, Endereco });
   };
 
   const handleMateria = (e) => {
-    const { name, value, checked } = e.target;    
+    const { name, value, checked } = e.target;
 
     var MateriaAlunos = [...values.MateriaAlunos]; //matérias que tem atualmente
     console.log(MateriaAlunos);
@@ -178,40 +237,40 @@ function CadastroAluno() {
     var newValues = "";
 
     //se desmarcar checkbox da matéria
-    if (checked === false){
-       //se encontrar materiaId no array, faz filter e tira
+    if (checked === false) {
+      //se encontrar materiaId no array, faz filter e tira
       MateriaAlunos = MateriaAlunos.filter((n) => n.MateriaId != materiaId);
       setValues({ ...values, MateriaAlunos });
     }
 
     //se marcar checkbox da matéria
-        if (checked === true){
-    //adiciona materia no array
-          MateriaAlunos.push({ MateriaId: materiaId });
-          setValues({ ...values, MateriaAlunos });
-       }    
+    if (checked === true) {
+      //adiciona materia no array
+      MateriaAlunos.push({ MateriaId: materiaId });
+      setValues({ ...values, MateriaAlunos });
+    }
   };
 
-  function checkMateria(id){
-    var checkMateria = [...values.MateriaAlunos]    
+  function checkMateria(id) {
+    var checkMateria = [...values.MateriaAlunos]
     var matIds = []
-    checkMateria.map((mat,i) => (
+    checkMateria.map((mat, i) => (
       matIds.push(Object.values(mat))
-    ))      
-    if( matIds.find(e => e == id) ){  
+    ))
+    if (matIds.find(e => e == id)) {
       return true
-    } else    
-    return false    
+    } else
+      return false
   }
 
   function handleSubmit(e) {
-    alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));
-    console.log(values);
-    e.preventDefault();
+    alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));   
+    console.log(values);   
 
-    const response = fetch(`https://localhost:44389/api/aluno/`, {
+    const response = fetch(`http://raphaelfogaca-002-site1.itempurl.com/api/aluno/`, {
       method: "POST",
       headers: {
+        Authorization: 'Bearer '+token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -219,11 +278,14 @@ function CadastroAluno() {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response == "Aluno Cadastrado") {
-          console.log("Deu bom");
-          console.log(response);
-        } else {
-          console.log("Deu ruim");
+        console.log(response);
+        if (response === "Aluno cadastrado") {
+          setMensagem({ ...values, title: "Sucesso!", text: response })
+          setOpen(true);
+         } 
+        else {
+          setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar aluno" })
+          setOpen(true);
         }
       });
   }
@@ -251,8 +313,9 @@ function CadastroAluno() {
                   id="Nome"
                   name="Nome"
                   label="Nome Aluno"
+                  
                   fullWidth
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Nome}
                 />
               </Grid>
@@ -262,6 +325,7 @@ function CadastroAluno() {
                   name="DataNascimento"
                   label="Data Nascimento"
                   type="date"
+                  
                   onChange={handleChange}
                   value={values.DataNascimento}
                   InputLabelProps={{
@@ -275,6 +339,7 @@ function CadastroAluno() {
                   id="Serie"
                   name="Serie"
                   label="Serie"
+                  
                   onChange={handleChange}
                   value={values.Serie}
                   fullWidth
@@ -285,7 +350,8 @@ function CadastroAluno() {
                   id="Escola"
                   name="Escola"
                   label="Escola"
-                  onChange={handleChange}
+                  
+                  onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Escola}
                   fullWidth
                 />
@@ -295,8 +361,9 @@ function CadastroAluno() {
                   id="NomeResponsavel"
                   name="NomeResponsavel"
                   label="Nome Responsável"
+                  
                   fullWidth
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.NomeResponsavel}
                 />
               </Grid>
@@ -305,7 +372,8 @@ function CadastroAluno() {
                   id="CPFResponsavel"
                   name="CPFResponsavel"
                   label="CPF"
-                  onChange={handleChange}
+                  
+                  onChange={(e) => { handleChange(cpfMask(e)) }}
                   value={values.CPFResponsavel}
                   fullWidth
                   InputLabelProps={{
@@ -318,20 +386,22 @@ function CadastroAluno() {
                   id="TelefoneResponsavel"
                   name="TelefoneResponsavel"
                   label="Telefone"
-                  onChange={handleChange}
+                  
+                  onChange={(e) => { handleChange(phoneMask(e)) }}
                   value={values.TelefoneResponsavel}
                   fullWidth
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
-              </Grid>
+              </Grid>              
               <Grid item xs={12} sm={4}>
                 <TextField
                   id="EmailResponsavel"
                   name="EmailResponsavel"
                   label="E-mail"
                   onChange={handleChange}
+                  
                   value={values.EmailResponsavel}
                   fullWidth
                   InputLabelProps={{
@@ -349,6 +419,7 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Logradouro"
                   name="Logradouro"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.Logradouro}
                   label="Logradouro"
@@ -359,8 +430,8 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Numero"
                   name="Numero"
-                  label="Nº"
-                  onChange={handleEndereco}
+                  label="Nº"                  
+                  onChange={(e) => { handleEndereco(onlyNumbersMax5(e)) }}
                   value={values.Endereco.Numero}
                   fullWidth
                 />
@@ -380,6 +451,7 @@ function CadastroAluno() {
                   id="Endereco.Cidade"
                   name="Cidade"
                   label="Cidade"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.Cidade}
                   fullWidth
@@ -389,6 +461,7 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Bairro"
                   name="Bairro"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.Bairro}
                   label="Bairro"
@@ -400,6 +473,7 @@ function CadastroAluno() {
                   id="Endereco.Estado"
                   name="Estado"
                   label="Estado"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.Estado}
                   fullWidth
@@ -439,6 +513,7 @@ function CadastroAluno() {
                   id="Endereco.CEP"
                   name="CEP"
                   label="CEP"
+                  
                   onChange={handleEndereco}
                   value={values.Endereco.CEP}
                   fullWidth
@@ -451,26 +526,26 @@ function CadastroAluno() {
                 </div>
               </Grid>
 
-               <Grid item xs={12}>
-                { 
-                materiasResponse.data ? 
-                (
-                materiasResponse.data.map((mat, j) => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        name={`MateriaAlunos${[]}.MateriaId`}
-                        onChange={handleMateria}
-                        //onChange={(e) => handleMateria(e)}
-                        value={`index:${j},id:${mat.id}`}
-                        checked={checkMateria(mat.id)}                        
-                      />
-                    }
-                    label={mat.nome}
-                  />
-                ))) : false             
-                  }
-              </Grid> 
+              <Grid item xs={12}>                
+                {
+                  materiasResponse.data ?
+                    (
+                      materiasResponse.data.map((mat, j) => (
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              name={`MateriaAlunos${[]}.MateriaId`}
+                              onChange={handleMateria}                              
+                              value={`index:${j},id:${mat.id}`}
+                              checked={checkMateria(mat.id)}
+                            />
+                          }
+                          label={mat.nome}
+                        />
+                      ))) : false
+                }
+                
+              </Grid>
 
               <Grid item xs={12}>
                 <div className={classes.subtitulo}>
@@ -485,16 +560,17 @@ function CadastroAluno() {
                   label="Servico Contratado"
                   onChange={handleChange}
                   name="ServicoId"
-                  value={values.ServicoId}
                   
+                  value={values.ServicoId}
+
                 >
                   {servicosResponse.data ? (
-                    
-                      servicosResponse.data.map((serv) => (
-                        <MenuItem value={serv.id}>
-                          {serv.descricao + " - Valor: R$" + serv.valor}
-                        </MenuItem>
-                      ))) : false
+
+                    servicosResponse.data.map((serv) => (
+                      <MenuItem value={serv.id}>
+                        {serv.descricao + " - Valor: R$" + serv.valor}
+                      </MenuItem>
+                    ))) : false
                   }
                 </Select>
               </Grid>
@@ -509,8 +585,8 @@ function CadastroAluno() {
               </Button>
               <Button
                 variant="contained"
-                color="primary"
-                type="submit"
+                color="primary"                
+                onClick={handleClickOpen}
                 className={classes.button}
               >
                 Cadastrar
@@ -518,6 +594,22 @@ function CadastroAluno() {
             </div>
           </form>
         </Paper>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{mensagem.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {mensagem.text}
+            </DialogContentText>
+          </DialogContent>
+          {(mensagem.text == "Aluno cadastrado") ?     
+          <Button onClick={() => { handleClose(); history.push("/alunos"); }}>Ok</Button>
+           : <Button onClick={handleClose}>Ok</Button>}          
+        </Dialog>
       </main>
     </React.Fragment>
   );

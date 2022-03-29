@@ -8,17 +8,11 @@ function initialState() {
   return { Login: "", Senha: "" };
 }
 
-function login(values) {
-  if (values.Login !== '') {
-    return { token: values};
-  }
-  return { error: 'Usuário ou senha inválido' };
-}
-
 const UserLogin = () => {
   const [values, setValues] = useState(initialState);
   const [error, setError] = useState(null);
   const { setToken } = useContext(StoreContext);
+  const { setUserLogged} = useContext(StoreContext);
   const history = useHistory();
   const {token} = '';
 
@@ -34,7 +28,7 @@ const UserLogin = () => {
   function onSubmit(event) {
     event.preventDefault();   
     
-    const response = fetch("https://localhost:44389/api/usuario", {
+    const response = fetch("http://raphaelfogaca-002-site1.itempurl.com/api/usuario/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -44,18 +38,19 @@ const UserLogin = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response.login !== "") {                  
-         const { token, error } = login(response); 
-         setToken(token);
-         return history.push("/");
-         console.log(token) ;   
-         console.log('deubom');                  
+        if (response.jwt != null && response.dadosUsuario.login != null) {          
+         setToken(response.jwt);
+         setUserLogged(response.dadosUsuario);         
+         return history.push("/");                        
         } else {
           console.log("Deu ruim");
+          console.log(response.jwt);
+          console.log(response.dadosUsuario);
+          //setToken(response.jwt);
+          setError(response);
         }
-      });   
-      
-    setError(error);
+      });         
+    
     setValues(initialState);
   }
 
@@ -71,6 +66,7 @@ const UserLogin = () => {
             name="Login"
             onChange={onChange}
             value={values.Login}
+            required
           />
         </div>
         <div className="user-login__form-control">
@@ -81,6 +77,7 @@ const UserLogin = () => {
             name="Senha"
             onChange={onChange}
             value={values.Senha}
+            required
           />
         </div>
         {error && <div className="user-login__error">{error}</div>}
