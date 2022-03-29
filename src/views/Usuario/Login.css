@@ -42,3 +42,13 @@
 .user-login__error {
   color: red;
 }
+
+.wrapper{
+  position: relative;
+}
+
+#loader{
+  position: absolute;
+  top: 100%;
+  right: 49%;
+}

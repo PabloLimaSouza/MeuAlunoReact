@@ -5,9 +5,16 @@ const Home = () => {
     return (
         <div>
             
-            <h1>Notas de publicação - Versão atual: v22022022</h1>            
-                <br/>
+            <h1>Notas de publicação - Versão atual: xxxxxx</h1>     
+            <br/>
+                <h2>Itens publicados: xxxxxx</h2>                     
+            <ul>
+                <li>Bloquear botão login quando ainda não houve retorno do login</li>
+                <li>Ícone de Loading quando está aguardando login</li> 
+                <li>Mensagem de erro quando</li>                  
+            </ul>
 
+            <br/>
                 <h2>Itens publicados: v22022022</h2>                     
             <ul>
                 <li>Menu contratos com listagem de cláusulas padrões</li>                

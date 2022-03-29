@@ -20,13 +20,14 @@ import Usuarios from "../../views/Usuario/Usuarios";
 import Home from "../../views/Home/Home";
 import CadastroContrato from "../../views/Contratos/CadastroContrato";
 import Contratos from "../../views/Contratos/Contratos";
+import Loader from "../../utils/loader";
 
 
-const Content = (props) => (
-  <div className="Geral">
+const Content = (props) => (  
+  <div className="Geral">    
   <div className="Header"><Header/></div>   
   <div className="Menu"><Menu/></div>   
-  <div className="PaginaAtual">    
+  <div className="PaginaAtual">      
   <Switch>
           <Route path="/cadastroAluno" component={CadastroAluno} />
           <Route path="/alunos" component={Alunos} />

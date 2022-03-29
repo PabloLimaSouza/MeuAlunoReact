@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import StoreContext from "../../contexts/StoreContext";
 import { url } from "../../../src/variaveis";
+import Loader from "../../utils/loader";
 
 import "./Login.css";
 
@@ -11,6 +12,7 @@ function initialState() {
 
 const UserLogin = () => {
   const [values, setValues] = useState(initialState);
+  const [loading,setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { setToken } = useContext(StoreContext);
   const { setUserLogged} = useContext(StoreContext);
@@ -27,7 +29,9 @@ const UserLogin = () => {
   }
 
   function onSubmit(event) {
-    event.preventDefault();   
+    debugger;
+    event.preventDefault();  
+    setLoading(true); 
     const response = fetch(`${ url }/api/usuario/login`, {
       //const response = fetch("https://localhost:44389/api/usuario/login", {
       method: "POST",
@@ -36,8 +40,7 @@ const UserLogin = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(values),
-    })
-      .then((response) => response.json())
+    }).then((response) => response.json())
       .then((response) => {
         if (response.jwt != null && response.dadosUsuario.login != null) {          
          setToken(response.jwt);
@@ -50,13 +53,21 @@ const UserLogin = () => {
           //setToken(response.jwt);
           setError(response);
         }
-      });         
-    
+    //   }).catch(function(error) {
+    //     console.log(error);
+    //     setError("Não foi possível realizar login.");
+    //     setLoading(false);
+    // }); 
+      }).then( () => {
+        setLoading(false);
+      });        
+    console.log(response);
     setValues(initialState);
   }
 
   return (
-    <div className="user-login">
+    <div className="wrapper">
+    <div className="user-login">      
       <h1 className="user-login__title">Acessar o Sistema</h1>
       <form onSubmit={onSubmit}>
         <div className="user-login__form-control">
@@ -81,11 +92,20 @@ const UserLogin = () => {
             required
           />
         </div>
-        {error && <div className="user-login__error">{error}</div>}
-        <button type="submit" className="user-login__submit-button">
+        <div className="user-login__error">{error}</div>
+        <button type="submit" className="user-login__submit-button" disabled={loading ? "disabled" : ''}>
           Entrar
         </button>
-      </form>
+      </form>      
+    </div>
+    {loading ? 
+    (
+    <div id="loader">
+      <Loader/>
+    </div>
+    ) 
+    : false}
+    
     </div>
   );
 };
