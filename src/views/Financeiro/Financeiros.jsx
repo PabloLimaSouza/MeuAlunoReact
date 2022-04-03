@@ -83,8 +83,7 @@ const Financeiros = () => {
   const handleCheckChange = (e) => {    
     const { name, checked } = e.target;
 
-    var itens = [...itemSelecionado]; //matérias que tem atualmente
-
+    var itens = [...itemSelecionado]; 
     if(checked){
       itens.push(name);      
     }

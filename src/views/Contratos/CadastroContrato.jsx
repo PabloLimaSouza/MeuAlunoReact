@@ -1,5 +1,5 @@
 import { Grid, Paper, TextareaAutosize, FormControlLabel, Checkbox, Button } from "@material-ui/core";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import StoreContext from "../../contexts/StoreContext";
 import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
@@ -12,59 +12,85 @@ function CadastroContrato() {
     const classes = useStyles();
     const { token, userLogged } = useContext(StoreContext);
     const retornoContrato = useFetch(`${url}/api/contratoPorEmpresaId/${userLogged.empresaId}`, "get", token)
-    const [clausulas,setClausulas] = useState([])
-    
+    const [clausulas, setClausulas] = useState([])
+    const [contrato, setContrato] = useState([]);
 
-    const handleChange = (e) => {
-        
-        const { name, value } = e.target;
-        var clausula = value.split('|');       
+    useEffect(
+
+        function () {
+            if (retornoContrato.data != null) {
+                const contratoValues = {
+                    ContratoId: retornoContrato.data.contrato.id,
+                    EmpresaId: userLogged.empresaId
+                }
+                setContrato(contratoValues);
+            }
+        }, [retornoContrato]
+    );
+
+    const handleClausula = (e) => {
+        const { name, value, checked } = e.target;
+
+        var clausula = value.split('|');
         const values = {
             Id: name,
             Nome: clausula[1],
-            Descricao: clausula[2]
+            Descricao: clausula[2],
+            ContratoId: contrato.ContratoId,
+            Ativa: false,
         };
-        var clausulasExistentes = [...clausulas];        
-        clausulasExistentes.push(values);
+        var clausulasExistentes = [...clausulas]; //cláusulas que tem atualmente    
 
-        setClausulas(clausulasExistentes);
-        console.log(clausulasExistentes);  
-        console.log(clausulas);     
-    }
-
-    // function checkChange(id) {
-    //     var clausulas = [...values.MateriaAlunos]
-    //     var matIds = []
-    //     checkMateria.map((mat, i) => (
-    //       matIds.push(Object.values(mat))
-    //     ))
-    //     if (matIds.find(e => e == id)) {
-    //       return true
-    //     } else
-    //       return false
-    //   }
-
-    function handleSubmit(e){
-
-        var request = {
-            clausulas,
-            Contrato: {
-                EmpresaId: userLogged.empresaId
-            }
+        //se desmarcar checkbox 
+        if (checked === false) {
+            //se encontrar clausulaId no array, faz filter e tira
+            values.Ativa = false;
+            clausulasExistentes = clausulasExistentes.filter((n) => n.Id != values.Id);
+            setClausulas(clausulasExistentes);
         }
 
-        //alert("SUCCESS!! :-)\n\n" + JSON.stringify(request, null, 4)); 
+        //se marcar checkbox
+        if (checked === true) {
+            //adiciona materia no array
+            values.Ativa = true;
+            clausulasExistentes.push(values);
+            setClausulas(clausulasExistentes);
+        }
+    };
 
-        const response = fetch(`${ url }/api/contrato/`, {
+    function checkChange(id) {
+        var checkClausulas = [...clausulas]
+        var clausulasId = []
+        checkClausulas.map((clausula, i) => (
+            clausulasId.push(clausula.Id)
+        ))
+        if (clausulasId.find(e => e == id)) {
+            return true
+        } else
+            return false
+    }
+
+    function handleSubmit(e) {
+        debugger;
+        console.log(retornoContrato);
+        debugger;
+        var request = {
+            clausulas,
+            contrato
+        }
+
+        alert("SUCCESS!! :-)\n\n" + JSON.stringify(request, null, 4));
+
+        const response = fetch(`${url}/api/contrato/`, {
             method: "POST",
             headers: {
-              Authorization: 'Bearer '+token,
-              Accept: "application/json",
-              "Content-Type": "application/json",
+                Authorization: 'Bearer ' + token,
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(request),
-          });
-                
+        });
+
     }
 
     return (
@@ -89,8 +115,8 @@ function CadastroContrato() {
                                                     <Checkbox
                                                         name={clausula.id}
                                                         value={`${i}|${clausula.nome}|${clausula.descricao}`}
-                                                        onChange={handleChange}
-                                                        //checked={checkChange(clausula.id)}
+                                                        onChange={handleClausula}
+                                                        checked={checkChange(clausula.id)}
                                                     />
                                                 }
                                             />
@@ -101,7 +127,7 @@ function CadastroContrato() {
                                                 aria-label="maximum height"
                                                 placeholder="Maximum 4 rows"
                                                 defaultValue={clausula.nome + " " + clausula.descricao}
-                                                name={clausula.id}                                                
+                                                name={clausula.id}
                                                 style={{ width: 700 }}
                                             />
                                         </Grid>
@@ -112,16 +138,16 @@ function CadastroContrato() {
                         }
 
                     </Grid><div className="btn-novo">
-          <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                onClick={handleSubmit}
-                className="btn-novo"                
-              >
-                Salvar
-              </Button>
-          </div>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            onClick={handleSubmit}
+                            className="btn-novo"
+                        >
+                            Salvar
+                        </Button>
+                    </div>
 
                 </form>
             </main>

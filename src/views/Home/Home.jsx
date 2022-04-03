@@ -5,13 +5,13 @@ const Home = () => {
     return (
         <div>
             
-            <h1>Notas de publicação - Versão atual: xxxxxx</h1>     
+            <h1>Notas de publicação - Versão atual: v28032022</h1>     
             <br/>
-                <h2>Itens publicados: xxxxxx</h2>                     
+                <h2>Itens publicados: v28032022</h2>                     
             <ul>
                 <li>Bloquear botão login quando ainda não houve retorno do login</li>
                 <li>Ícone de Loading quando está aguardando login</li> 
-                <li>Mensagem de erro quando</li>                  
+                <li>Mensagem quando tem erro ao realizar login</li>                  
             </ul>
 
             <br/>
@@ -30,6 +30,7 @@ const Home = () => {
             <br/>
             <h2>Itens em andamento:</h2>
             <ul>
+                <li>Contratos - ajustar lista para enviar se cláusula está ativa ou não</li>
                 <li>Contratos - editar cláusula na empresa específica</li>
                 <li>Contratos - botão gerar contrato na tela do aluno</li>
                 <li>Boletim Aluno</li>
