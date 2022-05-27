@@ -27,8 +27,7 @@ function CadastroUsuario() {
         editando = true;
     }
 
-    const listaEmpresas = useFetch(`${ url }/api/empresa`,"get",token);
-    var listaPessoas = "";  
+    const listaPessoas = useFetch(`${ url }/api/pessoasPorEmpresa/${userLogged.empresaId}`,"get",token); 
 
     const initialValues = {
         Id: 0,
@@ -42,31 +41,7 @@ function CadastroUsuario() {
         Ativo: false          
     };
 
-    const[values,setValues] = useState(initialValues);
-    const [responsePessoas,setResponse] = useState({
-        data: null,
-        loading: true
-    })
-
-    useEffect( () => {        
-      const responsePessoas = fetch(`${ url }/api/pessoasPorEmpresa/${userLogged.EmpresaId}`, {          
-      //const responsePessoas = fetch(`https://localhost:44389/api/pessoasPorEmpresa/${values.EmpresaId}`, {          
-        method: "GET",
-        headers: {
-          Authorization: 'Bearer '+token,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        }})
-        .then(resp => resp.json())
-        .then(json => setResponse({
-                data: json,
-                loading: false
-            }));                              
-    }, [values.EmpresaId]);
-
-    useEffect( () => {
-      console.log(responsePessoas.data);
-    },[responsePessoas])
+    const[values,setValues] = useState(initialValues);    
 
   const responseEditarUsuario = useFetch(editarUsuarioUrl);
     
@@ -88,27 +63,15 @@ function CadastroUsuario() {
   );
 
     const showPessoas = () => {
-        return  responsePessoas.data ? 
+        return  listaPessoas.data ? 
          (
-            responsePessoas.data.map((pessoa) => (
+          listaPessoas.data.map((pessoa) => (
                  <MenuItem value={pessoa.id}>
                      {pessoa.nome}
                 </MenuItem>
              ))
          ) : false
      };
-
-    const showEmpresas = () => {
-        console.log(listaEmpresas);
-       return  listaEmpresas.data ? 
-        (
-            listaEmpresas.data.map((empresa) => (
-                <MenuItem value={empresa.id}>
-                    {empresa.razaoSocial}
-               </MenuItem>
-            ))
-        ) : false
-    };
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -129,6 +92,7 @@ function CadastroUsuario() {
       console.log("form inválido");
     }
   };
+  console.log(userLogged);
 
   const validadorForm = () => {
     if(values.TipoUsuario == ""){
@@ -218,7 +182,7 @@ function CadastroUsuario() {
                                     onChange={handleChange}                                    
                                     select                                   
                                 >
-                                     {listaEmpresas.data ? showEmpresas() : false}
+                                     <MenuItem selected value={userLogged.empresaId}>{userLogged.empresaNome}</MenuItem>
                                     </TextField>
                             </Grid>
                             <Grid item xs={12} sm={6}>

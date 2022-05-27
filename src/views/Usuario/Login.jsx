@@ -29,7 +29,6 @@ const UserLogin = () => {
   }
 
   function onSubmit(event) {
-    debugger;
     event.preventDefault();  
     setLoading(true); 
     const response = fetch(`${ url }/api/usuario/login`, {

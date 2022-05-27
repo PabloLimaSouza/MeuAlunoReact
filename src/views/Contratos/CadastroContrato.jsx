@@ -13,17 +13,31 @@ function CadastroContrato() {
     const { token, userLogged } = useContext(StoreContext);
     const retornoContrato = useFetch(`${url}/api/contratoPorEmpresaId/${userLogged.empresaId}`, "get", token)
     const [clausulas, setClausulas] = useState([])
-    const [contrato, setContrato] = useState([]);
+    const [contrato, setContrato] = useState();
 
     useEffect(
 
         function () {
             if (retornoContrato.data != null) {
                 const contratoValues = {
-                    ContratoId: retornoContrato.data.contrato.id,
+                    ContratoId: retornoContrato.data.contratoId,
                     EmpresaId: userLogged.empresaId
                 }
                 setContrato(contratoValues);
+                    debugger;
+                var clausulasExistentes = []                
+                retornoContrato.data.clausulas.map((clausula => (
+                    clausula.ativa ? clausulasExistentes.push({ 
+                        Id: clausula.id,
+                        Nome: clausula.nome,
+                        Descricao: clausula.descricao,
+                        ContratoId: clausula.ContratoId,
+                        Ativa: clausula.ativa
+                    }) : false
+                )))
+                console.log(clausulasExistentes);
+                setClausulas(clausulasExistentes);
+                console.log(clausulas);        
             }
         }, [retornoContrato]
     );
@@ -59,7 +73,7 @@ function CadastroContrato() {
     };
 
     function checkChange(id) {
-        var checkClausulas = [...clausulas]
+        var checkClausulas = clausulas;
         var clausulasId = []
         checkClausulas.map((clausula, i) => (
             clausulasId.push(clausula.Id)
@@ -70,16 +84,26 @@ function CadastroContrato() {
             return false
     }
 
-    function handleSubmit(e) {
+    const handleChange = (e) => {
         debugger;
+        const { name, value } = e.target;
+        var clausulasExistentes = clausulas;
+        var clausulaIndex = clausulas.findIndex(i => i.Id == name);
+        clausulasExistentes[clausulaIndex].descricao = value;
+        setClausulas(clausulasExistentes);
+      };
+
+    function handleSubmit(e) {     
         console.log(retornoContrato);
-        debugger;
-        var request = {
+        var ContratoId = contrato.ContratoId;
+        var EmpresaId = contrato.EmpresaId;
+        var request = {            
             clausulas,
-            contrato
+            ContratoId,
+            EmpresaId
         }
 
-        alert("SUCCESS!! :-)\n\n" + JSON.stringify(request, null, 4));
+        //alert("SUCCESS!! :-)\n\n" + JSON.stringify(request, null, 4));
 
         const response = fetch(`${url}/api/contrato/`, {
             method: "POST",
@@ -129,6 +153,7 @@ function CadastroContrato() {
                                                 defaultValue={clausula.nome + " " + clausula.descricao}
                                                 name={clausula.id}
                                                 style={{ width: 700 }}
+                                                onChange={handleChange}
                                             />
                                         </Grid>
                                     </>

@@ -7,6 +7,14 @@ const Home = () => {
             
             <h1>Notas de publicação - Versão atual: v28032022</h1>     
             <br/>
+                <h2>Itens publicados: v09052022</h2>                     
+            <ul>
+                <li>Listar apenas empresa logada na criação de usuário</li>
+                <li>Não atualizar lista de pessoas ao selecionar empresa na criação de usuário</li>   
+                <li>Não tentar decodificar token quando o mesmo é nulo</li>               
+            </ul>
+
+            <br/>
                 <h2>Itens publicados: v28032022</h2>                     
             <ul>
                 <li>Bloquear botão login quando ainda não houve retorno do login</li>
@@ -30,9 +38,9 @@ const Home = () => {
             <br/>
             <h2>Itens em andamento:</h2>
             <ul>
-                <li>Contratos - ajustar lista para enviar se cláusula está ativa ou não</li>
-                <li>Contratos - editar cláusula na empresa específica</li>
-                <li>Contratos - botão gerar contrato na tela do aluno</li>
+                <li>Contratos - ajustar lista para enviar se cláusula está ativa ou não OK</li>
+                <li>Contratos - editar cláusula na empresa específica OK</li>
+                <li>Contratos - botão gerar contrato na tela do aluno falta atualizar pagina</li>
                 <li>Boletim Aluno</li>
                 <li>Agenda na página inicial</li>
                 <li>Linha do tempo financeiro, página inicial</li>     
