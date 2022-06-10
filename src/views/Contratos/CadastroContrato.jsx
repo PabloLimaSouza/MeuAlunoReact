@@ -1,4 +1,8 @@
-import { Grid, Paper, TextareaAutosize, FormControlLabel, Checkbox, Button } from "@material-ui/core";
+import { Grid, Paper, TextareaAutosize, FormControlLabel, Checkbox, Button,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    Dialog } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import StoreContext from "../../contexts/StoreContext";
 import useStyles from "../Styles/useStyles";
@@ -14,9 +18,24 @@ function CadastroContrato() {
     const retornoContrato = useFetch(`${url}/api/contratoPorEmpresaId/${userLogged.empresaId}`, "get", token)
     const [clausulas, setClausulas] = useState([])
     const [contrato, setContrato] = useState();
+    const alertas = {
+        text: "",
+        title: ""
+      }
+    
+    const [mensagem, setMensagem] = useState(alertas);
+    const [open, setOpen] = useState(false);
+    const history = useHistory();
+    
+    const checkAdmin = () => {
+        if(userLogged.tipoUsuario == 1){
+            return true;
+        }else{
+            return false;
+        }
+    };
 
     useEffect(
-
         function () {
             if (retornoContrato.data != null) {
                 const contratoValues = {
@@ -24,65 +43,69 @@ function CadastroContrato() {
                     EmpresaId: userLogged.empresaId
                 }
                 setContrato(contratoValues);
-                    debugger;
                 var clausulasExistentes = []                
                 retornoContrato.data.clausulas.map((clausula => (
-                    clausula.ativa ? clausulasExistentes.push({ 
+                    clausulasExistentes.push({ 
                         Id: clausula.id,
                         Nome: clausula.nome,
                         Descricao: clausula.descricao,
                         ContratoId: clausula.ContratoId,
                         Ativa: clausula.ativa
-                    }) : false
+                    })
                 )))
-                console.log(clausulasExistentes);
                 setClausulas(clausulasExistentes);
-                console.log(clausulas);        
             }
         }, [retornoContrato]
     );
 
-    const handleClausula = (e) => {
+    useEffect(
+        function() {
+console.log("clausula", clausulas);
+        },[clausulas]
+    )
+
+    const handleClose = () => {
+        setOpen(false);
+      };
+
+      const handleClausula = (e) => {
         const { name, value, checked } = e.target;
-
-        var clausula = value.split('|');
-        const values = {
-            Id: name,
-            Nome: clausula[1],
-            Descricao: clausula[2],
-            ContratoId: contrato.ContratoId,
-            Ativa: false,
-        };
-        var clausulasExistentes = [...clausulas]; //cláusulas que tem atualmente    
-
-        //se desmarcar checkbox 
+        var clausulasExistentes = [...clausulas];  
+        var clausulaIndex = clausulas.findIndex(i => i.Id == name);
         if (checked === false) {
-            //se encontrar clausulaId no array, faz filter e tira
-            values.Ativa = false;
-            clausulasExistentes = clausulasExistentes.filter((n) => n.Id != values.Id);
+            clausulasExistentes[clausulaIndex].Ativa = false;
             setClausulas(clausulasExistentes);
         }
-
-        //se marcar checkbox
-        if (checked === true) {
-            //adiciona materia no array
-            values.Ativa = true;
-            clausulasExistentes.push(values);
+        else if (checked === true) {
+            clausulasExistentes[clausulaIndex].Ativa = true;
             setClausulas(clausulasExistentes);
         }
-    };
+    };  
 
     function checkChange(id) {
         var checkClausulas = clausulas;
         var clausulasId = []
         checkClausulas.map((clausula, i) => (
-            clausulasId.push(clausula.Id)
+            clausula.Ativa == true ? clausulasId.push(clausula.Id) : false                        
         ))
         if (clausulasId.find(e => e == id)) {
             return true
         } else
             return false
     }
+   
+
+    function addClausula(){        
+        var clausulasExistentes = [...clausulas];                
+        clausulasExistentes.push({ 
+                        Id: 1,
+                        Nome: "Nova cláusula",
+                        Descricao: "descrição",
+                        ContratoId: 0,
+                        Ativa: false
+                    });                                   
+        setClausulas(clausulasExistentes);   
+    };
 
     const handleChange = (e) => {
         debugger;
@@ -93,8 +116,7 @@ function CadastroContrato() {
         setClausulas(clausulasExistentes);
       };
 
-    function handleSubmit(e) {     
-        console.log(retornoContrato);
+    function handleSubmit(e) {  
         var ContratoId = contrato.ContratoId;
         var EmpresaId = contrato.EmpresaId;
         var request = {            
@@ -102,8 +124,6 @@ function CadastroContrato() {
             ContratoId,
             EmpresaId
         }
-
-        //alert("SUCCESS!! :-)\n\n" + JSON.stringify(request, null, 4));
 
         const response = fetch(`${url}/api/contrato/`, {
             method: "POST",
@@ -113,7 +133,15 @@ function CadastroContrato() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(request),
-        });
+        })
+        .then((response) => {     
+              setMensagem({ title: "Sucesso!", text: "Contrato atualizado." })
+              setOpen(true);         
+          })
+         .catch((response) => {
+             setMensagem({ title: "Erro!", text: "Erro ao atualizar cadastro." })
+             setOpen(true);
+          });
 
     }
 
@@ -127,54 +155,84 @@ function CadastroContrato() {
                         </div>
                     </Grid>
                 </Grid>
+                
                 <form>
-                    <Grid container spacing={3}>
-                        {retornoContrato.data != null ?
-                            (retornoContrato.data.clausulas.map((clausula, i) => {
-                                return (
-                                    <>
-                                        <Grid item xs={12} sm={2}>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        name={clausula.id}
-                                                        value={`${i}|${clausula.nome}|${clausula.descricao}`}
-                                                        onChange={handleClausula}
-                                                        checked={checkChange(clausula.id)}
-                                                    />
-                                                }
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={10}>
+                    <Grid container spacing={3}>                       
+                   {clausulas.map((clausula,i) => (
+                       
+                       <>
+                      <Grid item xs={12} sm={2}>
+                      <FormControlLabel
+                          control={
+                              <Checkbox
+                                  key={clausula.Id}
+                                  name={clausula.Id}
+                                  value={clausula.Id}
+                                  onChange={handleClausula}
+                                  checked={checkChange(clausula.Id)}
+                              />
+                          }
+                      />
+                      </Grid>
+                      <Grid item xs={12} sm={10}>
                                             <TextareaAutosize
+                                                key={clausula.Id}
                                                 minRows={4}
                                                 aria-label="maximum height"
                                                 placeholder="Maximum 4 rows"
-                                                defaultValue={clausula.nome + " " + clausula.descricao}
-                                                name={clausula.id}
+                                                defaultValue={clausula.Nome + " " + clausula.Descricao}
+                                                disabled={checkAdmin() === true ? false : true}
+                                                name={clausula.Id}
                                                 style={{ width: 700 }}
                                                 onChange={handleChange}
                                             />
                                         </Grid>
-                                    </>
-                                )
-                            }))
-                            : false
-                        }
+                      </>
+                  
+                   ))}
 
-                    </Grid><div className="btn-novo">
+                    </Grid>
+                    <div className={classes.button}>
+
+                    {checkAdmin() === true ? 
+                        <Button
+                        variant="contained"
+                        color="warning"                            
+                        onClick={addClausula}
+                        className={classes.button}
+                    >
+                        Adicionar
+                    </Button>
+
+                        : false}
+
                         <Button
                             variant="contained"
-                            color="primary"
-                            type="submit"
+                            color="primary"                            
                             onClick={handleSubmit}
-                            className="btn-novo"
+                            className={classes.button}
                         >
                             Salvar
                         </Button>
+                        
+                        
                     </div>
-
                 </form>
+
+                <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{mensagem.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {mensagem.text}
+            </DialogContentText>
+          </DialogContent>
+          {<Button onClick={() => { handleClose(); history.push("/contratos"); }}>Ok</Button>}
+        </Dialog>
             </main>
         </React.Fragment>
     )

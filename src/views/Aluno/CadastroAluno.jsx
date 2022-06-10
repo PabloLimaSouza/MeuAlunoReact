@@ -32,6 +32,18 @@ function CadastroAluno() {
   console.log("materias: ", materiasResponse.data)
   const servicosUrl = `${ url }/api/servicoPorEmpresa/${userLogged.empresaId}`;
   const servicosResponse = useFetch(servicosUrl,"get",token);
+  
+  const gerarContrato = () => {
+    fetch(`${ url }/api/gerarContratoPDF/${userLogged.empresaId},${values.Id}`, {
+      method: "GET",
+      headers: {
+        Authorization: 'Bearer '+token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }
+    })
+  };
+  
 
   const editarAlunoId = window.location.pathname.split("/");
   var editarAlunoUrl = "";
@@ -591,6 +603,14 @@ function CadastroAluno() {
                 className={classes.button}
               >
                 Cadastrar
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"                
+                onClick={gerarContrato}
+                className={classes.button}
+              >
+                Contrato
               </Button>
             </div>
           </form>

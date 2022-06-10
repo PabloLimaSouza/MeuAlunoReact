@@ -5,7 +5,7 @@ const Home = () => {
     return (
         <div>
             
-            <h1>Notas de publicação - Versão atual: v28032022</h1>     
+            <h1>Notas de publicação - Versão atual: v09052022</h1>     
             <br/>
                 <h2>Itens publicados: v09052022</h2>                     
             <ul>
@@ -31,7 +31,7 @@ const Home = () => {
             <br/>
                 <h2>Itens publicados: v17022022</h2>           
             <ul>
-                <li>Erro ao cadastrar ou alterar matética</li>
+                <li>Erro ao cadastrar ou alterar matéria</li>
                 <li>Exibir menu de acordo com tipo de usuário</li>
                 <li>Listar somente empresas que usuário tem acesso</li>
             </ul>
