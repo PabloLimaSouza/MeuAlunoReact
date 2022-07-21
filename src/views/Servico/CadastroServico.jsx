@@ -33,7 +33,7 @@ import {
 } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
 import { purple } from "@material-ui/core/colors";
-import { currencyMask, onlyLetters } from "../../utils/mask";
+import { currencyMask, onlyLetters, currencyMaskList } from "../../utils/mask";
 import { url } from "../../../src/variaveis";
 
 function CadastroServico() {
@@ -55,7 +55,7 @@ function CadastroServico() {
     Descricao: "",
     Valor: "",
     Fidelidade: false,
-    TipoMulta: "",
+    TipoMulta: 0,
     ValorMulta: "",
     EmpresaId: userLogged.empresaId,
     QtdAulas: "",
@@ -153,7 +153,7 @@ useEffect(
       setValues((prevState) => ({
         Id: servicoResponse.data.id,
         Descricao: servicoResponse.data.descricao,
-        Valor: servicoResponse.data.valor,
+        Valor: currencyMaskList(parseFloat(servicoResponse.data.valor).toFixed(2)),
         TipoMulta: servicoResponse.data.tipoMulta,
         Fidelidade: servicoResponse.data.fidelidade,
         EmpresaId: servicoResponse.data.empresaId,
@@ -187,9 +187,9 @@ useEffect(
   [values.QtdAulas]
 );
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setValues({ ...values, [name]: e.target.value });
+const handleChange = (e) => {  
+  var { name, value } = e.target;  
+  setValues({ ...values, [name]: value });
 };
 
 const handleCheckChange = (e) => {
@@ -199,7 +199,6 @@ const handleCheckChange = (e) => {
 
 const handleChangeAula = (e) => {
   const { name, value, index, select } = e.target;
-
   const AulaIdIndex = name.substring(13, 14);
   console.log(AulaIdIndex);
   console.log(value);
@@ -209,8 +208,21 @@ const handleChangeAula = (e) => {
   setValues({ ...values, ServicosAulas });
 };
 
+
+const tratarDecimal = (e) => {
+  if(e == 0)
+  return 0
+  else
+  return e.replace(".","").replace(",",".");
+}
+
 function handleSubmit(e) {
+  debugger;
   setLoading(true);
+  console.log("enviando...",values);
+  var dados = values;
+  dados.Valor = tratarDecimal(values.Valor);
+  dados.ValorMulta = tratarDecimal(values.ValorMulta);
 
   const response = fetch(`${ url }/api/servico`, {
     method: "POST",
@@ -219,7 +231,7 @@ function handleSubmit(e) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(values),
+    body: JSON.stringify(dados),
   })
     .then((response) => response.json())
     .then((response) => {
@@ -265,7 +277,7 @@ return (
               />
             </Grid>
             <Grid item xs={12} sm={2}>
-              <TextField
+              <TextField              
                 id="Valor"
                 name="Valor"
                 label="Valor"                

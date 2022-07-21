@@ -5,7 +5,7 @@ export const currencyMask = (e) => {
     value = value.replace(/\D/g, "");
     value = value.replace(/(\d)(\d{2})$/, "$1,$2");
     //quando tem . o backend nao está aceitando converter para decimal
-    //value = value.replace(/(?=(\d{3})+(\D))\B/g, ".")
+    value = value.replace(/(?=(\d{3})+(\D))\B/g, ".")
     e.target.value = value;
     return e;
 }
@@ -32,6 +32,15 @@ export const cpfMask = (e) => {
     value = value.replace(/\D/g, "");
     value = value.replace(/(\d)(\d{2})$/, "$1-$2");
     value = value.replace(/(?=(\d{3})+(\D))\B/g, ".")
+    e.target.value = value;
+    return e;
+}
+
+export const cnpjMask = (e) => {
+    e.target.maxLength = 18; 
+    let value = e.target.value;     
+    value = value.replace(/\D/g, "");
+    value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
     e.target.value = value;
     return e;
 }
@@ -71,6 +80,13 @@ export const onlyNumbersMax5 = (e) => {
 
 export const onlyNumbersMax2 = (e) => {
     e.target.maxLength = 2;
+    let value = e.target.value;
+    value = value.replace(/\D/g, ""); 
+    e.target.value = value;
+    return e;
+}
+
+export const onlyNumbers = (e) => {    
     let value = e.target.value;
     value = value.replace(/\D/g, ""); 
     e.target.value = value;

@@ -22,7 +22,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { MenuItem } from "@material-ui/core";
 import { format } from "date-fns";
 import { useHistory } from "react-router";
-import { cepMask, cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
+import { cepMask, cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask, onlyNumbers, cnpjMask } from "../../utils/mask";
 
 
 
@@ -189,6 +189,7 @@ function CadastroEmpresa() {
   };
 
   const handlePessoa = (e) => {
+    debugger;
     const { name, value } = e.target;
     const Endereco = { ...values.Endereco };
     const Pessoa = { ...values.Pessoa };
@@ -253,7 +254,9 @@ function CadastroEmpresa() {
     newPessoa.Pessoa = {
       Nome: values.RazaoSocial,
       CPF: values.CNPJ_CPF,
-      Telefone: values.Telefone,    
+      Telefone: values.Telefone,
+      DataNascimento: "",
+      Email: "",    
     };
     setValues({...values, Pessoa: newPessoa});
 
@@ -278,9 +281,13 @@ function CadastroEmpresa() {
       //valuesToSubmit.Pessoa = [];
       setValues({ ...values, valuesToSubmit });
     }
+    debugger;
+    var dados = values;
+    dados.CNPJ_CPF = dados.CNPJ_CPF.replace(/\D/g, "");
+    if(dados.Pessoa.CPF != null)
+    dados.Pessoa.CPF = dados.Pessoa.CPF.replace(/\D/g, "");
 
-    alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
-    console.log(values);
+    dados = JSON.stringify(dados);
 
     const response = fetch(`${ url }/api/empresa/`, {
       method: "POST",
@@ -355,7 +362,8 @@ function CadastroEmpresa() {
                       : "CNPJ OU CPF"
                   }
                   fullWidth
-                  onChange={(e) => {handleChange(cpfMask(e))}}
+                  
+                  onChange={(e) => { values.TipoEmpresa == "1" ? handleChange(cpfMask(e)) : handleChange(cnpjMask(e)) } }
                   value={values.CNPJ_CPF}
                 />
               </Grid>

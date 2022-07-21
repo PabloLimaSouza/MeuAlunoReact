@@ -5,7 +5,19 @@ const Home = () => {
     return (
         <div>
             
-            <h1>Notas de publicação - Versão atual: v09052022</h1>     
+            <h1>Notas de publicação - Versão atual: v09052022</h1>  
+            <br/>
+                <h2>Itens publicados: v14062022</h2>                     
+            <ul>
+                <li>Contratos - ajustar lista para enviar se cláusula está ativa ou não</li>
+                <li>Contratos - editar cláusula na empresa específica</li>
+                <li>Erro no valor do serviço não está enviando casas decimais</li>
+                <li>Ajustar exibição do valor do serviço no cadastro e listagem</li>
+                <li>Gravar somente numeros para CPF ou CNPJ da empresa</li>
+                <li>Data de nascimento e e-mail do usuario no cadastro da empresa não sendo gravados corretamente</li>
+                <li>Cadastro da empresa não muda campo CNPJ/CPF de acordo com o tipo física/jurídica</li>              
+            </ul>
+
             <br/>
                 <h2>Itens publicados: v09052022</h2>                     
             <ul>
@@ -38,9 +50,7 @@ const Home = () => {
             <br/>
             <h2>Itens em andamento:</h2>
             <ul>
-                <li>Contratos - ajustar lista para enviar se cláusula está ativa ou não OK</li>
-                <li>Contratos - editar cláusula na empresa específica OK</li>
-                <li>Contratos - botão gerar contrato na tela do aluno falta atualizar pagina</li>
+                <li>Contratos - botão gerar contrato na tela do aluno</li>
                 <li>Boletim Aluno</li>
                 <li>Agenda na página inicial</li>
                 <li>Linha do tempo financeiro, página inicial</li>     

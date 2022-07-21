@@ -5,6 +5,7 @@ import "./Servicos.css";
 import StoreContext from "../../contexts/StoreContext";
 import { Button } from "@material-ui/core";
 import { url } from "../../../src/variaveis";
+import { onlyLetters, currencyMask, currencyMaskList } from "../../utils/mask";
 
 const Servicos = () => {
   const history = useHistory();
@@ -21,11 +22,11 @@ const Servicos = () => {
 
   console.log(response);
   function showServicos(servicos) {
-    return servicos.map((servico) => (
+    return servicos.map((servico) => (      
       <tr onClick={() => editarServico(servico.id)}>
         <td key={servico.id}>{servico.id}</td>
         <td key={servico.descricao}>{servico.descricao}</td>
-        <td key={servico.valor}>{servico.valor}</td>
+        <td key={servico.valor}>{currencyMaskList(parseFloat(servico.valor).toFixed(2))}</td>
         <td key={servico.qtdAulas}>{servico.qtdAulas}</td>
         <td key={servico.fidelidade}>{servico.fidelidade ? "SIM" : "NÃO"}</td>
       </tr>
