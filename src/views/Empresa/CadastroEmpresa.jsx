@@ -27,6 +27,7 @@ import { cepMask, cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask
 
 
 function CadastroEmpresa() {
+  debugger;
   const { token } = useContext(StoreContext);
   var editando = false;
   var editarEmpresaUrl = "";

@@ -115,6 +115,30 @@ const Financeiros = () => {
       });
   }
 
+  async function excluir() {    
+    
+    await Promise.all(itemSelecionado.map(async (item) => {
+      const response = await fetch(`${ url }/api/financeiro/${item}`, {  
+        method: "DELETE",
+        headers: {
+          Authorization: 'Bearer  '+token,  
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }       
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          if (response != null) {
+            setMensagem({ ...values, title: "Sucesso!", text: "Documentos excluídos." });
+            setOpen(true);
+          } else {
+            setMensagem({ ...values, title: "Erro!", text: "Não foi possível excluir os documentos selecionados." });
+            setOpen(true);
+          }
+        });
+    }));    
+  }
+
   const show = () => {
     console.log(listaFinanceiros);
   }
@@ -140,7 +164,8 @@ const Financeiros = () => {
       });
   }
 
-  function editarFinanceiro(id) {
+  function editarFinanceiro(e,id) {    
+    if(e.target.checked == undefined)    
     history.push(`/cadastroFinanceiro/${id}`)
   }
 
@@ -153,11 +178,11 @@ const Financeiros = () => {
       return (
         console.log(financeiros),
         financeiros.map((financeiro) => (
-          // <tr onClick={() => editarFinanceiro(financeiro.id)}>
-          <tr>
+           <tr onClick={(e) => editarFinanceiro(e,financeiro.id)}>
+          
             {financeiro.situacao == 1 ? 
             (
-              <td id="checkbox">
+              <td class="checkbox" id="checkbox">
             
               <Checkbox
               name={financeiro.id}
@@ -306,7 +331,20 @@ const Financeiros = () => {
               
       </table>
       
+      <div className={`botoes ${classes.button}`} style={{display: 'flex'}}>   
+
       
+      <div className={`btn-excluir ${classes.button}`}>              
+
+              <Button
+                variant="contained"
+                color="error"
+                onClick={excluir}
+                className={classes.button}                
+              >
+                Excluir
+              </Button>
+      </div>
       <div className={`btn-liquidar ${classes.button}`}>              
 
               <Button
@@ -317,7 +355,8 @@ const Financeiros = () => {
               >
                 Liquidar
               </Button>
-      </div>     
+      </div>  
+      </div>   
 
       <Dialog
         open={open}

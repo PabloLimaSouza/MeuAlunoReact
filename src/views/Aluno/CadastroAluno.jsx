@@ -3,7 +3,7 @@ import { useFetch } from "../../hooks/useFetch";
 import StoreContext from "../../contexts/StoreContext";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { cpfMask, onlyLetters, onlyNumbersMax5, phoneMask } from "../../utils/mask";
+import { cpfMask, onlyLetters, onlyNumbersMax5, phoneMask, onlyNumbersMax2, dayNumber } from "../../utils/mask";
 import { url } from "../../../src/variaveis";
 
 import {
@@ -79,6 +79,7 @@ function CadastroAluno() {
     EmpresaId: userLogged.empresaId,
     ServicoId: "",
     MateriaAlunos: [],
+    DiaVencimento: 1
   };
 
   const [values, setValues] = useState(initialValues);
@@ -187,6 +188,7 @@ function CadastroAluno() {
           ServicoId: alunoResponse.data.servicoId,
           EmpresaId: alunoResponse.data.empresaId,
           MateriaAlunos: materias,
+          DiaVencimento: alunoResponse.data.diaVencimento
         }));
       }
     },
@@ -277,7 +279,7 @@ function CadastroAluno() {
   }
 
   function handleSubmit(e) {
-    alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));   
+    //alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));   
     console.log(values);   
 
     const response = fetch(`${ url }/api/aluno/`, {
@@ -586,6 +588,22 @@ function CadastroAluno() {
                     ))) : false
                   }
                 </Select>
+              </Grid>
+              <Grid item xs={2}>
+                <TextField
+                  id="DiaVencimento"
+                  name="DiaVencimento"
+                  label="Dia Vencimento"                  
+                  onChange={(e) => { handleChange(dayNumber(e)) }}
+                  value={values.DiaVencimento}
+                  type="text"
+                  fullWidth 
+                  inputProps={{  maxLength: 2, inputMode: 'numeric', pattern: '[0-9]*'  }}               
+                  InputLabelProps={{
+                    shrink: true                    
+                  }}
+                  
+                />
               </Grid>
             </Grid>
             <div classname={classes.buttons}>

@@ -44,6 +44,14 @@
     margin-top: 12%;
   }
 
+  .btn-excluir{    
+    text-align: right;    
+    width: auto;
+    padding-left: 80%;    
+    padding-bottom: 1%;
+  }
+
+
   .btn-novo{    
     text-align: right;    
     width: 95%;
@@ -53,7 +61,6 @@
 
   .btn-liquidar{    
     text-align: right;    
-    width: 95%;
-    padding-left: 85%;    
+    width: auto;    
     padding-bottom: 1%;
   }

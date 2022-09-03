@@ -79,9 +79,20 @@ export const onlyNumbersMax5 = (e) => {
 }
 
 export const onlyNumbersMax2 = (e) => {
+    debugger;
     e.target.maxLength = 2;
     let value = e.target.value;
     value = value.replace(/\D/g, ""); 
+    e.target.value = value;
+    return e;
+}
+
+export const dayNumber = (e) => {
+    e.target.maxLength = 2;
+    let value = e.target.value;
+    value = value.replace(/\D/g, ""); 
+    if(value > 31)
+        value = 31;
     e.target.value = value;
     return e;
 }
@@ -109,5 +120,13 @@ export const cepMask = (e) => {
     value = value.replace(/(\d)(\d{3})$/, "$1-$2");    
     e.target.value = value;
     return e;
+}
+
+export const getCurrentDate = (separator) => {
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();    
+    return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date}`
 }
 

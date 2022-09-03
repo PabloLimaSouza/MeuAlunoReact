@@ -23,7 +23,7 @@ import { useHistory } from "react-router";
 import et from "date-fns/esm/locale/et/index.js";
 import { parseJSON } from "date-fns";
 import { format } from "date-fns";
-import { currencyMask, onlyLetters } from "../../utils/mask";
+import { currencyMask, onlyLetters, getCurrentDate } from "../../utils/mask";
 import { setDayOfYear } from "date-fns/esm";
 import { url } from "../../../src/variaveis";
 
@@ -57,7 +57,7 @@ function CadastroFinanceiro() {
     PessoaNome: "",
     DataVencimento: "",
     qtdProvisionar: 0,
-    Valor: "",
+    Valor: 0,
     FormaPagamento: "",
     Situacao: 1,
     EmpresaId: userLogged.empresaId,
@@ -77,16 +77,17 @@ function CadastroFinanceiro() {
   const [open, setOpen] = useState(false);
 
   const validadorForm = () => {
+    debugger;
     if (values.AlunoNome == "" && values.PessoaNome == "" && todos == false) {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar um aluno ou informar uma pessoa" });
       setOpen(true);
-    } else if (values.Valor == "") {
+    } else if (values.Valor == "" && !todos) {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar valor" });
       setOpen(true);
     } else if (values.FormaPagamento == "") {
-      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar valor" });
+      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar forma de pagamento" });
       setOpen(true);
-    } else if (values.DataVencimento == "") {
+    } else if (values.DataVencimento == "" && !todos) {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar data de vencimento" });
       setOpen(true);
     } else {
@@ -122,7 +123,9 @@ function CadastroFinanceiro() {
   useEffect(
     function () {
       if (todos) {
-        setValues({ ...values, AlunoNome: "", qtdProvisionar: 0, todosAlunos: true })
+        debugger;
+        let hoje = getCurrentDate('-');
+        setValues({ ...values, AlunoNome: "", qtdProvisionar: 0, todosAlunos: true, Valor: "0.00", Tipo: "1", DataVencimento: hoje})
       }
       if (!todos) {
         setValues({ ...values, todosAlunos: false })
@@ -133,23 +136,24 @@ function CadastroFinanceiro() {
 
   useEffect(
     function () {
+      debugger;
       console.log(responseEditarFinanceiro.data);
       if (responseEditarFinanceiro.data != null) {
         setValues((prevState) => ({
-          Id: responseEditarFinanceiro.data.id,
-          AlunoId: responseEditarFinanceiro.data.alunoId,
-          AlunoNome: responseEditarFinanceiro.data.nomeAluno,
-          PessoaNome: responseEditarFinanceiro.data.pessoaNome,
+          Id: responseEditarFinanceiro.data.result.id,
+          AlunoId: responseEditarFinanceiro.data.result.alunoId,
+          AlunoNome: responseEditarFinanceiro.data.result.nomeAluno,
+          PessoaNome: responseEditarFinanceiro.data.result.pessoaNome,
           DataVencimento: format(
-            new Date(responseEditarFinanceiro.data.dataVencimento),
+            new Date(responseEditarFinanceiro.data.result.dataVencimento),
             "yyyy-MM-dd"
-          ),
-          Valor: responseEditarFinanceiro.data.valor,
-          FormaPagamento: responseEditarFinanceiro.data.formaPagamento,
-          Situacao: responseEditarFinanceiro.data.situacao,
+          ), 
+          Valor: responseEditarFinanceiro.data.result.valor,
+          FormaPagamento: responseEditarFinanceiro.data.result.formaPagamento,
+          Situacao: responseEditarFinanceiro.data.result.situacao,
           todosAlunos: false,
-          Tipo: responseEditarFinanceiro.data.tipo,
-          EmpresaId: responseEditarFinanceiro.data.empresaId,
+          Tipo: responseEditarFinanceiro.data.result.tipo,
+          EmpresaId: responseEditarFinanceiro.data.result.empresaId,
         }));
       }
     },
@@ -206,16 +210,20 @@ function CadastroFinanceiro() {
   };
 
   function handleSubmit(e) {  
-    setLoading(true);  
-    
-    const response = fetch(`${ url }/api/financeiro/cadastrar`, {
-      Authorization: 'Bearer '+token,    
+    debugger;
+    setLoading(true);
+    var dados = values;
+    dados.Valor = dados.Valor.replace('.','');
+    dados.Valor = dados.Valor.replace(',','.');
+    debugger;
+    const response = fetch(`${ url }/api/financeiro/cadastrar`, {          
       method: "POST",
       headers: {
+        Authorization: 'Bearer '+token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify(dados),
     })
       .then((response) => response.json())
       .then((response) => {
@@ -261,6 +269,7 @@ function CadastroFinanceiro() {
               </Grid>
               <Grid item xs={12} sm={3}>
                 <Collapse in={tipoReceber ? true : false}>
+                <Tooltip title={todos ? "Não pode ser usado para todos alunos" : ""} placement="top-end">
                   <TextField
                     id="AlunoNome"
                     name="AlunoNome"
@@ -279,6 +288,7 @@ function CadastroFinanceiro() {
                   >
                     {responseAluno.data ? showAlunos(responseAluno.data) : false}
                   </TextField>
+                  </Tooltip>
                 </Collapse>
                 <Collapse in={tipoReceber ? false : true}>
                   <TextField
@@ -313,21 +323,25 @@ function CadastroFinanceiro() {
                 </Grid>}
 
               <Grid item xs={3}>
+              <Tooltip title={todos ? "Será gerada data específica para cada aluno" : ""} placement="top-end">
                 <TextField
                   id="DataVencimento"
                   name="DataVencimento"
                   type="date"
                   label="Vencimento"
                   value={values.DataVencimento}
+                  disabled={todos ? true : false}
                   onChange={handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
+                </Tooltip>
               </Grid>
             </Grid>
             <Grid container spacing={3}>
               <Grid item xs={3}>
+              <Tooltip title={todos ? "Não pode ser usado para todos alunos" : ""} placement="top-end">
                 <TextField
                   id="Valor"
                   name="Valor"
@@ -340,7 +354,10 @@ function CadastroFinanceiro() {
                   InputProps={{
                     startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                   }}
+                  disabled={todos ? true : false}
                 />
+              </Tooltip>                    
+
               </Grid>
               <Grid item xs={2}>
                 <TextField
@@ -364,10 +381,7 @@ function CadastroFinanceiro() {
               {(editando)
                 ? false
                 : <Grid item xs={2}>
-                  <Tooltip
-                    title="Não pode ser usado para todos alunos"
-                    placement="top-end"
-                  >
+                    <Tooltip title={todos ? "Não pode ser usado para todos alunos" : ""} placement="top-end">                  
                     <TextField
                       id="qtdProvisionar"
                       name="qtdProvisionar"
@@ -417,7 +431,7 @@ function CadastroFinanceiro() {
                 disabled={loading}
               >
                 {editando ? "Atualizar" : "Cadastrar"}
-              </Button>
+              </Button>             
             </div>
           </form>
           
