@@ -38,12 +38,12 @@ function CadastroUsuario() {
         Senha: "",
         EmpresaNome: "",
         PessoaNome: "",
-        Ativo: false          
+        Ativo: true          
     };
 
     const[values,setValues] = useState(initialValues);    
 
-  const responseEditarUsuario = useFetch(editarUsuarioUrl);
+  const responseEditarUsuario = useFetch(editarUsuarioUrl,"get",token);
     
   useEffect(
     function() {
@@ -120,8 +120,8 @@ function CadastroUsuario() {
   };
 
   function handleSubmit(e) {
-    alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
-    console.log(values);    
+    //alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
+    //console.log(values);    
 
     const response = fetch(`${ url }/api/usuario/`, {
       //const response = fetch("https://localhost:44389/api/usuario/", {

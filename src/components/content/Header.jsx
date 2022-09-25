@@ -14,6 +14,7 @@ import React, { useContext } from "react";
 import StoreContext from '../../contexts/StoreContext';
 import useStyles from "../../views/Styles/useStyles";
 import { useHistory } from "react-router";
+import { useEffect } from "react";
 
 const Header = () => {
   const { token, setToken } = useContext(StoreContext);
@@ -21,6 +22,9 @@ const Header = () => {
 
   const classes = useStyles();
   const history = useHistory();
+
+  // useEffect(() => {
+  // },[userLogged])
 
   if (token != null) {
 

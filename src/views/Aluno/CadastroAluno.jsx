@@ -121,9 +121,6 @@ function CadastroAluno() {
     } else if(values.TelefoneResponsavel ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o telefone do responsável pelo aluno" });
       setOpen(true); 
-    } else if(values.EmailResponsavel ===""){
-      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o e-mail do responsável pelo aluno" });
-      setOpen(true); 
     } else if(values.Endereco.Logradouro ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o logradouro do endereço" });
       setOpen(true); 

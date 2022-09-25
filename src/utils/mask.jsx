@@ -21,7 +21,7 @@ export const currencyMaskList = (e) => {
 export const onlyLetters = (e) => {
     e.target.maxLength = 100;
     let value = e.target.value;
-    value = value.replace(/[^a-z\s]+/i, '');       
+    value = value.replace(/[^A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/g, '');       
     e.target.value = value;
     return e;
 }

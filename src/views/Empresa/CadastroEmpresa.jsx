@@ -27,8 +27,8 @@ import { cepMask, cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask
 
 
 function CadastroEmpresa() {
-  debugger;
   const { token } = useContext(StoreContext);
+  const { userLogged, setUserLogged } = useContext(StoreContext);
   var editando = false;
   var editarEmpresaUrl = "";
   const editarEmpresaId = window.location.pathname.split("/");
@@ -52,6 +52,7 @@ function CadastroEmpresa() {
     CNPJ_CPF: "",
     RazaoSocial: "",
     Telefone: "",
+    Ativo: true,
     Endereco: {
       Logradouro: "",
       Numero: "",
@@ -156,6 +157,7 @@ function CadastroEmpresa() {
           CNPJ_CPF: empresaResponse.data.cnpJ_CPF,
           RazaoSocial: empresaResponse.data.razaoSocial,
           Telefone: empresaResponse.data.telefone,
+          Ativo: empresaResponse.data.ativo,
           Endereco: {
             Id: empresaResponse.data.endereco.id,
             Logradouro: empresaResponse.data.endereco.logradouro,
@@ -274,6 +276,12 @@ function CadastroEmpresa() {
     console.log(values);
   };
 
+  const handleCheckChange = (e) => {
+    debugger;
+    const { name, checked } = e.target;
+    setValues({ ...values, [name]: e.target.checked });
+  };
+
   function handleSubmit(e) {
     console.log(editarEmpresaUrl);
     //limpar pessoa/usuario da empresa
@@ -289,6 +297,8 @@ function CadastroEmpresa() {
     dados.Pessoa.CPF = dados.Pessoa.CPF.replace(/\D/g, "");
 
     dados = JSON.stringify(dados);
+    console.log(dados);
+    debugger;
 
     const response = fetch(`${ url }/api/empresa/`, {
       method: "POST",
@@ -301,8 +311,9 @@ function CadastroEmpresa() {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response === "Empresa cadastrada com sucesso" || response === "Empresa atualizada") {
-          setMensagem({ ...values, title: "Sucesso!", text: response })
+        if ( response != null && response.status != 200) {          
+          setUserLogged({ ...userLogged, empresa: response })
+          setMensagem({ ...values, title: "Sucesso!", text: editando ? "Empresa atualizada" : "Empresa cadastrada" })
           setOpen(true);
          } 
         else {
@@ -336,7 +347,23 @@ function CadastroEmpresa() {
                   <MenuItem value="1">Física</MenuItem>
                   <MenuItem value="2">Jurídica</MenuItem>
                 </TextField>
-              </Grid>
+                </Grid>
+
+                <Grid item xs={12} sm={2}>
+                  <FormLabel>Ativa?</FormLabel>
+
+                  <Switch
+                    color="primary"
+                    name="Ativo"
+                    value={values.Ativo}
+                    checked={values.Ativo}
+                    onChange={handleCheckChange}
+                    inputProps={{ "aria-label": "primary checkbox" }}
+                    fullWidth
+                  />
+                </Grid>
+
+
             </Grid>
 
             <Grid container spacing={3}>
@@ -607,6 +634,7 @@ function CadastroEmpresa() {
               >
                 {editando ? "Atualizar" : "Cadastrar"}
               </Button>
+              
             </div>
           </form>
           <Dialog
