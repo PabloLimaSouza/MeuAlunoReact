@@ -15,10 +15,23 @@ const Financeiros = () => {
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(false);
-
-  const response = useFetch(`${ url }/api/financeiroPorEmpresa/${userLogged.empresaId}`,"get",token);
   const [listaFinanceiros, setListaFinanceiros] = useState("");
 
+  const response = useFetch(`${ url }/api/financeiroPorEmpresa/${userLogged.empresaId}`,"get",token);
+
+  const atualizarLista = async () => {
+    debugger;
+    await fetch(`${ url }/api/financeiroPorEmpresa/${userLogged.empresaId}`, {
+      method: "GET",
+      headers: {
+        Authorization: 'Bearer '+token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }    
+    }).then(resp => resp.json())
+      .then(json => setListaFinanceiros(json));
+  }
+  
   useEffect(() => {
     setListaFinanceiros(response.data);    
   }, [response])
@@ -198,7 +211,7 @@ const Financeiros = () => {
             <td key="formaPagamento">{financeiro.formaPagamento}</td>
             <td key="dataVencimento">{format(new Date(financeiro.dataVencimento), 'dd/MM/yyy')}</td>
             <td key="valor">{currencyMaskList(parseFloat(financeiro.valor).toFixed(2))}</td>
-            <td key="situacao">{financeiro.situacao == 1 ? "Em aberto" : "Liquidado"}</td>
+            <td id={"financeiro"+financeiro.id} key="situacao">{financeiro.situacao == 1 ? "Em aberto" : "Liquidado"}</td>
           </tr>
         ))
       )
@@ -274,8 +287,8 @@ const Financeiros = () => {
                 shrink: true,
               }}
             >
-              <MenuItem value="1">CRE</MenuItem>
-              <MenuItem value="2">CPA</MenuItem>
+              <MenuItem value="1">Receber</MenuItem>
+              <MenuItem value="2">Pagar</MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12} sm={2}>
@@ -332,7 +345,6 @@ const Financeiros = () => {
       </table>
       
       <div className={`botoes ${classes.button}`} style={{display: 'flex'}}>   
-
       
       <div className={`btn-excluir ${classes.button}`}>              
 
@@ -345,6 +357,7 @@ const Financeiros = () => {
                 Excluir
               </Button>
       </div>
+
       <div className={`btn-liquidar ${classes.button}`}>              
 
               <Button
@@ -370,7 +383,7 @@ const Financeiros = () => {
             {mensagem.text}
           </DialogContentText>
         </DialogContent>
-        <Button onClick={() => { handleClose(); window.location.reload(); }}>Ok</Button>
+        <Button onClick={() => { handleClose(); atualizarLista() }}>Ok</Button>
       </Dialog>
     </div>   
     
