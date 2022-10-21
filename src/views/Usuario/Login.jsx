@@ -32,7 +32,6 @@ const UserLogin = () => {
     event.preventDefault();  
     setLoading(true); 
     const response = fetch(`${ url }/api/usuario/login`, {
-      //const response = fetch("https://localhost:44389/api/usuario/login", {
       method: "POST",
       headers: {
         Accept: "application/json",

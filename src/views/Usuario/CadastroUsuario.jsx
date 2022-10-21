@@ -119,12 +119,9 @@ function CadastroUsuario() {
     setOpen(false);
   };
 
-  function handleSubmit(e) {
-    //alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
-    //console.log(values);    
+  function handleSubmit(e) {     
 
     const response = fetch(`${ url }/api/usuario/`, {
-      //const response = fetch("https://localhost:44389/api/usuario/", {
       method: "POST",
       headers: {
         Accept: "application/json",
