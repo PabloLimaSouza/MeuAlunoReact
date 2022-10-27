@@ -5,7 +5,23 @@ const Home = () => {
     return (
         <div>
             
-            <h1>Notas de publicação - Versão atual: v09052022</h1>  
+            <h1>Notas de publicação - Versão atual: v26102022</h1>  
+            <br/>
+                <h2>Itens publicados: v26102022</h2>                     
+            <ul>
+                <li>Financeiros - erro ao cadastrar tipo contas a receber selecionando aluno</li>
+                <li>Financeiros - erro ao consultar financeiro pelo nome da pessoa</li>
+                <li>Financeiros - incluído no filtro "Tipo" a opção Todos</li>
+                <li>Financeiros - cards com Total Receber, Total Pagar e Saldo</li>                       
+            </ul>
+          
+            <br/>
+                <h2>Itens publicados: v20102022</h2>                     
+            <ul>
+                <li>Financeiros - erro após liquidar documentos</li>
+                <li>Financeiros - alterar tipo financeiro de CRE/CPA para Receber e Pagar </li>                       
+            </ul>
+
             <br/>
                 <h2>Itens publicados: v14062022</h2>                     
             <ul>
@@ -48,7 +64,7 @@ const Home = () => {
                 <li>Listar somente empresas que usuário tem acesso</li>
             </ul>
             <br/>
-            <h2>Itens em andamento:</h2>
+            <h2>RoadMap:</h2>
             <ul>
                 <li>Contratos - botão gerar contrato na tela do aluno</li>
                 <li>Boletim Aluno</li>

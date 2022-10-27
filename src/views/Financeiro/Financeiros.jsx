@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Checkbox, Dialog, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem, TextField, TablePagination, Table } from "@material-ui/core";
+import { Button, Checkbox, Dialog, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem, TextField, TablePagination, Table, Card, CardContent, Typography } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
 import StoreContext from "../../contexts/StoreContext";
 import { useFetch } from "../../hooks/useFetch";
@@ -16,24 +16,43 @@ const Financeiros = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [listaFinanceiros, setListaFinanceiros] = useState("");
+  const [saldoFinanceiro, setSaldoFinanceiro] = useState({
+    totalReceber: "",
+    totalPagar: "",
+    saldo: ""
+  })
 
-  const response = useFetch(`${ url }/api/financeiroPorEmpresa/${userLogged.empresaId}`,"get",token);
+  const response = useFetch(`${url}/api/financeiroPorEmpresa/${userLogged.empresaId}`, "get", token);
 
-  const atualizarLista = async () => {
-    debugger;
-    await fetch(`${ url }/api/financeiroPorEmpresa/${userLogged.empresaId}`, {
+  const atualizarSaldo = async () => {
+
+    var saldo = await fetch(`${url}/api/financeiro/saldoPorEmpresaId/${userLogged.empresaId}`, {
       method: "GET",
       headers: {
-        Authorization: 'Bearer '+token,
+        Authorization: 'Bearer ' + token,
         Accept: "application/json",
         "Content-Type": "application/json",
-      }    
+      }
+    }).then(resp => resp.json())    
+      .then(json => setSaldoFinanceiro({ totalReceber: json.totalReceber.toFixed(2), totalPagar: json.totalPagar.toFixed(2), saldo: json.saldo.toFixed(2) }))
+  }
+
+  const atualizarLista = async () => {
+
+    await fetch(`${url}/api/financeiroPorEmpresa/${userLogged.empresaId}`, {
+      method: "GET",
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }
     }).then(resp => resp.json())
       .then(json => setListaFinanceiros(json));
   }
-  
-  useEffect(() => {
-    setListaFinanceiros(response.data);    
+
+  useEffect(async () => {
+    setListaFinanceiros(response.data);
+    atualizarSaldo();
   }, [response])
 
   var CurrencyFormat = require('react-currency-format');
@@ -93,24 +112,24 @@ const Financeiros = () => {
     setFiltroValues({ ...filtroValues, [name]: value });
   }
 
-  const handleCheckChange = (e) => {    
+  const handleCheckChange = (e) => {
     const { name, checked } = e.target;
 
-    var itens = [...itemSelecionado]; 
-    if(checked){
-      itens.push(name);      
+    var itens = [...itemSelecionado];
+    if (checked) {
+      itens.push(name);
     }
-    else{      
+    else {
       itens = itens.filter((n) => n != name);
     }
     setItemSelecionado(itens);
   };
-  
-  function liquidar() {    
-    const response = fetch(`${ url }/api/financeiro/liquidar`, {  
+
+  function liquidar() {
+    const response = fetch(`${url}/api/financeiro/liquidar`, {
       method: "POST",
       headers: {
-        Authorization: 'Bearer  '+token,  
+        Authorization: 'Bearer  ' + token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -128,16 +147,16 @@ const Financeiros = () => {
       });
   }
 
-  async function excluir() {    
-    
+  async function excluir() {
+
     await Promise.all(itemSelecionado.map(async (item) => {
-      const response = await fetch(`${ url }/api/financeiro/${item}`, {  
+      const response = await fetch(`${url}/api/financeiro/${item}`, {
         method: "DELETE",
         headers: {
-          Authorization: 'Bearer  '+token,  
+          Authorization: 'Bearer  ' + token,
           Accept: "application/json",
           "Content-Type": "application/json",
-        }       
+        }
       })
         .then((response) => response.json())
         .then((response) => {
@@ -149,7 +168,7 @@ const Financeiros = () => {
             setOpen(true);
           }
         });
-    }));    
+    }));
   }
 
   const show = () => {
@@ -157,10 +176,10 @@ const Financeiros = () => {
   }
 
   function handlePesquisar(e) {
-    const response = fetch(`${ url }/api/financeiro/buscar`, {  
+    const response = fetch(`${url}/api/financeiro/buscar`, {
       method: "POST",
       headers: {
-        Authorization: 'Bearer  '+token,  
+        Authorization: 'Bearer  ' + token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -177,9 +196,9 @@ const Financeiros = () => {
       });
   }
 
-  function editarFinanceiro(e,id) {    
-    if(e.target.checked == undefined)    
-    history.push(`/cadastroFinanceiro/${id}`)
+  function editarFinanceiro(e, id) {
+    if (e.target.checked == undefined)
+      history.push(`/cadastroFinanceiro/${id}`)
   }
 
   function novoFinanceiro() {
@@ -191,27 +210,27 @@ const Financeiros = () => {
       return (
         console.log(financeiros),
         financeiros.map((financeiro) => (
-           <tr onClick={(e) => editarFinanceiro(e,financeiro.id)}>
-          
-            {financeiro.situacao == 1 ? 
-            (
-              <td class="checkbox" id="checkbox">
-            
-              <Checkbox
-              name={financeiro.id}
-              onClick={handleCheckChange}
-              size="small"
-              />
-              </td> 
-            ) : <td></td>}             
-            
+          <tr onClick={(e) => editarFinanceiro(e, financeiro.id)}>
+
+            {financeiro.situacao == 1 ?
+              (
+                <td class="checkbox" id="checkbox">
+
+                  <Checkbox
+                    name={financeiro.id}
+                    onClick={handleCheckChange}
+                    size="small"
+                  />
+                </td>
+              ) : <td></td>}
+
             <td key={financeiro.id}>{financeiro.id}</td>
             <td key="tipo">{financeiro.tipo === 1 ? "Receber" : "Pagar"}</td>
             <td key="pessoaNome">{financeiro.pessoaNome}</td>
             <td key="formaPagamento">{financeiro.formaPagamento}</td>
             <td key="dataVencimento">{format(new Date(financeiro.dataVencimento), 'dd/MM/yyy')}</td>
             <td key="valor">{currencyMaskList(parseFloat(financeiro.valor).toFixed(2))}</td>
-            <td id={"financeiro"+financeiro.id} key="situacao">{financeiro.situacao == 1 ? "Em aberto" : "Liquidado"}</td>
+            <td id={"financeiro" + financeiro.id} key="situacao">{financeiro.situacao == 1 ? "Em aberto" : "Liquidado"}</td>
           </tr>
         ))
       )
@@ -219,7 +238,7 @@ const Financeiros = () => {
     return false
   }
 
-  return (    
+  return (
     <div className="lista-financeiros">
       <h1>Financeiro</h1>
 
@@ -287,6 +306,7 @@ const Financeiros = () => {
                 shrink: true,
               }}
             >
+              <MenuItem value="0">Todos</MenuItem>
               <MenuItem value="1">Receber</MenuItem>
               <MenuItem value="2">Pagar</MenuItem>
             </TextField>
@@ -339,37 +359,57 @@ const Financeiros = () => {
           {listaFinanceiros ?
             showFinanceiros(listaFinanceiros)
             : false}
-            
-        </tbody>  
-              
-      </table>
-      
-      <div className={`botoes ${classes.button}`} style={{display: 'flex'}}>   
-      
-      <div className={`btn-excluir ${classes.button}`}>              
 
-              <Button
-                variant="contained"
-                color="error"
-                onClick={excluir}
-                className={classes.button}                
-              >
-                Excluir
-              </Button>
+        </tbody>
+
+      </table>
+
+      <div className="div-saldo">
+        <div className="div-saldo-item totalReceber">           
+          <p>Total Receber</p>             
+          <p>R$ {saldoFinanceiro.totalReceber}</p>             
+        </div>
+
+        <div className="div-saldo-item totalPagar">          
+          <p>Total Pagar</p>             
+          <p>R$ {saldoFinanceiro.totalPagar}</p>             
+        </div>
+
+        <div className="div-saldo-item saldo">          
+          <p>Saldo</p>             
+          <p>R$ {saldoFinanceiro.saldo}</p>             
+        </div>
+
+
+
       </div>
 
-      <div className={`btn-liquidar ${classes.button}`}>              
+      <div className={`botoes ${classes.button}`} style={{ display: 'flex' }}>
 
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={liquidar}
-                className={classes.button}                
-              >
-                Liquidar
-              </Button>
-      </div>  
-      </div>   
+        <div className={`btn-excluir ${classes.button}`}>
+
+          <Button
+            variant="contained"
+            color="error"
+            onClick={excluir}
+            className={classes.button}
+          >
+            Excluir
+          </Button>
+        </div>
+
+        <div className={`btn-liquidar ${classes.button}`}>
+
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={liquidar}
+            className={classes.button}
+          >
+            Liquidar
+          </Button>
+        </div>
+      </div>
 
       <Dialog
         open={open}
@@ -385,8 +425,8 @@ const Financeiros = () => {
         </DialogContent>
         <Button onClick={() => { handleClose(); atualizarLista() }}>Ok</Button>
       </Dialog>
-    </div>   
-    
+    </div>
+
   );
 }
 

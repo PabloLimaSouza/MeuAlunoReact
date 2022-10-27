@@ -64,3 +64,30 @@
     width: auto;    
     padding-bottom: 1%;
   }
+
+  .div-saldo{
+  
+    display: flex;
+  }
+
+  .div-saldo-item{
+    min-width: 200px;    
+    min-height: 75px;
+    margin-left: 200px;
+    margin-right: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    outline: 2px solid gray;
+    font-size: 20px;
+    font-weight: 600;  
+    padding: 20px;
+    top: 50%;
+  }
+
+  .totalReceber{
+    color: green;      
+  }
+  
+  .totalPagar{
+    color: red;      
+  }
