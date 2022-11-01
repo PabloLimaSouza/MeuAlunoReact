@@ -11,9 +11,6 @@ function Empresa() {
     const { token } = useContext(StoreContext); 
     const response = useFetch(`${ url }/api/empresa`,"get",token);
     const history = useHistory(); 
-
-    console.log(token);
-
     function editarEmpresa(id){
         history.push(`/cadastroEmpresa/${id}`)
     }

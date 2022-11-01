@@ -57,8 +57,7 @@ function Aulas() {
             <th>Hora Fim</th>
             <th>Vagas</th>           
           </tr>
-          {response.data ? showAulas(response.data) : false}
-          {console.log(response.data)}
+          {response.data ? showAulas(response.data) : false}          
         </tbody>
       </table>
     </div>

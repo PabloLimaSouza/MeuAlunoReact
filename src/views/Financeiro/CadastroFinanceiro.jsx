@@ -157,7 +157,6 @@ function CadastroFinanceiro() {
   );
 
   const handleChange = (e) => {
-    console.log(e.target);
     const { name, value } = e.target;
     if (name == "AlunoNome") {
       setValues({ ...values, [name]: e.target.value, AlunoId: e.target.value })

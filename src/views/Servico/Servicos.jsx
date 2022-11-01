@@ -20,7 +20,6 @@ const Servicos = () => {
     history.push(`/cadastroServico/${id}`);
   }
 
-  console.log(response);
   function showServicos(servicos) {
     return servicos.map((servico) => (      
       <tr onClick={() => editarServico(servico.id)}>

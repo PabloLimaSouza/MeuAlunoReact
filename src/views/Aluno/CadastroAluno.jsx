@@ -29,7 +29,6 @@ function CadastroAluno() {
 
   const materiasUrl = `${ url }/api/materiaPorEmpresa/${userLogged.empresaId}`;
   const materiasResponse = useFetch(materiasUrl,"get",token);
-  console.log("materias: ", materiasResponse.data)
   const servicosUrl = `${ url }/api/servicoPorEmpresa/${userLogged.empresaId}`;
   const servicosResponse = useFetch(servicosUrl,"get",token);
   
@@ -270,9 +269,7 @@ function CadastroAluno() {
       return false
   }
 
-  function handleSubmit(e) {
-    //alert("SUCCESS!! :-)\n\n" + JSON.stringify(values, null, 4));   
-    console.log(values);   
+  function handleSubmit(e) {  
 
     const response = fetch(`${ url }/api/aluno/`, {
       method: "POST",

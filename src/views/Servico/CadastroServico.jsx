@@ -117,9 +117,7 @@ function CadastroServico() {
   }
 
   const handleClickOpen = () => {
-    console.log("handleClickOpen()");  
-    if (validadorForm())  {
-        
+    if (validadorForm())  {        
         handleSubmit();
       }
       else {
