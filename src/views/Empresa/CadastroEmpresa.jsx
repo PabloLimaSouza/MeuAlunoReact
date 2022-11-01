@@ -90,7 +90,6 @@ function CadastroEmpresa() {
   };
 
   const validadorForm = () => {
-    console.log(values);
     if(values.TipoEmpresa == ""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o tipo da empresa" });
       setOpen(true);      
@@ -149,7 +148,6 @@ function CadastroEmpresa() {
   //atualizar campos do form quando é para editar empresa  
   useEffect(
     function () {
-      console.log(empresaResponse.data);
       if (empresaResponse.data != null) {
         setValues((prevState) => ({
           Id: empresaResponse.data.id,
@@ -196,7 +194,6 @@ function CadastroEmpresa() {
     const { name, value } = e.target;
     const Endereco = { ...values.Endereco };
     const Pessoa = { ...values.Pessoa };
-    console.log(Pessoa);
 
     if (name == "Logradouro") {
       Object.keys(Endereco).forEach((key) => {
@@ -262,18 +259,7 @@ function CadastroEmpresa() {
       Email: "",    
     };
     setValues({...values, Pessoa: newPessoa});
-
-    setValues({ ...values, [name]: e.target.checked });
-    console.log(
-      "handleCheckChange " +
-        ">>name: " +
-        e.target.name +
-        " >>value: " +
-        e.target.value +
-        " >>checked: " +
-        e.target.checked
-    );
-    console.log(values);
+    setValues({ ...values, [name]: e.target.checked });   
   };
 
   const handleCheckChange = (e) => {
@@ -284,22 +270,11 @@ function CadastroEmpresa() {
 
   function handleSubmit(e) {
     console.log(editarEmpresaUrl);
-    //limpar pessoa/usuario da empresa
     if (values.Id != 0) {
       const valuesToSubmit = values;
-      //valuesToSubmit.Pessoa = [];
       setValues({ ...values, valuesToSubmit });
     }
-    debugger;
-    var dados = values;
-    dados.CNPJ_CPF = dados.CNPJ_CPF.replace(/\D/g, "");
-    if(dados.Pessoa.CPF != null)
-    dados.Pessoa.CPF = dados.Pessoa.CPF.replace(/\D/g, "");
-
-    dados = JSON.stringify(dados);
-    console.log(dados);
-    debugger;
-
+   
     const response = fetch(`${ url }/api/empresa/`, {
       method: "POST",
       headers: {

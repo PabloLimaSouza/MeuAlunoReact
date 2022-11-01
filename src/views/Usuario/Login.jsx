@@ -45,21 +45,11 @@ const UserLogin = () => {
          setUserLogged(response.dadosUsuario);         
          return history.push("/");                        
         } else {
-          console.log("Deu ruim");
-          console.log(response.jwt);
-          console.log(response.dadosUsuario);
-          //setToken(response.jwt);
           setError(response);
-        }
-    //   }).catch(function(error) {
-    //     console.log(error);
-    //     setError("Não foi possível realizar login.");
-    //     setLoading(false);
-    // }); 
+        } 
       }).then( () => {
         setLoading(false);
       });        
-    console.log(response);
     setValues(initialState);
   }
 

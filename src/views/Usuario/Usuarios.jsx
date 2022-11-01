@@ -13,8 +13,6 @@ const Usuarios = () => {
   const { token, userLogged } = useContext(StoreContext);
   const classes = useStyles();
   const history = useHistory();
-console.log(token);
-console.log(userLogged);
 
   const response = useFetch(`${ url }/api/usuariosPorEmpresa/${userLogged.empresaId}`,"get",token);
   
@@ -38,7 +36,6 @@ console.log(userLogged);
   }
 
   function showUsuarios(usuarios) {
-    console.log(usuarios);
     return (
       usuarios.map((usuario) => (
         <tr onClick={() => editarUsuario(usuario.id)}>

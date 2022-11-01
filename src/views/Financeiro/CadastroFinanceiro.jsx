@@ -136,8 +136,6 @@ function CadastroFinanceiro() {
 
   useEffect(
     function () {
-      debugger;
-      console.log(responseEditarFinanceiro.data);
       if (responseEditarFinanceiro.data != null) {
         setValues((prevState) => ({
           Id: responseEditarFinanceiro.data.result.id,
@@ -191,7 +189,6 @@ function CadastroFinanceiro() {
   };
 
   function showAlunos(alunos) {
-    console.log(responseAluno.data);
     return responseAluno.data.map((aluno) => (
       <MenuItem value={aluno.id}>{aluno.nome}</MenuItem>
     ));

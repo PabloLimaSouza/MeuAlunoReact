@@ -81,9 +81,7 @@ function CadastroMateria() {
     setValues({ ...values, [name]: e.target.value });
   };
 
-  function handleSubmit(e) {
-    alert("Sucess: \n\n" + JSON.stringify(values, null, 4));
-    console.log(values);    
+  function handleSubmit(e) {      
 
     const response = fetch(`${url}/api/materia/`, {          
       method: "POST",

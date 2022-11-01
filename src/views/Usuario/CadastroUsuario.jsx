@@ -76,7 +76,6 @@ function CadastroUsuario() {
     const handleChange = (e) => {
         const {name, value} = e.target;
         setValues({...values, [name]: e.target.value});
-        console.log({name, value});
     };
 
     const alertas = {
@@ -92,8 +91,7 @@ function CadastroUsuario() {
       console.log("form inválido");
     }
   };
-  console.log(userLogged);
-
+  
   const validadorForm = () => {
     if(values.TipoUsuario == ""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar tipo de usuário" });

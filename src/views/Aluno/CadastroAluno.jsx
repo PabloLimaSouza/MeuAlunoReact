@@ -238,14 +238,9 @@ function CadastroAluno() {
     const { name, value, checked } = e.target;
 
     var MateriaAlunos = [...values.MateriaAlunos]; //matérias que tem atualmente
-    console.log(MateriaAlunos);
-    console.log(MateriaAlunos.length);
     const materiaIdIndex = value.search("id");
-    console.log(materiaIdIndex);
     const index = value.substring(6, materiaIdIndex - 1);
-
     const materiaId = value.substring(materiaIdIndex + 3);
-
     var newValues = "";
 
     //se desmarcar checkbox da matéria
@@ -290,7 +285,6 @@ function CadastroAluno() {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         if (response === "Aluno cadastrado") {
           setMensagem({ ...values, title: "Sucesso!", text: response })
           setOpen(true);

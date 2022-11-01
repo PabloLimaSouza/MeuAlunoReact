@@ -8,7 +8,6 @@ const Menu = (props) => {
 const [sidebar,setSidebar] = useState(false);
 const showSidebar = () => setSidebar(!sidebar);
 const { token, userLogged } = useContext(StoreContext);
-console.log(userLogged);
  if(userLogged.tipoUsuario == 1){
     return (   
         <>    

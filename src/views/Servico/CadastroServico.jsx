@@ -79,13 +79,10 @@ function CadastroServico() {
       else {
         validador = true;
       }
-    }
-    console.log(validador);
-    return validador;
+    }    return validador;
   }
 
   const validadorForm = () => {
-    console.log("validadorForm()")
     if (values.Descricao == "") {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar uma descrição" });
       setOpen(true);
@@ -99,7 +96,6 @@ function CadastroServico() {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar pelo menos uma aula" });
       setOpen(true);
     } else if (values.QtdAulas > 0 && !validadorServicosAulas()) {
-      console.log("values.QtdAulas > 0 && !validadorServicosAulas()")
       for (var i = 0; i <= values.QtdAulas; i++) {
         if (values.ServicosAulas[i] != null && values.ServicosAulas[i].AulaId == "") {
           setMensagem({ ...values, title: "Alerta!", text: "Falta selecionar aula do serviço" });
@@ -200,9 +196,6 @@ const handleCheckChange = (e) => {
 const handleChangeAula = (e) => {
   const { name, value, index, select } = e.target;
   const AulaIdIndex = name.substring(13, 14);
-  console.log(AulaIdIndex);
-  console.log(value);
-
   var ServicosAulas = [...values.ServicosAulas]; //servicos que tem atualmente
   ServicosAulas.splice(AulaIdIndex, 1, { AulaId: value }); //preencher item selecionado
   setValues({ ...values, ServicosAulas });

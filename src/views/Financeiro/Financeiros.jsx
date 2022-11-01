@@ -25,7 +25,6 @@ const Financeiros = () => {
   const response = useFetch(`${url}/api/financeiroPorEmpresa/${userLogged.empresaId}`, "get", token);
 
   const atualizarSaldo = async () => {
-
     var saldo = await fetch(`${url}/api/financeiro/saldoPorEmpresaId/${userLogged.empresaId}`, {
       method: "GET",
       headers: {
@@ -171,10 +170,6 @@ const Financeiros = () => {
     }));
   }
 
-  const show = () => {
-    console.log(listaFinanceiros);
-  }
-
   function handlePesquisar(e) {
     const response = fetch(`${url}/api/financeiro/buscar`, {
       method: "POST",
@@ -208,7 +203,6 @@ const Financeiros = () => {
   function showFinanceiros(financeiros) {
     if (financeiros != null) {
       return (
-        console.log(financeiros),
         financeiros.map((financeiro) => (
           <tr onClick={(e) => editarFinanceiro(e, financeiro.id)}>
 
