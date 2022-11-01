@@ -77,7 +77,6 @@ function CadastroFinanceiro() {
   const [open, setOpen] = useState(false);
 
   const validadorForm = () => {
-    debugger;
     if (values.AlunoNome == "" && values.PessoaNome == "" && todos == false) {
       setMensagem({ ...values, title: "Alerta!", text: "Necessário selecionar um aluno ou informar uma pessoa" });
       setOpen(true);
@@ -123,7 +122,6 @@ function CadastroFinanceiro() {
   useEffect(
     function () {
       if (todos) {
-        debugger;
         let hoje = getCurrentDate('-');
         setValues({ ...values, AlunoNome: "", qtdProvisionar: 0, todosAlunos: true, Valor: "0.00", Tipo: "1", DataVencimento: hoje})
       }
@@ -207,12 +205,10 @@ function CadastroFinanceiro() {
   };
 
   function handleSubmit(e) {  
-    debugger;
     setLoading(true);
     var dados = values;
     dados.Valor = dados.Valor.replace('.','');
     dados.Valor = dados.Valor.replace(',','.');
-    debugger;
     const response = fetch(`${ url }/api/financeiro/cadastrar`, {          
       method: "POST",
       headers: {

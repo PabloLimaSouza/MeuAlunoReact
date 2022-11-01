@@ -108,7 +108,6 @@ console.log("clausula", clausulas);
     };
 
     const handleChange = (e) => {
-        debugger;
         const { name, value } = e.target;
         var clausulasExistentes = clausulas;
         var clausulaIndex = clausulas.findIndex(i => i.Id == name);

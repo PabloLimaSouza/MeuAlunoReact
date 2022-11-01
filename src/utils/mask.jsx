@@ -79,7 +79,6 @@ export const onlyNumbersMax5 = (e) => {
 }
 
 export const onlyNumbersMax2 = (e) => {
-    debugger;
     e.target.maxLength = 2;
     let value = e.target.value;
     value = value.replace(/\D/g, ""); 

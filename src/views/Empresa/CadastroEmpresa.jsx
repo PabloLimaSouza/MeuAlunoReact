@@ -186,11 +186,9 @@ function CadastroEmpresa() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: e.target.value });
-    console.log({ name, value });
   };
 
   const handlePessoa = (e) => {
-    debugger;
     const { name, value } = e.target;
     const Endereco = { ...values.Endereco };
     const Pessoa = { ...values.Pessoa };
@@ -263,13 +261,11 @@ function CadastroEmpresa() {
   };
 
   const handleCheckChange = (e) => {
-    debugger;
     const { name, checked } = e.target;
     setValues({ ...values, [name]: e.target.checked });
   };
 
   function handleSubmit(e) {
-    console.log(editarEmpresaUrl);
     if (values.Id != 0) {
       const valuesToSubmit = values;
       setValues({ ...values, valuesToSubmit });

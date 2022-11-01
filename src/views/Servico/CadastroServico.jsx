@@ -210,9 +210,7 @@ const tratarDecimal = (e) => {
 }
 
 function handleSubmit(e) {
-  debugger;
   setLoading(true);
-  console.log("enviando...",values);
   var dados = values;
   dados.Valor = tratarDecimal(values.Valor);
   dados.ValorMulta = tratarDecimal(values.ValorMulta);
