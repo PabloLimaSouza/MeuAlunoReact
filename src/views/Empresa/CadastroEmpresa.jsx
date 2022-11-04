@@ -145,7 +145,6 @@ function CadastroEmpresa() {
     setOpen(false);
   };
 
-  //atualizar campos do form quando é para editar empresa  
   useEffect(
     function () {
       if (empresaResponse.data != null) {
@@ -282,7 +281,8 @@ function CadastroEmpresa() {
     })
       .then((response) => response.json())
       .then((response) => {
-        if ( response != null && response.status != 200) {          
+        debugger;
+        if ( response != null) {          
           setUserLogged({ ...userLogged, empresa: response })
           setMensagem({ ...values, title: "Sucesso!", text: editando ? "Empresa atualizada" : "Empresa cadastrada" })
           setOpen(true);
@@ -621,7 +621,7 @@ function CadastroEmpresa() {
             </DialogContentText>
           </DialogContent>          
 
-          {(mensagem.text == "Empresa cadastrada com sucesso" || mensagem.text == "Empresa atualizada") ?     
+          {(mensagem.title == "Sucesso!") ?     
             <Button onClick={() => { handleClose(); history.push("/empresas"); }}>Ok</Button>
              : <Button onClick={handleClose}>Ok</Button>} 
           

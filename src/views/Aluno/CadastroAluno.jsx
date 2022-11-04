@@ -3,7 +3,7 @@ import { useFetch } from "../../hooks/useFetch";
 import StoreContext from "../../contexts/StoreContext";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { cpfMask, onlyLetters, onlyNumbersMax5, phoneMask, onlyNumbersMax2, dayNumber } from "../../utils/mask";
+import { cepMask, cpfMask, onlyLetters, onlyNumbersMax5, phoneMask, onlyNumbersMax2, dayNumber } from "../../utils/mask";
 import { url } from "../../../src/variaveis";
 
 import {
@@ -517,7 +517,7 @@ function CadastroAluno() {
                   name="CEP"
                   label="CEP"
                   
-                  onChange={handleEndereco}
+                  onChange={(e) => { handleEndereco(cepMask(e)) } }
                   value={values.Endereco.CEP}
                   fullWidth
                 />
