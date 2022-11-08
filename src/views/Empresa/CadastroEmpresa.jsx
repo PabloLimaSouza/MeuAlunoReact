@@ -281,16 +281,15 @@ function CadastroEmpresa() {
     })
       .then((response) => response.json())
       .then((response) => {
-        debugger;
-        if ( response != null) {          
+        if (response.ok) {          
           setUserLogged({ ...userLogged, empresa: response })
           setMensagem({ ...values, title: "Sucesso!", text: editando ? "Empresa atualizada" : "Empresa cadastrada" })
           setOpen(true);
          } 
         else {
-          setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar empresa" })
+          setMensagem({ ...values, title: "Erro!", text: response })
           setOpen(true);
-        }
+        }        
       });
   }
 

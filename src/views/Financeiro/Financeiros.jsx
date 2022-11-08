@@ -24,17 +24,17 @@ const Financeiros = () => {
 
   const response = useFetch(`${url}/api/financeiroPorEmpresa/${userLogged.empresaId}`, "get", token);
 
-  const atualizarSaldo = async () => {
-    var saldo = await fetch(`${url}/api/financeiro/saldoPorEmpresaId/${userLogged.empresaId}`, {
-      method: "GET",
-      headers: {
-        Authorization: 'Bearer ' + token,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      }
-    }).then(resp => resp.json())    
-      .then(json => setSaldoFinanceiro({ totalReceber: json.totalReceber.toFixed(2), totalPagar: json.totalPagar.toFixed(2), saldo: json.saldo.toFixed(2) }))
-  }
+  // const atualizarSaldo = async () => {
+  //   var saldo = await fetch(`${url}/api/financeiro/saldoPorEmpresaId/${userLogged.empresaId}`, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: 'Bearer ' + token,
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     }
+  //   }).then(resp => resp.json())    
+  //     .then(json => setSaldoFinanceiro({ totalReceber: json.totalReceber.toFixed(2), totalPagar: json.totalPagar.toFixed(2), saldo: json.saldo.toFixed(2) }))
+  // }
 
   const atualizarLista = async () => {
 
@@ -50,8 +50,20 @@ const Financeiros = () => {
   }
 
   useEffect(async () => {
+    var receber = 0;
+    var pagar = 0; 
+    var saldo = 0;
+
+    if(response.data != null){
+      response.data.map((financeiro) => (
+        financeiro.tipo == 1 ? receber += financeiro.valor : pagar += financeiro.valor
+      ))
+      saldo = receber-pagar;
+      saldo = saldo.toFixed(2);
+    } 
+    setSaldoFinanceiro({ totalReceber: currencyMask(receber.toString()), totalPagar: currencyMask(pagar.toString()), saldo: currencyMask(saldo.toString()) })
     setListaFinanceiros(response.data);
-    atualizarSaldo();
+
   }, [response])
 
   var CurrencyFormat = require('react-currency-format');
@@ -183,6 +195,17 @@ const Financeiros = () => {
       .then((response) => response.json())
       .then((response) => {
         if (response != null) {
+          var receber = 0;
+          var pagar = 0;
+          var saldo = 0;          
+          response.map((financeiro) => (
+            financeiro.tipo == 1 ? receber += financeiro.valor : pagar += financeiro.valor
+          ))
+          saldo = receber - pagar;
+          saldo = saldo.toFixed(2);
+
+          setSaldoFinanceiro({ totalReceber: currencyMask(receber.toString()), totalPagar: currencyMask(pagar.toString()), saldo: currencyMask(saldo.toString()) })
+
           setListaFinanceiros(response);
         } else {
           setMensagem({ ...values, title: "Erro!", text: "Nenhum documento encontrado com o filtro utilizado" });
@@ -201,9 +224,11 @@ const Financeiros = () => {
   }
 
   function showFinanceiros(financeiros) {
+     
     if (financeiros != null) {
       return (
-        financeiros.map((financeiro) => (
+        financeiros.map((financeiro) => (         
+          
           <tr onClick={(e) => editarFinanceiro(e, financeiro.id)}>
 
             {financeiro.situacao == 1 ?
@@ -225,8 +250,8 @@ const Financeiros = () => {
             <td key="dataVencimento">{format(new Date(financeiro.dataVencimento), 'dd/MM/yyy')}</td>
             <td key="valor">{currencyMaskList(parseFloat(financeiro.valor).toFixed(2))}</td>
             <td id={"financeiro" + financeiro.id} key="situacao">{financeiro.situacao == 1 ? "Em aberto" : "Liquidado"}</td>
-          </tr>
-        ))
+          </tr>                
+        ))       
       )
     }
     return false
@@ -372,10 +397,7 @@ const Financeiros = () => {
         <div className="div-saldo-item saldo">          
           <p>Saldo</p>             
           <p>R$ {saldoFinanceiro.saldo}</p>             
-        </div>
-
-
-
+        </div>        
       </div>
 
       <div className={`botoes ${classes.button}`} style={{ display: 'flex' }}>

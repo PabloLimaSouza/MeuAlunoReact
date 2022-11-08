@@ -3,7 +3,7 @@ import { useFetch } from "../../hooks/useFetch";
 import StoreContext from "../../contexts/StoreContext";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { cepMask, cpfMask, onlyLetters, onlyNumbersMax5, phoneMask, onlyNumbersMax2, dayNumber } from "../../utils/mask";
+import { cepMask, cpfMask, onlyLetters, onlyNumbersMax5, phoneMask, dateFormat, dayNumber } from "../../utils/mask";
 import { url } from "../../../src/variaveis";
 
 import {
@@ -329,7 +329,7 @@ function CadastroAluno() {
                   label="Data Nascimento"
                   type="date"
                   
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(dateFormat(e)) }}
                   value={values.DataNascimento}
                   InputLabelProps={{
                     shrink: true,

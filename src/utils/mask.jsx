@@ -1,13 +1,23 @@
 import React from "react";
 
 export const currencyMask = (e) => {
-    let value = e.target.value;
+    let value;
+    if(e.target != null)
+    value = e.target.value;
+    else 
+    value = e;
     value = value.replace(/\D/g, "");
     value = value.replace(/(\d)(\d{2})$/, "$1,$2");
     //quando tem . o backend nao está aceitando converter para decimal
     value = value.replace(/(?=(\d{3})+(\D))\B/g, ".")
-    e.target.value = value;
-    return e;
+
+    if(e.target != null){
+        e.target.value = value;
+        return e;
+    }   
+    else {
+        return value;
+    }  
 }
 
 export const currencyMaskList = (e) => {
@@ -127,5 +137,15 @@ export const getCurrentDate = (separator) => {
     let month = newDate.getMonth() + 1;
     let year = newDate.getFullYear();    
     return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date}`
+}
+
+export const dateFormat = (e) => {
+    var date = e.target.value.split("-");
+    var year = date[0];
+    var month = date[1];
+    var day = date[2];    
+    year = year.substring(0,4);
+    e.target.value = `${year}-${month}-${day}`;  
+    return e;
 }
 

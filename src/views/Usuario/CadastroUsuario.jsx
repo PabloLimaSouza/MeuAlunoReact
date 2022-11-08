@@ -129,12 +129,12 @@ function CadastroUsuario() {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response === "Usuário cadastrado com sucesso" || response === "Usuário atualizada") {
-          setMensagem({ ...values, title: "Sucesso!", text: response })
+        if (response.ok) {
+          setMensagem({ ...values, title: "Sucesso!", text: editando ? "Usuário atualizado." : "Usuário cadastrado." })
           setOpen(true);
          } 
         else {
-          setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar usuário" })
+          setMensagem({ ...values, title: "Erro!", text: response })
           setOpen(true);
         }
       });

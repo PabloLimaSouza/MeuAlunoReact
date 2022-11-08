@@ -23,7 +23,7 @@ import { useHistory } from "react-router";
 import et from "date-fns/esm/locale/et/index.js";
 import { parseJSON } from "date-fns";
 import { format } from "date-fns";
-import { currencyMask, onlyLetters, getCurrentDate } from "../../utils/mask";
+import { currencyMask, onlyLetters, getCurrentDate, dateFormat } from "../../utils/mask";
 import { setDayOfYear } from "date-fns/esm";
 import { url } from "../../../src/variaveis";
 
@@ -57,7 +57,7 @@ function CadastroFinanceiro() {
     PessoaNome: "",
     DataVencimento: "",
     qtdProvisionar: 0,
-    Valor: 0,
+    Valor: "",
     FormaPagamento: "",
     Situacao: 1,
     EmpresaId: userLogged.empresaId,
@@ -323,7 +323,7 @@ function CadastroFinanceiro() {
                   label="Vencimento"
                   value={values.DataVencimento}
                   disabled={todos ? true : false}
-                  onChange={handleChange}
+                  onChange={(e) => { handleChange(dateFormat(e)) }}
                   InputLabelProps={{
                     shrink: true,
                   }}
