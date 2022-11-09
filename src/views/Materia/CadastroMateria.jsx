@@ -10,6 +10,8 @@ import StoreContext from "../../contexts/StoreContext";
 import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from "react-router-dom";
+import Loader from "../../utils/loader";
+
 
 function CadastroMateria() {
   const { token, userLogged } = useContext(StoreContext);  
@@ -82,6 +84,7 @@ function CadastroMateria() {
   };
 
   function handleSubmit(e) {      
+    document.getElementById("div-loading").style.display = "block";
 
     const response = fetch(`${url}/api/materia/`, {          
       method: "POST",
@@ -94,6 +97,8 @@ function CadastroMateria() {
     })
       .then((response) => response.json())
       .then((response) => {
+        document.getElementById("div-loading").style.display = "none";
+
         if (response === "Matéria cadastrada" || response === "Matéria atualizada") {
           setMensagem({ ...values, title: "Sucesso!", text: response })
           setOpen(true);
@@ -167,6 +172,7 @@ function CadastroMateria() {
           
         </Dialog>
       </main>
+      <Loader/>
     </React.Fragment>
   );
 }

@@ -26,6 +26,7 @@ import { format } from "date-fns";
 import { currencyMask, onlyLetters, getCurrentDate, dateFormat } from "../../utils/mask";
 import { setDayOfYear } from "date-fns/esm";
 import { url } from "../../../src/variaveis";
+import Loader from "../../utils/loader";
 
 function CadastroFinanceiro() {
   const classes = useStyles();
@@ -208,6 +209,8 @@ function CadastroFinanceiro() {
     var dados = values;
     dados.Valor = dados.Valor.replace('.','');
     dados.Valor = dados.Valor.replace(',','.');
+    document.getElementById("div-loading").style.display = "block";
+
     const response = fetch(`${ url }/api/financeiro/cadastrar`, {          
       method: "POST",
       headers: {
@@ -219,6 +222,8 @@ function CadastroFinanceiro() {
     })
       .then((response) => response.json())
       .then((response) => {
+        document.getElementById("div-loading").style.display = "none";
+
         if (response != null && response.errors == null) {
           setMensagem({ ...values, title: "Sucesso!", text: response })
           setOpen(true);          
@@ -443,6 +448,7 @@ function CadastroFinanceiro() {
             {getDialogActions(mensagem.title)}
         </Dialog>
       </main>
+      <Loader/>
     </React.Fragment>
   );
 }

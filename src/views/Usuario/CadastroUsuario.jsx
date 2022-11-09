@@ -10,6 +10,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from "react-router-dom";
 import StoreContext from "../../contexts/StoreContext";
 import { url } from "../../../src/variaveis";
+import Loader from "../../utils/loader";
 
 function CadastroUsuario() {
 
@@ -118,6 +119,7 @@ function CadastroUsuario() {
   };
 
   function handleSubmit(e) {     
+    document.getElementById("div-loading").style.display = "block";
 
     const response = fetch(`${ url }/api/usuario/`, {
       method: "POST",
@@ -129,6 +131,8 @@ function CadastroUsuario() {
     })
       .then((response) => response.json())
       .then((response) => {
+        document.getElementById("div-loading").style.display = "none";
+
         if (response.ok) {
           setMensagem({ ...values, title: "Sucesso!", text: editando ? "Usuário atualizado." : "Usuário cadastrado." })
           setOpen(true);

@@ -5,6 +5,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { cepMask, cpfMask, onlyLetters, onlyNumbersMax5, phoneMask, dateFormat, dayNumber } from "../../utils/mask";
 import { url } from "../../../src/variaveis";
+import Loader from "../../utils/loader";
 
 import {
   Button,
@@ -18,6 +19,8 @@ import {
   DialogContent,
   DialogContentText,
   Dialog,
+  CircularProgress
+
 } from "@material-ui/core";
 import useStyles from "../Styles/useStyles";
 import { format } from 'date-fns';
@@ -41,8 +44,7 @@ function CadastroAluno() {
         "Content-Type": "application/json",
       }
     })
-  };
-  
+  };  
 
   const editarAlunoId = window.location.pathname.split("/");
   var editarAlunoUrl = "";
@@ -114,12 +116,16 @@ function CadastroAluno() {
     } else if(values.NomeResponsavel ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o nome do responsável pelo aluno" });
       setOpen(true); 
-    } else if(values.CPFResponsavel ===""){
-      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CPF do responsável pelo aluno" });
-      setOpen(true); 
-    } else if(values.TelefoneResponsavel ===""){
-      setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o telefone do responsável pelo aluno" });
-      setOpen(true); 
+    
+    // else if(values.CPFResponsavel ===""){
+    //   setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o CPF do responsável pelo aluno" });
+    //   setOpen(true); 
+    // 
+
+    // } else if(values.TelefoneResponsavel ===""){
+    //   setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o telefone do responsável pelo aluno" });
+    //   setOpen(true); 
+
     } else if(values.Endereco.Logradouro ===""){
       setMensagem({ ...values, title: "Alerta!", text: "Necessário informar o logradouro do endereço" });
       setOpen(true); 
@@ -270,7 +276,8 @@ function CadastroAluno() {
   }
 
   function handleSubmit(e) {  
-
+    document.getElementById("div-loading").style.display = "block";
+ 
     const response = fetch(`${ url }/api/aluno/`, {
       method: "POST",
       headers: {
@@ -282,6 +289,7 @@ function CadastroAluno() {
     })
       .then((response) => response.json())
       .then((response) => {
+        document.getElementById("div-loading").style.display = "none";
         if (response === "Aluno cadastrado") {
           setMensagem({ ...values, title: "Sucesso!", text: response })
           setOpen(true);
@@ -316,7 +324,7 @@ function CadastroAluno() {
                   id="Nome"
                   name="Nome"
                   label="Nome Aluno"
-                  
+                  required={true}
                   fullWidth
                   onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.Nome}
@@ -328,6 +336,7 @@ function CadastroAluno() {
                   name="DataNascimento"
                   label="Data Nascimento"
                   type="date"
+                  required={true}
                   
                   onChange={(e) => { handleChange(dateFormat(e)) }}
                   value={values.DataNascimento}
@@ -364,7 +373,7 @@ function CadastroAluno() {
                   id="NomeResponsavel"
                   name="NomeResponsavel"
                   label="Nome Responsável"
-                  
+                  required={true}
                   fullWidth
                   onChange={(e) => { handleChange(onlyLetters(e)) }}
                   value={values.NomeResponsavel}
@@ -422,7 +431,7 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Logradouro"
                   name="Logradouro"
-                  
+                  required={true}
                   onChange={handleEndereco}
                   value={values.Endereco.Logradouro}
                   label="Logradouro"
@@ -437,6 +446,7 @@ function CadastroAluno() {
                   onChange={(e) => { handleEndereco(onlyNumbersMax5(e)) }}
                   value={values.Endereco.Numero}
                   fullWidth
+                  required={true}
                 />
               </Grid>
               <Grid item xs={12} sm={3}>
@@ -454,7 +464,7 @@ function CadastroAluno() {
                   id="Endereco.Cidade"
                   name="Cidade"
                   label="Cidade"
-                  
+                  required={true}
                   onChange={handleEndereco}
                   value={values.Endereco.Cidade}
                   fullWidth
@@ -464,7 +474,7 @@ function CadastroAluno() {
                 <TextField
                   id="Endereco.Bairro"
                   name="Bairro"
-                  
+                  required={true}
                   onChange={handleEndereco}
                   value={values.Endereco.Bairro}
                   label="Bairro"
@@ -476,7 +486,7 @@ function CadastroAluno() {
                   id="Endereco.Estado"
                   name="Estado"
                   label="Estado"
-                  
+                  required={true}
                   onChange={handleEndereco}
                   value={values.Endereco.Estado}
                   fullWidth
@@ -636,9 +646,11 @@ function CadastroAluno() {
           {(mensagem.text == "Aluno cadastrado") ?     
           <Button onClick={() => { handleClose(); history.push("/alunos"); }}>Ok</Button>
            : <Button onClick={handleClose}>Ok</Button>}          
-        </Dialog>
+        </Dialog>        
       </main>
+     <Loader/>   
     </React.Fragment>
+   
   );
 }
 

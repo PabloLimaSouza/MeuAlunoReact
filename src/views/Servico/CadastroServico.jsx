@@ -8,6 +8,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 import lifecycle, { componentDidMount, componentDidUpdate } from 'react-pure-lifecycle';
+import Loader from "../../utils/loader";
 
 import {
   Button,
@@ -212,6 +213,7 @@ function handleSubmit(e) {
   var dados = values;
   dados.Valor = tratarDecimal(values.Valor);
   dados.ValorMulta = tratarDecimal(values.ValorMulta);
+  document.getElementById("div-loading").style.display = "block";
 
   const response = fetch(`${ url }/api/servico`, {
     method: "POST",
@@ -224,6 +226,8 @@ function handleSubmit(e) {
   })
     .then((response) => response.json())
     .then((response) => {
+      document.getElementById("div-loading").style.display = "none";
+
       if (response != null) {
         setMensagem({ ...values, title: "Sucesso!", text: response })
         setOpen(true);
@@ -416,6 +420,7 @@ return (
 
       </Dialog>
     </main>
+    <Loader/>
   </React.Fragment>
 );
                           }

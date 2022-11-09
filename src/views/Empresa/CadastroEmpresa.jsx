@@ -23,6 +23,7 @@ import { MenuItem } from "@material-ui/core";
 import { format } from "date-fns";
 import { useHistory } from "react-router";
 import { cepMask, cpfMask, currencyMask, onlyLetters, onlyNumbersMax5, phoneMask, onlyNumbers, cnpjMask } from "../../utils/mask";
+import Loader from "../../utils/loader";
 
 
 
@@ -269,7 +270,8 @@ function CadastroEmpresa() {
       const valuesToSubmit = values;
       setValues({ ...values, valuesToSubmit });
     }
-   
+    document.getElementById("div-loading").style.display = "block";
+
     const response = fetch(`${ url }/api/empresa/`, {
       method: "POST",
       headers: {
@@ -281,6 +283,8 @@ function CadastroEmpresa() {
     })
       .then((response) => response.json())
       .then((response) => {
+        document.getElementById("div-loading").style.display = "none";
+
         if (response.ok) {          
           setUserLogged({ ...userLogged, empresa: response })
           setMensagem({ ...values, title: "Sucesso!", text: editando ? "Empresa atualizada" : "Empresa cadastrada" })
@@ -627,6 +631,7 @@ function CadastroEmpresa() {
         </Dialog>
         </Paper>
       </main>
+      <Loader/>
     </React.Fragment>
   );
 }

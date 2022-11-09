@@ -12,12 +12,12 @@ function initialState() {
 
 const UserLogin = () => {
   const [values, setValues] = useState(initialState);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { setToken } = useContext(StoreContext);
-  const { setUserLogged} = useContext(StoreContext);
+  const { setUserLogged } = useContext(StoreContext);
   const history = useHistory();
-  const {token} = '';
+  const { token } = '';
 
   function onChange(event) {
     const { value, name } = event.target;
@@ -29,9 +29,9 @@ const UserLogin = () => {
   }
 
   function onSubmit(event) {
-    event.preventDefault();  
-    setLoading(true); 
-    const response = fetch(`${ url }/api/usuario/login`, {
+    event.preventDefault();
+    document.getElementById("div-loading").style.display = "block";
+    const response = fetch(`${url}/api/usuario/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -40,61 +40,56 @@ const UserLogin = () => {
       body: JSON.stringify(values),
     }).then((response) => response.json())
       .then((response) => {
-        if (response.jwt != null && response.dadosUsuario.login != null) {          
-         setToken(response.jwt);
-         setUserLogged(response.dadosUsuario);         
-         return history.push("/");                        
+        document.getElementById("div-loading").style.display = "none";
+        if (response.jwt != null && response.dadosUsuario.login != null) {
+          setToken(response.jwt);
+          setUserLogged(response.dadosUsuario);
+          return history.push("/");
         } else {
           setError(response);
-        } 
-      }).then( () => {
+        }
+      }).then(() => {
         setLoading(false);
-      });        
+      });
     setValues(initialState);
   }
 
   return (
     <div className="wrapper">
-    <div className="user-login">      
-      <h1 className="user-login__title">Acessar o Sistema</h1>
-      <form onSubmit={onSubmit}>
-        <div className="user-login__form-control">
-          <label htmlFor="user">Usuário</label>
-          <input
-            id="user"
-            type="text"
-            name="Login"
-            onChange={onChange}
-            value={values.Login}
-            required
-          />
-        </div>
-        <div className="user-login__form-control">
-          <label htmlFor="password">Senha</label>
-          <input
-            id="password"
-            type="password"
-            name="Senha"
-            onChange={onChange}
-            value={values.Senha}
-            required
-          />
-        </div>
-        <div className="user-login__error">{error}</div>
-        <button type="submit" className="user-login__submit-button" disabled={loading ? "disabled" : ''}>
-          Entrar
-        </button>
-      </form>      
-    </div>
-    {loading ? 
-    (
-    <div id="loader">
+      <div className="user-login">
+        <h1 className="user-login__title">Acessar o Sistema</h1>
+        <form onSubmit={onSubmit}>
+          <div className="user-login__form-control">
+            <label htmlFor="user">Usuário</label>
+            <input
+              id="user"
+              type="text"
+              name="Login"
+              onChange={onChange}
+              value={values.Login}
+              required
+            />
+          </div>
+          <div className="user-login__form-control">
+            <label htmlFor="password">Senha</label>
+            <input
+              id="password"
+              type="password"
+              name="Senha"
+              onChange={onChange}
+              value={values.Senha}
+              required
+            />
+          </div>
+          <div className="user-login__error">{error}</div>
+          <button type="submit" className="user-login__submit-button" disabled={loading ? "disabled" : ''}>
+            Entrar
+          </button>
+        </form>
+      </div>
       <Loader/>
     </div>
-    ) 
-    : false}
     
-    </div>
   );
 };
 
