@@ -121,9 +121,11 @@ function CadastroUsuario() {
   function handleSubmit(e) {     
     document.getElementById("div-loading").style.display = "block";
 
+    debugger;
     const response = fetch(`${ url }/api/usuario/`, {
       method: "POST",
       headers: {
+        Authorization: 'Bearer '+token,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -287,6 +289,7 @@ function CadastroUsuario() {
           
         </Dialog>
             </main>
+            <Loader />
         </React.Fragment>
     );
 }

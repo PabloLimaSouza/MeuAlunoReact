@@ -12,6 +12,7 @@ function initialState() {
 
 const UserLogin = () => {
   const [values, setValues] = useState(initialState);
+  const [recuperarSenhaValues, setrecuperarSenhavalues] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { setToken } = useContext(StoreContext);
@@ -26,6 +27,23 @@ const UserLogin = () => {
       ...values,
       [name]: value,
     });
+  }
+
+  function recuperarSenha(){
+    debugger;
+    var url = window.location.href;
+    // const response = fetch(`${url}/api/usuario/forgotPassword`, {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(recuperarSenhaValues),
+    // }).then((response) => response.json())      
+    //   .then(() => {
+    //     setLoading(false);
+    //   });
+    // setValues(initialState);
   }
 
   function onSubmit(event) {
@@ -85,6 +103,7 @@ const UserLogin = () => {
           <button type="submit" className="user-login__submit-button" disabled={loading ? "disabled" : ''}>
             Entrar
           </button>
+          <a href="#" className="btn-recuperar-senha" onClick={recuperarSenha}>Esqueci Minha Senha</a>
         </form>
       </div>
       <Loader/>

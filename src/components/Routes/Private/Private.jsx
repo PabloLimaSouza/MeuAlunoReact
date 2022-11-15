@@ -5,8 +5,7 @@ import StoreContext from '../../../contexts/StoreContext';
 
 const RoutesPrivate = ({ component: Component, ...rest }) => {
   const { token, } = useContext(StoreContext);
-  
-  if(token != null){
+  if (token != null) {
     var decoded = jwt_decode(token);
 
     if (decoded.exp < (Date.now().valueOf() / 1000)) {
@@ -18,26 +17,26 @@ const RoutesPrivate = ({ component: Component, ...rest }) => {
         />
       )
     } else {
-        return (
-          <Route
-            {...rest}
-            render={() => token
-              ? <Component {...rest} />
-              : <Redirect to="/login" />
+      return (
+        <Route
+          {...rest}
+          render={() => token
+            ? <Component {...rest} />
+            : <Redirect to="/login" />
           }
         />
       )
     }
-  }else{
+  } else {
     return (
       <Route
         {...rest}
         render={() => token
           ? <Component {...rest} />
           : <Redirect to="/login" />
-      }
-    />
-  )
+        }
+      />
+    )
   }
 }
 

@@ -20,8 +20,6 @@ import Usuarios from "../../views/Usuario/Usuarios";
 import Home from "../../views/Home/Home";
 import CadastroContrato from "../../views/Contratos/CadastroContrato";
 import Contratos from "../../views/Contratos/Contratos";
-import Loader from "../../utils/loader";
-
 
 const Content = (props) => (  
   <div className="Geral">    
@@ -46,6 +44,7 @@ const Content = (props) => (
           <Route path="/cadastroContrato" component={CadastroContrato}/>
           <Route path="/contratos" component={Contratos}/>
           <Route path="/" component={Home}/>
+          
   </Switch>
   </div>   
   <div className="Footer">Todos direitos reservados @ 2021</div>   

@@ -10,7 +10,7 @@ import {
     Link
   } from "react-router-dom";
 import Login from '../views/Usuario/Login'
-import Aluno from './Aluno/CadastroAluno'
+import CriarSenha from "../views/Usuario/CriarSenha";
 import RoutesPrivate from '../components/Routes/Private/Private'
 import StoreProvider from '../contexts/Provider'
 
@@ -19,7 +19,8 @@ const App = props => (
       <StoreProvider>
      <Router>
        <Switch>
-       <Route path="/login" component={Login}/>          
+       <Route path="/login" component={Login}/>
+       <Route path="/criarSenha" component={CriarSenha} />         
        <RoutesPrivate path="/" component={Content}/>             
        </Switch>  
      </Router>       
