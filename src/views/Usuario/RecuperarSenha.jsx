@@ -1,16 +1,14 @@
 import React, {useState} from "react";
 import Loader from "../../utils/loader";
 import { url } from "../../../src/variaveis";
-import { TextField, Button, DialogTitle, DialogContent, DialogContentText, Dialog } from "@material-ui/core";
+import { Button, DialogTitle, DialogContent, DialogContentText, Dialog } from "@material-ui/core";
 import { useHistory } from "react-router";
 
-import "./CriarSenha.css";
 
-const CriarSenha = () => {
+const RecuperarSenha = () => {
 
     const initialValues = {
-        senha: "",
-        senhaConfere: ""        
+        email: ""
     }
     const [values,setValues] = useState(initialValues);
     const [open, setOpen] = useState(false);
@@ -35,18 +33,16 @@ const CriarSenha = () => {
     
     function onSubmit(event) {
         event.preventDefault();
-        if (values.senha != values.senhaConfere) {
-            setMensagem({ ...values, title: "Alerta!", text: "As senhas informadas devem ser iguais" });
+        if (values.email == "") {
+            setMensagem({ ...values, title: "Alerta!", text: "Informe seu e-mail" });
             setOpen(true);            
         } else {
             document.getElementById("div-loading").style.display = "block";
-            var userData = window.location.href.split('%5B$');
             const body = {
-                UsuarioEmail: userData[1],
-                ResetToken : userData[2],       
-                NewPassword: values.senha,   
+                UsuarioEmail: values.email,
+                
             }
-            const response = fetch(`${url}/api/usuario/resetPassword`, {
+            const response = fetch(`${url}/api/usuario/forgotpassword`, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -74,36 +70,21 @@ const CriarSenha = () => {
     return (
         
             <>
-            <img className="logotipo" src="https://i.imgur.com/LbUVpGb.png" />
             <div className="wrapper">
             <div className="user-login">
-                <h1 className="user-login__title">Criar nova senha</h1>
-                <form>   
-                <div className="user-login__form-control">                 
-                    <TextField
-                        id="password"
-                        name="senha"
-                        label="Senha"
-                        type="password"
-                        required={true}
-                        onChange={handleChange}
-                        value={values.senha}
-                        variant="outlined"
-                        className="user-login__form-control" />
-                </div>
-                <div className="user-login__form-control">
-                    <TextField
-                        id="password"
-                        name="senhaConfere"
-                        label="Confirme a Senha"
-                        type="password"
-                        required={true}
-                        onChange={handleChange}
-                        value={values.senhaConfere}
-                        variant="outlined"
-                        className="user-login__form-control" />
-                </div>                   
-                <button className="user-login__submit-button" onClick={onSubmit}>Confirmar</button>
+                <h1 className="user-login__title">Recuperar Senha</h1>
+                <form>
+                    <div className="user-login__form-control">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            onChange={handleChange}
+                            value={values.email}
+                            required />
+                    </div>                    
+                    <button onClick={onSubmit}>Confirmar</button>
                 </form>
             </div>
             <Loader />
@@ -131,4 +112,4 @@ const CriarSenha = () => {
     )
 }
 
-export default CriarSenha;
+export default RecuperarSenha;
