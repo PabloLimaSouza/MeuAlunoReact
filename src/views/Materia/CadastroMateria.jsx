@@ -22,7 +22,7 @@ function CadastroMateria() {
       var editarMateriaUrl = "";    
       const editarMateriaId = window.location.pathname.split("/");
       if (editarMateriaId[2] != null){
-        editarMateriaUrl =  `${url}/api/materia/${editarMateriaId[2]}`;  
+        editarMateriaUrl =  `${url}/api/v1/materias/${editarMateriaId[2]}`;  
         editando = true;    
       }
   
@@ -86,7 +86,7 @@ function CadastroMateria() {
   function handleSubmit(e) {      
     document.getElementById("div-loading").style.display = "block";
 
-    const response = fetch(`${url}/api/materia/`, {          
+    const response = fetch(`${url}/api/v1/materias/`, {          
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

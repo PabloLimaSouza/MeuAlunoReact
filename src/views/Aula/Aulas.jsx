@@ -9,7 +9,7 @@ import { url } from "../../../src/variaveis";
 
 function Aulas() {
   const { token, userLogged } = useContext(StoreContext); 
-  const response = useFetch(`${ url }/api/aulaPorEmpresa/${userLogged.empresaId}`, "get",token);
+  const response = useFetch(`${ url }/api/v1/aulas/empresa/${userLogged.empresaId}`, "get",token);
 
   const history = useHistory();
 

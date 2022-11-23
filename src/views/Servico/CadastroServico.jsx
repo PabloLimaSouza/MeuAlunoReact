@@ -39,13 +39,13 @@ import { url } from "../../../src/variaveis";
 
 function CadastroServico() {
   const { token, userLogged } = useContext(StoreContext);
-  const aulasResponse = useFetch(`${ url }/api/aulaPorEmpresa/${userLogged.empresaId}`,"get",token);
+  const aulasResponse = useFetch(`${ url }/api/v1/aulas/empresa/${userLogged.empresaId}`,"get",token);
   const history = useHistory();
   const editarServicoId = window.location.pathname.split("/");
   var editarServicoUrl = "";
 
   if (editarServicoId[2] != null) {
-    editarServicoUrl = `${ url }/api/servico/${editarServicoId[2]}`;
+    editarServicoUrl = `${ url }/api/v1/servicos/${editarServicoId[2]}`;
   }
 
   const servicoResponse = useFetch(editarServicoUrl,"get",token);
@@ -215,7 +215,7 @@ function handleSubmit(e) {
   dados.ValorMulta = tratarDecimal(values.ValorMulta);
   document.getElementById("div-loading").style.display = "block";
 
-  const response = fetch(`${ url }/api/servico`, {
+  const response = fetch(`${ url }/api/servicos`, {
     method: "POST",
     headers: {
       Authorization: 'Bearer  '+token,

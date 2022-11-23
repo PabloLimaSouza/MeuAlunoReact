@@ -12,7 +12,7 @@ import { Button } from "@material-ui/core";
 const Alunos = (props) => {
   const { token, userLogged } = useContext(StoreContext); 
 
-  const response = useFetch(`${ url }/api/alunoPorEmpresa/${userLogged.empresaId}`,"get",token);
+  const response = useFetch(`${ url }/api/v1/alunos/empresa/${userLogged.empresaId}`,"get",token);
 
   const history = useHistory();  
 

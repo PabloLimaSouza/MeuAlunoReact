@@ -34,19 +34,23 @@ const CriarSenha = () => {
       };        
     
     function onSubmit(event) {
+        debugger;
         event.preventDefault();
         if (values.senha != values.senhaConfere) {
             setMensagem({ ...values, title: "Alerta!", text: "As senhas informadas devem ser iguais" });
             setOpen(true);            
         } else {
             document.getElementById("div-loading").style.display = "block";
-            var userData = window.location.href.split('%5B$');
+            var userData = window.location.search;
+            var urlParams = new URLSearchParams(userData);
             const body = {
-                UsuarioEmail: userData[1],
-                ResetToken : userData[2],       
+                UsuarioEmail: urlParams.get('email'),
+                ResetToken : urlParams.get('token'),       
                 NewPassword: values.senha,   
             }
-            const response = fetch(`${url}/api/usuario/resetPassword`, {
+            body.ResetToken = body.ResetToken.replace(' ','+');
+            
+            const response = fetch(`${url}/api/v1/usuarios/resetPassword`, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",

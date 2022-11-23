@@ -10,7 +10,7 @@ import { onlyLetters, currencyMask, currencyMaskList } from "../../utils/mask";
 const Servicos = () => {
   const history = useHistory();
   const { token, userLogged } = useContext(StoreContext); 
-  const response = useFetch(`${ url }/api/servicoPorEmpresa/${userLogged.empresaId}`,"get",token); 
+  const response = useFetch(`${ url }/api/v1/servicos/empresa/${userLogged.empresaId}`,"get",token); 
   
   function novoServico() {
     history.push("/cadastroServico");

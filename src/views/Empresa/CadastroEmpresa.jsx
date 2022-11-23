@@ -34,7 +34,7 @@ function CadastroEmpresa() {
   var editarEmpresaUrl = "";
   const editarEmpresaId = window.location.pathname.split("/");
   if (editarEmpresaId[2] != null) {
-    editarEmpresaUrl = `${ url }/api/empresa/${editarEmpresaId[2]}`;
+    editarEmpresaUrl = `${ url }/api/v1/empresas/${editarEmpresaId[2]}`;
     editando = true;
   }
 
@@ -272,7 +272,7 @@ function CadastroEmpresa() {
     }
     document.getElementById("div-loading").style.display = "block";
 
-    const response = fetch(`${ url }/api/empresa/`, {
+    const response = fetch(`${ url }/api/v1/empresas/`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

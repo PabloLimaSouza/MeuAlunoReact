@@ -22,23 +22,11 @@ const Financeiros = () => {
     saldo: ""
   })
 
-  const response = useFetch(`${url}/api/financeiroPorEmpresa/${userLogged.empresaId}`, "get", token);
-
-  // const atualizarSaldo = async () => {
-  //   var saldo = await fetch(`${url}/api/financeiro/saldoPorEmpresaId/${userLogged.empresaId}`, {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: 'Bearer ' + token,
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     }
-  //   }).then(resp => resp.json())    
-  //     .then(json => setSaldoFinanceiro({ totalReceber: json.totalReceber.toFixed(2), totalPagar: json.totalPagar.toFixed(2), saldo: json.saldo.toFixed(2) }))
-  // }
+  const response = useFetch(`${url}/api/v1/financeiros/empresa/${userLogged.empresaId}`, "get", token);
 
   const atualizarLista = async () => {
 
-    await fetch(`${url}/api/financeiroPorEmpresa/${userLogged.empresaId}`, {
+    await fetch(`${url}/api/v1/financeiros/${userLogged.empresaId}`, {
       method: "GET",
       headers: {
         Authorization: 'Bearer ' + token,
@@ -137,7 +125,7 @@ const Financeiros = () => {
   };
 
   function liquidar() {
-    const response = fetch(`${url}/api/financeiro/liquidar`, {
+    const response = fetch(`${url}/api/v1/financeiros/liquidar`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer  ' + token,
@@ -161,7 +149,7 @@ const Financeiros = () => {
   async function excluir() {
 
     await Promise.all(itemSelecionado.map(async (item) => {
-      const response = await fetch(`${url}/api/financeiro/${item}`, {
+      const response = await fetch(`${url}/api/v1/financeiros/${item}`, {
         method: "DELETE",
         headers: {
           Authorization: 'Bearer  ' + token,
@@ -183,7 +171,7 @@ const Financeiros = () => {
   }
 
   function handlePesquisar(e) {
-    const response = fetch(`${url}/api/financeiro/buscar`, {
+    const response = fetch(`${url}/api/v1/financeiros/buscar`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer  ' + token,

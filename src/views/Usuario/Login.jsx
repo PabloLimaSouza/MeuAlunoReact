@@ -54,7 +54,7 @@ const handleClose = () => {
     document.getElementById("div-loading").style.display = "block";
     document.getElementById("btn-enviar-email").innerHTML = "Aguarde...";
     document.getElementById("btn-enviar-email").disabled = true;
-    const response = fetch(`${url}/api/usuario/forgotPassword`, {
+    const response = fetch(`${url}/api/v1/usuarios/forgotPassword`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -81,7 +81,7 @@ const handleClose = () => {
   function onSubmit(event) {
     event.preventDefault();
     document.getElementById("div-loading").style.display = "block";
-    const response = fetch(`${url}/api/usuario/login`, {
+    const response = fetch(`${url}/api/v1/usuarios/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",

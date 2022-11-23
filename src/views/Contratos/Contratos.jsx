@@ -10,8 +10,6 @@ import CadastroContrato from "../Contratos/CadastroContrato";
 function Contratos() {
   const { token, userLogged } = useContext(StoreContext);
 
-  //const response = useFetch(`${ url }/api/materiaPorEmpresa/${userLogged.empresaId}`,"get",token);
-
   const history = useHistory();
 
   const classes = useStyles();

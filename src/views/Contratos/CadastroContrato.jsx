@@ -15,7 +15,7 @@ function CadastroContrato() {
 
     const classes = useStyles();
     const { token, userLogged } = useContext(StoreContext);
-    const retornoContrato = useFetch(`${url}/api/contratoPorEmpresaId/${userLogged.empresaId}`, "get", token)
+    const retornoContrato = useFetch(`${url}/api/v1/contratos/empresa/${userLogged.empresaId}`, "get", token)
     const [clausulas, setClausulas] = useState([])
     const [contrato, setContrato] = useState();
     const alertas = {
@@ -124,7 +124,7 @@ console.log("clausula", clausulas);
             EmpresaId
         }
 
-        const response = fetch(`${url}/api/contrato/`, {
+        const response = fetch(`${url}/api/v1/contratos/`, {
             method: "POST",
             headers: {
                 Authorization: 'Bearer ' + token,

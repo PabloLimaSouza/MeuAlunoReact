@@ -10,7 +10,7 @@ import { url } from "../../../src/variaveis";
 function Materias() {
   const { token, userLogged } = useContext(StoreContext);
 
-  const response = useFetch(`${ url }/api/materiaPorEmpresa/${userLogged.empresaId}`,"get",token);
+  const response = useFetch(`${ url }/api/v1/materias/empresa/${userLogged.empresaId}`,"get",token);
 
   const history = useHistory();
 

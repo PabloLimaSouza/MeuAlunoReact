@@ -42,7 +42,7 @@ const RecuperarSenha = () => {
                 UsuarioEmail: values.email,
                 
             }
-            const response = fetch(`${url}/api/usuario/forgotpassword`, {
+            const response = fetch(`${url}/api/v1/usuarios/forgotpassword`, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",

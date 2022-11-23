@@ -26,7 +26,7 @@ function CadastroAula(){
     var editarAulaUrl = "";    
     const editarAulaId = window.location.pathname.split("/");
     if (editarAulaId[2] != null){
-      editarAulaUrl =  `${ url }/api/aula/${editarAulaId[2]}`;
+      editarAulaUrl =  `${ url }/api/v1/aulas/${editarAulaId[2]}`;
       editando = true;      
     }
 

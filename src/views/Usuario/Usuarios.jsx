@@ -14,7 +14,7 @@ const Usuarios = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const response = useFetch(`${ url }/api/usuariosPorEmpresa/${userLogged.empresaId}`,"get",token);
+  const response = useFetch(`${ url }/api/v1/usuarios/empresa/${userLogged.empresaId}`,"get",token);
   
   const initialValues = {
     TipoUsuario: "",

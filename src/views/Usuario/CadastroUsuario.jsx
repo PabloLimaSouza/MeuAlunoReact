@@ -24,11 +24,11 @@ function CadastroUsuario() {
     var editarUsuarioUrl = "";
     const editarUsuarioId = window.location.pathname.split("/");
     if (editarUsuarioId[2] != null) {
-        editarUsuarioUrl = `${ url }/api/usuarioPorId/${editarUsuarioId[2]}`;
+        editarUsuarioUrl = `${ url }/api/v1/usuarios/${editarUsuarioId[2]}`;
         editando = true;
     }
 
-    const listaPessoas = useFetch(`${ url }/api/pessoasPorEmpresa/${userLogged.empresaId}`,"get",token); 
+    const listaPessoas = useFetch(`${ url }/api/v1/pessoas/empresa/${userLogged.empresaId}`,"get",token); 
 
     const initialValues = {
         Id: 0,
@@ -122,7 +122,7 @@ function CadastroUsuario() {
     document.getElementById("div-loading").style.display = "block";
 
     debugger;
-    const response = fetch(`${ url }/api/usuario/`, {
+    const response = fetch(`${ url }/api/v1/usuarios/`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

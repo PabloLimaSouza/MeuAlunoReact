@@ -30,13 +30,13 @@ import { useHistory } from "react-router";
 function CadastroAluno() {
   const { token, userLogged } = useContext(StoreContext);
 
-  const materiasUrl = `${ url }/api/materiaPorEmpresa/${userLogged.empresaId}`;
+  const materiasUrl = `${ url }/api/v1/materias/empresa/${userLogged.empresaId}`;
   const materiasResponse = useFetch(materiasUrl,"get",token);
-  const servicosUrl = `${ url }/api/servicoPorEmpresa/${userLogged.empresaId}`;
+  const servicosUrl = `${ url }/api/v1/servicos/empresa/${userLogged.empresaId}`;
   const servicosResponse = useFetch(servicosUrl,"get",token);
   
   const gerarContrato = () => {
-    fetch(`${ url }/api/gerarContratoPDF/${userLogged.empresaId},${values.Id}`, {
+    fetch(`${ url }/api/v1/empresas/gerarContratoPDF/${userLogged.empresaId},${values.Id}`, {
       method: "GET",
       headers: {
         Authorization: 'Bearer '+token,
@@ -50,7 +50,7 @@ function CadastroAluno() {
   var editarAlunoUrl = "";
 
   if (editarAlunoId[2] != null) {
-    editarAlunoUrl = `${ url }/api/aluno/${editarAlunoId[2]}`;
+    editarAlunoUrl = `${ url }/api/v1/alunos/${editarAlunoId[2]}`;
   }
 
   const history = useHistory();
@@ -278,7 +278,7 @@ function CadastroAluno() {
   function handleSubmit(e) {  
     document.getElementById("div-loading").style.display = "block";
  
-    const response = fetch(`${ url }/api/aluno/`, {
+    const response = fetch(`${ url }/api/v1/alunos/`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,

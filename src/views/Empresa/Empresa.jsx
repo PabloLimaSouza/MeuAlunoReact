@@ -9,7 +9,7 @@ import { url } from "../../../src/variaveis";
 function Empresa() {
 
     const { token } = useContext(StoreContext); 
-    const response = useFetch(`${ url }/api/empresa`,"get",token);
+    const response = useFetch(`${ url }/api/v1/empresas`,"get",token);
     const history = useHistory(); 
     function editarEmpresa(id){
         history.push(`/cadastroEmpresa/${id}`)

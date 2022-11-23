@@ -20,20 +20,16 @@ import {
 import StoreContext from "../../contexts/StoreContext";
 import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from "react-router";
-import et from "date-fns/esm/locale/et/index.js";
-import { parseJSON } from "date-fns";
 import { format } from "date-fns";
 import { currencyMask, onlyLetters, getCurrentDate, dateFormat } from "../../utils/mask";
-import { setDayOfYear } from "date-fns/esm";
 import { url } from "../../../src/variaveis";
 import Loader from "../../utils/loader";
 
 function CadastroFinanceiro() {
   const classes = useStyles();
-  var CurrencyFormat = require("react-currency-format");
   const { token, userLogged } = useContext(StoreContext);
 
-  const urlAlunos = `${ url }/api/alunoPorEmpresa/${userLogged.empresaId}`;
+  const urlAlunos = `${ url }/api/v1/alunos/empresa/${userLogged.empresaId}`;
  
   
   const responseAluno = useFetch(urlAlunos,"get",token);
@@ -46,7 +42,7 @@ function CadastroFinanceiro() {
   var editarFinanceiroUrl = "";
   var editando = false;
   if (editarFinanceiro[2] != null) {
-    editarFinanceiroUrl = `${ url }/api/cadastroFinanceiro/${editarFinanceiro[2]}`;
+    editarFinanceiroUrl = `${ url }/api/v1/financeiros/${editarFinanceiro[2]}`;
     editando = true;
   }
   const responseEditarFinanceiro = useFetch(editarFinanceiroUrl,"get",token);
@@ -211,7 +207,7 @@ function CadastroFinanceiro() {
     dados.Valor = dados.Valor.replace(',','.');
     document.getElementById("div-loading").style.display = "block";
 
-    const response = fetch(`${ url }/api/financeiro/cadastrar`, {          
+    const response = fetch(`${ url }/api/financeiros`, {          
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,
