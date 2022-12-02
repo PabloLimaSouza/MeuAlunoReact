@@ -1,13 +1,10 @@
 import React from 'react'
-import Menu from '../components/menu/Menu'
 import Content from '../components/content/Content'
 import './App.css'
-import MenuItem from '../components/menu/MenuItem'
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Link
+    Route
   } from "react-router-dom";
 import Login from '../views/Usuario/Login'
 import CriarSenha from "../views/Usuario/CriarSenha";

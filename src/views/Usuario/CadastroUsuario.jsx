@@ -143,6 +143,7 @@ function CadastroUsuario() {
     .catch((err) => {
       console.log(err);
     })   
+    document.getElementById("div-loading").style.display = "none";
   }
 
 
@@ -245,7 +246,7 @@ function CadastroUsuario() {
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={handleClickOpen}
+                                onClick={() => {handleClickOpen(); history.push("/usuarios");}}
                                 className={classes.button}
                             >
                                 {editando ? "Atualizar" : "Cadastrar"}
