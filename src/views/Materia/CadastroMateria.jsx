@@ -95,20 +95,23 @@ function CadastroMateria() {
       },
       body: JSON.stringify(values),
     })
-      .then((response) => response.json())
-      .then((response) => {
-        document.getElementById("div-loading").style.display = "none";
-
-        if (response === "Matéria cadastrada" || response === "Matéria atualizada") {
-          setMensagem({ ...values, title: "Sucesso!", text: response })
-          setOpen(true);
-         } 
-        else {
-          setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar matéria" })
-          setOpen(true);
-        }
-      });
-  }
+      
+    .then( async (response) => {
+      if(response.ok){
+        let data = await response.json();
+        setMensagem({ ...values, title: "Sucesso!", text: data })
+        setOpen(true);
+      }else{
+        let data = await response.json();
+        setMensagem({ ...values, title: "Erro!", text: data })
+        setOpen(true);
+      }
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    document.getElementById("div-loading").style.display = "none";   
+  };
 
   const classes = useStyles();
   return (

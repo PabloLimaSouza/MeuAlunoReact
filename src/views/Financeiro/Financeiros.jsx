@@ -6,9 +6,10 @@ import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from 'react-router-dom';
 import { format } from 'date-fns';
 import "./Financeiros.css";
-import CurrencyFormat from 'react-currency-format';
 import { onlyLetters, currencyMask, currencyMaskList } from "../../utils/mask";
 import { url } from "../../../src/variaveis";
+import Loader from "../../utils/loader";
+
 
 const Financeiros = () => {
   const { token, userLogged } = useContext(StoreContext);
@@ -25,16 +26,29 @@ const Financeiros = () => {
   const response = useFetch(`${url}/api/v1/financeiros/empresa/${userLogged.empresaId}`, "get", token);
 
   const atualizarLista = async () => {
-
-    await fetch(`${url}/api/v1/financeiros/${userLogged.empresaId}`, {
+debugger;
+    await fetch(`${url}/api/v1/financeiros/empresa/${userLogged.empresaId}`, {
       method: "GET",
       headers: {
         Authorization: 'Bearer ' + token,
         Accept: "application/json",
         "Content-Type": "application/json",
       }
-    }).then(resp => resp.json())
-      .then(json => setListaFinanceiros(json));
+    })
+    
+    .then( async (response) => {
+      debugger;
+      if(response.ok){
+        let data = await response.json();      
+        setListaFinanceiros(data)
+      }else{
+        history.push("/financeiros");
+      }
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+       
   }
 
   useEffect(async () => {
@@ -125,6 +139,9 @@ const Financeiros = () => {
   };
 
   function liquidar() {
+    debugger;
+    document.getElementById("div-loading").style.display = "block";
+
     const response = fetch(`${url}/api/v1/financeiros/liquidar`, {
       method: "POST",
       headers: {
@@ -134,16 +151,21 @@ const Financeiros = () => {
       },
       body: JSON.stringify(itemSelecionado),
     })
-      .then((response) => response.json())
-      .then((response) => {
-        if (response != null) {
-          setMensagem({ ...values, title: "Sucesso!", text: "Documentos liquidados." });
+
+    .then( async (response) => {
+      debugger;
+      if(response.ok){
+        setMensagem({ ...values, title: "Sucesso!", text: "Documentos liquidados." });
+        setOpen(true);
+      }else{
+        setMensagem({ ...values, title: "Erro!", text: "Não foi possível liquidar os documentos selecionados." });
           setOpen(true);
-        } else {
-          setMensagem({ ...values, title: "Erro!", text: "Não foi possível liquidar os documentos selecionados." });
-          setOpen(true);
-        }
-      });
+      }
+    })
+    .catch((err) => {
+        console.log(err);
+    })    
+    document.getElementById("div-loading").style.display = "none"; 
   }
 
   async function excluir() {
@@ -246,7 +268,7 @@ const Financeiros = () => {
   }
 
   return (
-    <div className="lista-financeiros">
+    <><div className="lista-financeiros">
       <h1>Financeiro</h1>
 
       <div className="btn-novo">
@@ -272,8 +294,7 @@ const Financeiros = () => {
               onChange={handleChange}
               InputLabelProps={{
                 shrink: true,
-              }}
-            />
+              }} />
           </Grid>
           <Grid item xs={12} sm={2}>
             <TextField
@@ -285,8 +306,7 @@ const Financeiros = () => {
               onChange={handleChange}
               InputLabelProps={{
                 shrink: true,
-              }}
-            />
+              }} />
           </Grid>
           <Grid item xs={12} sm={2}>
             <TextField
@@ -372,20 +392,20 @@ const Financeiros = () => {
       </table>
 
       <div className="div-saldo">
-        <div className="div-saldo-item totalReceber">           
-          <p>Total Receber</p>             
-          <p>R$ {saldoFinanceiro.totalReceber}</p>             
+        <div className="div-saldo-item totalReceber">
+          <p>Total Receber</p>
+          <p>R$ {saldoFinanceiro.totalReceber}</p>
         </div>
 
-        <div className="div-saldo-item totalPagar">          
-          <p>Total Pagar</p>             
-          <p>R$ {saldoFinanceiro.totalPagar}</p>             
+        <div className="div-saldo-item totalPagar">
+          <p>Total Pagar</p>
+          <p>R$ {saldoFinanceiro.totalPagar}</p>
         </div>
 
-        <div className="div-saldo-item saldo">          
-          <p>Saldo</p>             
-          <p>R$ {saldoFinanceiro.saldo}</p>             
-        </div>        
+        <div className="div-saldo-item saldo">
+          <p>Saldo</p>
+          <p>R$ {saldoFinanceiro.saldo}</p>
+        </div>
       </div>
 
       <div className={`botoes ${classes.button}`} style={{ display: 'flex' }}>
@@ -427,9 +447,10 @@ const Financeiros = () => {
             {mensagem.text}
           </DialogContentText>
         </DialogContent>
-        <Button onClick={() => { handleClose(); atualizarLista() }}>Ok</Button>
+        <Button onClick={() => { handleClose(); atualizarLista(); } }>Ok</Button>
       </Dialog>
-    </div>
+
+    </div><Loader /></>
 
   );
 }

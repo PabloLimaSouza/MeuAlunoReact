@@ -36,7 +36,6 @@ function CadastroUsuario() {
         EmpresaId: "",
         PessoaId: "",
         Login: "",
-        Senha: "",
         EmpresaNome: "",
         PessoaNome: "",
         Ativo: true          
@@ -106,9 +105,6 @@ function CadastroUsuario() {
     } else if (values.Login == ""){
         setMensagem({ ...values, title: "Alerta!", text: "Necessário informar login do usuário" });
       setOpen(true);
-    } else if (values.Senha == ""){
-        setMensagem({ ...values, title: "Alerta!", text: "Necessário informar senha do usuário" });
-      setOpen(true);
     } else {
       return true;
     }
@@ -122,7 +118,7 @@ function CadastroUsuario() {
     document.getElementById("div-loading").style.display = "block";
 
     debugger;
-    const response = fetch(`${ url }/api/v1/usuarios/`, {
+    const response = fetch(`${ url }/api/v1/usuarios/cadastrar`, {
       method: "POST",
       headers: {
         Authorization: 'Bearer '+token,
@@ -131,19 +127,22 @@ function CadastroUsuario() {
       },
       body: JSON.stringify(values),
     })
-      .then((response) => response.json())
-      .then((response) => {
-        document.getElementById("div-loading").style.display = "none";
 
-        if (response.ok) {
-          setMensagem({ ...values, title: "Sucesso!", text: editando ? "Usuário atualizado." : "Usuário cadastrado." })
-          setOpen(true);
-         } 
-        else {
-          setMensagem({ ...values, title: "Erro!", text: response })
-          setOpen(true);
-        }
-      });
+    .then(async (response) => {
+
+      if (response.ok) {
+        let data = await response.json();
+        setMensagem({ ...values, title: "Sucesso!", text: editando ? "Usuário atualizado." : "Usuário cadastrado." })
+        setOpen(true);
+      } else {
+        let data = await response.json();
+        setMensagem({ ...values, title: "Erro!", text: data })
+        setOpen(true);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })   
   }
 
 
@@ -206,28 +205,12 @@ function CadastroUsuario() {
                                 <TextField
                                     id="Login"
                                     name="Login"
-                                    label="Login"
-                                    disabled={editando}
+                                    label="Login"                                    
                                     fullWidth
                                     value={values.Login}
                                     onChange={handleChange}
                                 />
                             </Grid>
-                            {editando ?
-                            ""
-                            : (
-                                <Grid item xs={12} sm={4}>
-                                <TextField
-                                    id="Senha"
-                                    name="Senha"
-                                    label="Senha"
-                                    type="password"
-                                    value={values.Senha}
-                                    onChange={handleChange}                                   
-                                />
-                            </Grid>
-                            )}
-
                             {editando ?
                             (
                                 <Grid item xs={12} sm={4}>

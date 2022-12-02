@@ -50,7 +50,7 @@ const CriarSenha = () => {
             }
             body.ResetToken = body.ResetToken.replace(' ','+');
             
-            const response = fetch(`${url}/api/v1/usuarios/resetPassword`, {
+            const response = fetch(`${url}/api/v1/login/resetPassword`, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -58,20 +58,21 @@ const CriarSenha = () => {
                 },
                 body: JSON.stringify(body),
             })
-            .then((response) => response.json())
-            .then((response) => {
-              document.getElementById("div-loading").style.display = "none";
-                debugger;
-              if (response.error) {          
-                setMensagem({ ...values, title: "Erro!", text: response.message })
-                setOpen(true);
-               } 
-              else {              
-                setMensagem({ ...values, title: "Sucesso!", text: response.message })
-                setOpen(true);
-
-              }        
-            });
+            .then( async (response) => {
+                if(response.ok){
+                  let data = await response.json();
+                  setMensagem({ ...values, title: "Sucesso!", text: data })
+                  setOpen(true);
+                }else{
+                  let data = await response.json();
+                  setMensagem({ ...values, title: "Erro!", text: data })
+                  setOpen(true);
+                }
+              })
+              .catch((err) => {
+                  console.log(err);
+              })
+              document.getElementById("div-loading").style.display = "none";  
         }
      };
 

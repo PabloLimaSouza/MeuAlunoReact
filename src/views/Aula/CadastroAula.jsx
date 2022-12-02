@@ -105,7 +105,7 @@ function CadastroAula(){
     function handleSubmit(e) {   
       document.getElementById("div-loading").style.display = "block";
 
-        const response = fetch(`${ url }/api/aula`, {
+        const response = fetch(`${ url }/api/v1/aulas`, {
         method: "POST",
         headers: {
           Authorization: 'Bearer '+token,
@@ -114,19 +114,21 @@ function CadastroAula(){
         },
         body: JSON.stringify(values),
       })
-        .then((response) => response.json())
-        .then((response) => {
-          document.getElementById("div-loading").style.display = "none";
-
-          if (response === "Aula cadastrada" || response === "Aula atualizada") {
-            setMensagem({ ...values, title: "Sucesso!", text: response })
-            setOpen(true);
-           } 
-          else {
-            setMensagem({ ...values, title: "Erro!", text: "Erro ao cadastrar aula" })
-            setOpen(true);
-          }
-        });
+      .then( async (response) => {
+        if(response.ok){
+          let data = await response.json();
+          setMensagem({ ...values, title: "Sucesso!", text: data })
+          setOpen(true);
+        }else{
+          let data = await response.json();
+          setMensagem({ ...values, title: "Erro!", text: data })
+          setOpen(true);
+        }
+      })
+      .catch((err) => {
+          console.log(err);
+      })
+      document.getElementById("div-loading").style.display = "none";   
     }
 
     const classes = useStyles();

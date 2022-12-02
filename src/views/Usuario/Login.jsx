@@ -54,7 +54,7 @@ const handleClose = () => {
     document.getElementById("div-loading").style.display = "block";
     document.getElementById("btn-enviar-email").innerHTML = "Aguarde...";
     document.getElementById("btn-enviar-email").disabled = true;
-    const response = fetch(`${url}/api/v1/usuarios/forgotPassword`, {
+    const response = fetch(`${url}/api/v1/login/forgotPassword`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -73,7 +73,7 @@ const handleClose = () => {
         
         }else{
           setMensagem({ ...values, title: "RECUPERAÇÃO DE SENHA", 
-          text: "Para recuperar sua senha, enviamos um link para seu e-mail cadastrado." });
+          text: response.message });
         }
       });
   }
@@ -81,7 +81,7 @@ const handleClose = () => {
   function onSubmit(event) {
     event.preventDefault();
     document.getElementById("div-loading").style.display = "block";
-    const response = fetch(`${url}/api/v1/usuarios/login`, {
+    const response = fetch(`${url}/api/v1/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
