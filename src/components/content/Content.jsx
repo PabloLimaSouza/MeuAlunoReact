@@ -22,32 +22,43 @@ import CadastroContrato from "../../views/Contratos/CadastroContrato";
 import Contratos from "../../views/Contratos/Contratos";
 
 const Content = (props) => (  
-  <div className="woo-page__default">    
-  <div className="re-header"><Header/></div>   
-  <div className="Menu"><Menu/></div>   
-  <div className="PaginaAtual">      
-  <Switch>
-          <Route path="/cadastroAluno" component={CadastroAluno} />
-          <Route path="/alunos" component={Alunos} />
-          <Route path="/cadastroServico" component={CadastroServico}/>
-          <Route path="/servicos" component={Servicos}/>
-          <Route path="/cadastroMateria" component={CadastroMateria}/>
-          <Route path="/materias" component={Materias}/>
-          <Route path="/aulas" component={Aulas}/>
-          <Route path="/cadastroAula" component={CadastroAula}/>
-          <Route path="/empresas" component={Empresas}/>
-          <Route path="/cadastroEmpresa" component={CadastroEmpresa}/>
-          <Route path="/financeiros" component={Financeiros}/>
-          <Route path="/cadastroFinanceiro" component={CadastroFinanceiro}/>
-          <Route path="/usuarios" component={Usuarios}/>
-          <Route path="/cadastroUsuario" component={CadastroUsuario}/>
-          <Route path="/cadastroContrato" component={CadastroContrato}/>
-          <Route path="/contratos" component={Contratos}/>
-          <Route path="/" component={Home}/>
-          
-  </Switch>
-  </div>   
-  <div className="Footer">Todos direitos reservados @ 2021</div>   
+  <div className="rf-page__default">    
+    <div className="rf-menu">
+      <div className="rf-logo">
+        <span className="rf-icon-library">
+          Meu Aluno
+          {/* <img src="https://i.imgur.com/LbUVpGb.png"></img> */}
+        </span>
+      </div>
+      <Menu/>
+      <p className="rf-versionsystem">Verstion System: 1.0</p>
+    </div>   
+    <div className="rf-body">
+      <div className="rf-header"><Header/></div>   
+      <div className="rf-content">      
+      <Switch>
+              <Route path="/cadastroAluno" component={CadastroAluno} />
+              <Route path="/alunos" component={Alunos} />
+              <Route path="/cadastroServico" component={CadastroServico}/>
+              <Route path="/servicos" component={Servicos}/>
+              <Route path="/cadastroMateria" component={CadastroMateria}/>
+              <Route path="/materias" component={Materias}/>
+              <Route path="/aulas" component={Aulas}/>
+              <Route path="/cadastroAula" component={CadastroAula}/>
+              <Route path="/empresas" component={Empresas}/>
+              <Route path="/cadastroEmpresa" component={CadastroEmpresa}/>
+              <Route path="/financeiros" component={Financeiros}/>
+              <Route path="/cadastroFinanceiro" component={CadastroFinanceiro}/>
+              <Route path="/usuarios" component={Usuarios}/>
+              <Route path="/cadastroUsuario" component={CadastroUsuario}/>
+              <Route path="/cadastroContrato" component={CadastroContrato}/>
+              <Route path="/contratos" component={Contratos}/>
+              <Route path="/" component={Home}/>
+              
+      </Switch>
+      </div>   
+      <div className="rf-footer">Todos direitos reservados @ 2021</div>   
+    </div>
   </div>
 );
 

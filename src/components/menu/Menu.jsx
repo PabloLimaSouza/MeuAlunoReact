@@ -11,41 +11,29 @@ const { token, userLogged } = useContext(StoreContext);
  if(userLogged.tipoUsuario == 1){
     return (   
         <>    
-       
-        <nav className="nav-menu">
-            <ul className="nav-menu-items">
-                {MenuItemAdmin.map((item,index) => {
-                    return (
-                        <li key={index} className={item.cName}>
-                            <Link to={item.path}>
-                                {item.icon}
-                                <span>{item.title}</span>
-                            </Link>
-                        </li>
-                    )
-                })}
-            </ul>
-        </nav>    
+            {MenuItemAdmin.map((item,index) => {
+                return (
+                    <div key={index} className={"rf-wid-100"}>
+                        <Link to={item.path} className={"rf-wid-100"}>
+                            <span className={item.cName}>{item.title}</span>
+                        </Link>
+                    </div>
+                )
+            })}
         </>   
         ) 
  }else {
     return (   
         <>    
-       
-        <nav className="nav-menu">
-            <ul className="nav-menu-items">
-                {MenuItemCliente.map((item,index) => {
-                    return (
-                        <li key={index} className={item.cName}>
-                            <Link to={item.path}>
-                                {item.icon}
-                                <span>{item.title}</span>
-                            </Link>
-                        </li>
-                    )
-                })}
-            </ul>
-        </nav>    
+            {MenuItemCliente.map((item,index) => {
+                return (
+                    <div key={index} className={"rf-wid-100"}>
+                        <Link to={item.path} className={"rf-wid-100"}>
+                            <span className={item.cName}>{item.title}</span>
+                        </Link>
+                    </div>
+                )
+            })}  
         </>   
         ) 
  }

@@ -1,13 +1,21 @@
-.box-header{
-    .box-header__content{
-        background:rgb(235, 235, 235);
-        padding: 15px;
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
+.rf-page__default{
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.rf-header{
+    position: relative;
+    z-index: 2;
+    .rf-header__content{
+        background:$color-client-sec;
+        // box-shadow: 1px 1px 10px 5px rgba(0, 0, 0, 0.08);
+        height: 70px;
+        @include mx-flex();
+        @include mx-flex-row();
+        @include mx-flex-align-center();
+        @include mx-flex-justify-between();
         gap:20px;
+        padding: 0 20px;
 
         p{
             color: #333;
@@ -15,135 +23,113 @@
         button{
             border: 0;
         }
+        
+        .MuiInputBase-input{
+            color:rgb(90, 120, 146);
+            position: relative;
+            font-size: 0.8em;
+            width: 110px;
+            height: 30px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            @include mx-flex();
+            @include mx-flex-center();
+            line-height: initial;
+        }
+        .MuiInput-underline:before{
+            border: 0 !important;
+        }
+        
     }
 }
-.woo-page__default{
-    width: 100%;
-    grid-gap: 10px;     
-    grid-template-rows: 80px 200px; 
-}
 
-
-/*MENU INICIO*/
-
-.Menu{   
-    background-color: #060b26;
-    grid-area: main; grid-area: 2/1/60;
-    width: 30vh;
-}
-
-.Menu li a{
-    text-decoration: none;
-    color: white;
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    padding: 10px;
-    flex: 1;    
-}
-
-.Menu li a:hover{
-    background-color: #1a83ff
-
-}
-
-.navbar{
-    background-color: #060b26;
-    height: 80px;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-}
-
-.menu-bars{
-    margin-left: 2rem;
-    font-size: 2rem;
-    background: none;
-}
-
-.nav-menu-active{
-    left: 0;
-    transition: 350ms;
-}
-
-.nav-text{
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    padding: 8px 0px 8px 16px;
-    height: 60px;
-}
-
-.nav-text a{
-    text-decoration: none;
-    color: #f5f5f5;
-    font-size: 18px;
-    width: 95%;
+.rf-menu{
+    position: fixed;
+    width: 250px;
     height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    border-radius: 4px;
+    top: 0;
+    background: #f7f7f7;
+    box-sizing: border-box;
+    overflow: hidden;
+    .rf-wid-100{
+        float: left;
+        width: 100%;
+    }
+    a{
+        padding: 10px 20px;
+        text-decoration: none;
+        box-sizing: border-box;
+        color: rgb(122, 122, 122);
+        font-size: 0.9em;
+        span{
+            @include mx-flex();
+            @include mx-flex-row();
+            @include mx-flex-align-center();
+            gap:15px;
+            &:before{
+                @include mx-flex();
+                @include mx-flex-center();
+                width: 40px;
+                height: 40px;
+                background: $color-client-sec;
+                border-radius: 7px;
+            }
+        }
+        &:hover{
+            background: $color-client-sec;
+        }
+    }
+    .rf-logo{
+        width: 100%;
+        padding: 0 20px;
+        height: 70px;
+        background: $color-client-sec;
+        @include mx-flex();
+        @include mx-flex-align-center();
+        @include mx-flex-justify-start();
+        span{
+            
+            @include mx-flex();
+            @include mx-flex-row();
+            @include mx-flex-align-center();
+            gap:15px;
+            color: rgb(114, 114, 114);
+
+            &:before{
+                @include mx-flex();
+                @include mx-flex-center();
+                width: 40px;
+                height: 40px;
+                background: $color-client;
+                border-radius: 7px;
+                color: #fff;
+            }
+
+            img{
+                width: 70px;
+            }
+        }
+    }
+    .rf-versionsystem{
+        width: 100%;
+        text-align: left;
+        padding: 10px 20px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-top: 2px dotted #ccc;
+        font-size: 0.8em;
+        color: #ccc;
+    }
 }
-.nav-text a:hover{
-    background-color: #1a83ff;
+
+.rf-body{
+    float: right;
+    width: calc(100% - 250px);
 }
 
-/*MENU FINAL*/
-
-.PaginaAtual { 
-    grid-area: main; 
-    background-color: white;
-    grid-area: 2/2/60/7; 
-    width: 165vh;}
-
-.Footer { 
-    grid-area: footer; 
-    background-color: #060b26; 
-    height: 6vh; 
-    grid-area: 60/1/60/7
-}
-
-.Content{
-    display: flex;
-    flex: 1;
-    background-color: #ddd;    
-}
-
-.Header label{
-    padding-left: 10px;
-    padding-right: 5px;
-}
-
-.Header button{    
-    border-style: solid;
-    border-width: medium;
-    border-radius: 5px;
-    color: black;
-    padding: 15px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;    
-    cursor: pointer;    
-}
-
-.Header button:hover{    
-    background-color: rgb(136, 141, 141);
-    color: black;    
-}
-
-.Header strong{
-    padding-right: 20px;
-}
-
-.Header .MuiInputBase-input{
-    color:rgb(90, 120, 146);
-    position: relative;
-    padding-top: 5%;
-    font-size: 18px;
-    min-width: 20rem;
-    text-align: center;
-    border-style: solid;
-    border-width: medium;
-    border-radius: 5px;
-    background-color: #f5f5f5;
+.rf-footer{
+    display: none;
 }
