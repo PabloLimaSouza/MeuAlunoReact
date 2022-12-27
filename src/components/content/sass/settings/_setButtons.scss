@@ -1,0 +1,320 @@
+$rf-colors: (
+  "color-0": $color-0, 
+  "color-1": $color-1, 
+  "color-2": $color-2, 
+  "color-3": $color-3,
+  "color-4": $color-4,
+  "color-5": $color-5,
+  "color-6": $color-6,
+  "color-7": $color-7,
+  "color-8": $color-8,
+  "color-9": $color-9,
+  "color-10": $color-10,
+  "color-11": $color-11,
+  "color-12": $color-12,
+  "color-client": $color-client
+);
+
+
+
+[class*="rf-button-"] {
+    padding: 0 10px;
+    text-align: center;
+    text-transform: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    height: 29px;
+    font-size: 0.8em;
+    border: 0;
+    cursor: pointer;
+    transition: 0.5s;
+    font-size: 0.9em;
+    border-radius: 5px;
+
+    @include mx-flex();
+    @include mx-flex-row();
+    @include mx-flex-center();
+    text-decoration: none !important;
+
+    &:before {
+        transition: 0.5s;
+        margin-right: 10px;
+        width: auto;
+    }
+
+    &.--font-before-13 {
+        &:before {
+            font-size: 1.3em !important;
+        }
+    }
+
+    &.--big {
+        font-size: 1em;
+        @include mx-flex-column();
+        @include mx-flex-center();
+        height: 100px;
+        padding: 15px 5px;
+        border-radius: 15px;
+
+        &:before {
+            margin-right: 0px;
+            height: 40px;
+            font-size: 2.4em !important;
+        }
+    }
+
+    &.--bf-big {
+        &:before {
+            font-size: 3em !important;
+        }
+    }
+
+    &.--bf-medium {
+        &:before {
+            font-size: 2em !important;
+        }
+    }
+
+    &.--bf-small {
+        &:before {
+            font-size: 1.7em !important;
+        }
+    }
+
+    &.--small {
+        height: 24px;
+        padding: 0 5px;
+        font-size: 0.7em;
+    }
+
+    &.--rotate {
+
+        &:not(.--norotate) {
+            &:before {
+                transform: rotate(360deg)
+            }
+        }
+    }
+}
+
+[class*="rf-button-icon-"] {
+    height: 29px;
+    width: 29px;
+    text-align: center;
+    background: #186096;
+    color: #fff;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    min-width: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    text-decoration: none !important;
+    transition: 0.2s;
+    border-radius: 5px;
+
+    &.--bf-big {
+        &:before {
+            font-size: 1.8em !important;
+        }
+    }
+
+    &.--small {
+        height: 25px;
+        width: 25px;
+        padding-top: 1px;
+    }
+
+    &.--round {
+        border-radius: 50%;
+    }
+
+    &.--rotate {
+        &:before {
+            transform: rotate(180deg);
+        }
+    }
+
+    &.--no-border {
+        border: 0;
+    }
+
+    &.--disabled {
+        background: #000 !important;
+        background: #fff !important;
+        opacity: 0.6 !important;
+        border: 1px solid #000;
+
+        &:hover {
+            background: #000 !important;
+            background: #fff !important;
+            opacity: 0.6 !important;
+            border: 1px solid #000;
+        }
+    }
+}
+[class*="rf-button-icon-"]:before {
+    margin-right: 0;
+    font-size: 1.2em;  
+}
+[class*="rf-button-icon-border-"],
+[class*="rf-button-border-"] {
+    background: none;
+    border: 1px solid #ccc;
+}
+
+[class*="rf-button-"][disabled=disabled] {
+    opacity: 0.3 !important;
+    cursor: unset;
+}
+
+.rf-link{
+    color:#2489d5;
+    padding:3px 0;
+    &.--active{
+        font-weight:bold;
+        text-decoration:underline;
+    }
+}
+
+
+@mixin setColorSolidText($color) {
+    @if (lightness($color) > 65) {
+        color: $color-3;
+    }
+    @else {
+        color: $color-0;
+    }
+}
+@mixin setColorSolidHover($color) {
+    @if (lightness($color) > 65) {
+        background-color: $color-4;
+        color: $color-0;
+        border: 1px solid $color-4 !important;
+        /*background-color: $color;
+        border: 1px solid $color !important;*/
+    }
+    @else {
+        background-color: transparent;
+        color: $color;
+        border: 1px solid $color !important;
+    }
+}
+@mixin setColorBorderText($color) {
+    @if (lightness($color) > 65) {
+        color: $color-3;
+    }
+    @else {
+        color: $color;
+    }
+}
+@mixin setColorBorderHover($color) {
+    @if (lightness($color) > 65) {
+        /*background-color: $color-3 !important;
+        border-color: $color-3;
+        color: $color-0 !important;*/
+        background-color: $color;
+        border: 1px solid $color !important;
+    }
+    @else {
+        background-color: $color !important;
+        color: $color-0 !important;
+    }
+}
+
+@each $i, $cor in $rf-colors {
+
+    .rf-#{$i} {
+        color: $cor;
+    }
+    .rf-border-#{$i} {
+        border-color: $cor;
+        color: $color-0;
+    }
+    .--bg--#{$i},
+    .rf-background-#{$i} {
+        background-color: $cor;
+        color: $color-0;
+    }
+
+
+    .rf-button-#{$i},
+    .rf-button-icon-#{$i} {
+        background-color: $cor;
+        border: 1px solid $cor !important;
+
+        @if($i != "color-client") {
+            @include setColorSolidText($cor);
+        }
+        @else {
+            color: $color-0;
+        }
+
+        &.--active,
+        &:hover {
+
+            @if($i != "color-client") {
+                @include setColorSolidHover($cor);
+            }
+            @else {
+                background-color: transparent;
+                border: 1px solid $cor !important;
+                color: $cor !important;
+            }
+
+        }
+    }
+    .rf-button-border-#{$i},
+    .rf-button-icon-border-#{$i} {
+        border-color: $cor;
+
+        @if($i != "color-client") {
+            @include setColorBorderText($cor);
+            background-color: transparent;
+        }
+        @else {
+            background-color: transparent;
+            color: $cor;
+        }
+
+        &.--active,
+        &:hover {
+            @if($i != "color-client") {
+                @include setColorBorderHover($cor);
+            }
+            @else {
+                background-color: $cor !important;
+                color: $color-0 !important;
+            }
+        }
+    }
+
+}
+
+[class*="rf-button-icon-"] {
+
+    &.--disabled {
+        background: #5c5c5c !important;
+        color: #fff !important;
+        opacity: 0.6 !important;
+        border: none !important;
+
+        &:hover {
+            background: #5c5c5c !important;
+            color: #fff !important;
+            opacity: 0.6 !important;
+            border: none !important;
+        }
+    }
+}
+

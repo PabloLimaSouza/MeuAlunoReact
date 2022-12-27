@@ -1,0 +1,66 @@
+[class^="rf-wid-"],
+[class*=" rf-wid-"] {
+    float: left;
+    box-sizing: border-box;
+}
+
+.rf-wid-auto{
+    width:auto;
+}
+
+$num-1: 5;
+@for $i from 1 through 40 {
+    .rf-wid-fix-#{$num-1} {
+        width: $num-1+px;
+    }
+    @if $num-1 < 100{
+        $num-1: $num-1 + 5; 
+    }@else{
+        $num-1: $num-1 + 50; 
+     }
+}
+
+$num-2: 5;
+@for $i from 1 through 20 {
+    .rf-wid-#{$num-2} {
+        width: $num-2+"%";
+    }
+    $num-2: $num-2 + 5;
+}
+
+
+$num-3: 100;
+@for $i from 1 through 12 {
+    .rf-max-hei-#{$num-3} {
+        max-height: $num-3+px;
+    }
+    $num-3: $num-3 + 50;
+}
+
+$num-4: 50;
+@for $i from 1 through 12 {
+    .rf-hei-fix-#{$num-4} {
+        height: $num-4+px;
+    }
+
+    $num-4: $num-4 + 30;
+}
+
+$num-5: 100;
+@for $i from 1 through 25 {
+    .rf-max-wid-#{$num-5} {
+        max-width: $num-5+px;
+    }
+    $num-5: $num-5 + 50;
+}
+
+
+.rf-css [class^="rf-max-hei-"],
+.rf-css [class*=" rf-max-hei-"] {
+    overflow-x: auto;
+}
+
+
+.rf-wid-33{
+    width:33%;
+}

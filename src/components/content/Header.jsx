@@ -44,30 +44,35 @@ const Header = () => {
     }
 
     return (
-      <div className="Header" >
+      <div className="box-header" >
+        <div className="box-header__content">
+          <div className="rf-wid-auto --frow-center --fgap-10 rf-inputs">
+            <p>Empresa</p>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                //className="header-select"
+                labelId="empresaNome"
+                id="empresaNome"
+                name="empresaNome"
+                onChange={handleChange}
+                label="Empresa"
+                value={userLogged.empresaId}            
+              >
+                {userLogged.empresa.length > 0
+                  ? showEmpresas()
+                  : false}
+              </Select>
+            </FormControl>
+          </div>
 
-        <label>Empresa</label>
-        <FormControl sx={{ m: 1, minWidth: 120 }} variant="standard">
-          <Select
-            className="header-select"
-            labelId="empresaNome"
-            id="empresaNome"
-            name="empresaNome"
-            onChange={handleChange}
-            label="Empresa"
-            value={userLogged.empresaId}            
-          >
-            {userLogged.empresa.length > 0
-              ? showEmpresas()
-              : false}
-          </Select>
-        </FormControl>
+          <div className="--frow-center --fgap-10">
+              <p>Olá</p>
+              <strong>{userLogged.pessoaNome}</strong>
+          </div>
 
+          <button className="rf-button-color-9" type="button" onClick={() => setToken(null)}>Sair</button>
+        </div>
 
-        <label>Olá </label>
-        <strong>{userLogged.pessoaNome}</strong>
-
-        <button type="button" onClick={() => setToken(null)}>Sair</button>
       </div>
     )
   }

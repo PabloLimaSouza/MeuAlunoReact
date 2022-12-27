@@ -1,5 +1,5 @@
 import React from "react";
-import "./Content.css";
+import "./sass/styles.css";
 import { Switch, Route } from "react-router-dom";
 import CadastroAluno from "../../views/Aluno/CadastroAluno";
 import Alunos from "../../views/Aluno/Alunos";
@@ -22,8 +22,8 @@ import CadastroContrato from "../../views/Contratos/CadastroContrato";
 import Contratos from "../../views/Contratos/Contratos";
 
 const Content = (props) => (  
-  <div className="Geral">    
-  <div className="Header"><Header/></div>   
+  <div className="woo-page__default">    
+  <div className="re-header"><Header/></div>   
   <div className="Menu"><Menu/></div>   
   <div className="PaginaAtual">      
   <Switch>
