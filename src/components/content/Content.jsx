@@ -20,22 +20,17 @@ import Usuarios from "../../views/Usuario/Usuarios";
 import Home from "../../views/Home/Home";
 import CadastroContrato from "../../views/Contratos/CadastroContrato";
 import Contratos from "../../views/Contratos/Contratos";
+import UserThumb from "../user/UserThumb";
 
 const Content = (props) => (  
   <div className="rf-page__default">    
     <div className="rf-menu">
-      <div className="rf-logo">
-        <span className="rf-icon-library">
-          Meu Aluno
-          {/* <img src="https://i.imgur.com/LbUVpGb.png"></img> */}
-        </span>
-      </div>
+      <UserThumb/>
       <Menu/>
-      <p className="rf-versionsystem">Verstion System: 1.0</p>
     </div>   
     <div className="rf-body">
       <div className="rf-header"><Header/></div>   
-      <div className="rf-content">      
+      <div className="rf-wid-100">      
       <Switch>
               <Route path="/cadastroAluno" component={CadastroAluno} />
               <Route path="/alunos" component={Alunos} />

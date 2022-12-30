@@ -8,9 +8,10 @@ const Menu = (props) => {
 const [sidebar,setSidebar] = useState(false);
 const showSidebar = () => setSidebar(!sidebar);
 const { token, userLogged } = useContext(StoreContext);
+
  if(userLogged.tipoUsuario == 1){
     return (   
-        <>    
+        <div className="rf-menu__content">    
             {MenuItemAdmin.map((item,index) => {
                 return (
                     <div key={index} className={"rf-wid-100"}>
@@ -20,7 +21,7 @@ const { token, userLogged } = useContext(StoreContext);
                     </div>
                 )
             })}
-        </>   
+        </div>   
         ) 
  }else {
     return (   

@@ -46,30 +46,24 @@ const Header = () => {
     return (
       <div className="rf-header__content">
         <div className="rf-wid-auto --frow-center --fgap-10">
-        <button className="rf-button-icon-color-client rf-icon-home" type="button" onClick={() => setToken(null)}></button>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <Select
-                  //className="header-select"
-                  labelId="empresaNome"
-                  id="empresaNome"
-                  name="empresaNome"
-                  onChange={handleChange}
-                  label="Empresa"
-                  value={userLogged.empresaId}            
-                >
-                  {userLogged.empresa.length > 0
-                    ? showEmpresas()
-                    : false}
-                </Select>
-              </FormControl>
+          <button className="rf-button-icon-color-client rf-icon-home" type="button" onClick={() => setToken(null)}></button>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              //className="header-select"
+              labelId="empresaNome"
+              id="empresaNome"
+              name="empresaNome"
+              onChange={handleChange}
+              label="Empresa"
+              value={userLogged.empresaId}            
+            >
+              {userLogged.empresa.length > 0
+                ? showEmpresas()
+                : false}
+            </Select>
+          </FormControl>
         </div>
-        <div className="rf-wid-auto --frow-center --fgap-10">
-          <div className="--frow-center --fgap-10">
-              <p>Olá</p>
-              <strong>{userLogged.pessoaNome}</strong>
-          </div>
-          <button className="rf-button-icon-color-9 rf-icon-enter" type="button" onClick={() => setToken(null)}></button>
-        </div>
+        <a className="rf-button-icon-color-client rf-icon-enter" type="button" onClick={() => setToken(null)}></a>   
       </div>
     )
   }

@@ -163,8 +163,10 @@
     overflow: auto;
 
     &::-webkit-scrollbar {
-        width: 15px;
-        height: 15px;
+        width: 5px;
+        height: 5px
+    px
+    ;
         background-color: #ffffff;
         border-radius: 4px;
     }
@@ -176,7 +178,7 @@
     &::-webkit-scrollbar-thumb {
         background-color: #d4d4d4;
         border-radius: 10px;
-        border: 5px solid transparent;
+        border: 0px solid transparent;
         background-clip: padding-box;
 
         &:hover {

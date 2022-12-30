@@ -3708,8 +3708,8 @@
   width: 115px;
   height: 29px;
   background: #fff;
-  border: 1px solid rgb(50, 130, 223);
-  color: rgb(50, 130, 223);
+  border: 1px solid rgb(183, 50, 223);
+  color: rgb(183, 50, 223);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3718,8 +3718,8 @@
   box-sizing: border-box;
 }
 .rf-inputs .rf-input.--get-file .rf-button__file:hover {
-  background: rgb(50, 130, 223);
-  border: 1px solid rgb(50, 130, 223);
+  background: rgb(183, 50, 223);
+  border: 1px solid rgb(183, 50, 223);
   color: #fff;
 }
 .rf-inputs .rf-input.--required:before {
@@ -5643,7 +5643,7 @@
   text-transform: none;
   text-decoration: none;
   box-sizing: border-box;
-  height: 29px;
+  height: 39px;
   font-size: 0.8em;
   border: 0;
   cursor: pointer;
@@ -6336,44 +6336,44 @@
 }
 
 .rf-color-client {
-  color: rgb(50, 130, 223);
+  color: rgb(183, 50, 223);
 }
 
 .rf-border-color-client {
-  border-color: rgb(50, 130, 223);
+  border-color: rgb(183, 50, 223);
   color: #fff;
 }
 
 .--bg--color-client,
 .rf-background-color-client {
-  background-color: rgb(50, 130, 223);
+  background-color: rgb(183, 50, 223);
   color: #fff;
 }
 
 .rf-button-color-client,
 .rf-button-icon-color-client {
-  background-color: rgb(50, 130, 223);
-  border: 1px solid rgb(50, 130, 223) !important;
+  background-color: rgb(183, 50, 223);
+  border: 1px solid rgb(183, 50, 223) !important;
   color: #fff;
 }
 .rf-button-color-client.--active, .rf-button-color-client:hover,
 .rf-button-icon-color-client.--active,
 .rf-button-icon-color-client:hover {
   background-color: transparent;
-  border: 1px solid rgb(50, 130, 223) !important;
-  color: rgb(50, 130, 223) !important;
+  border: 1px solid rgb(183, 50, 223) !important;
+  color: rgb(183, 50, 223) !important;
 }
 
 .rf-button-border-color-client,
 .rf-button-icon-border-color-client {
-  border-color: rgb(50, 130, 223);
+  border-color: rgb(183, 50, 223);
   background-color: transparent;
-  color: rgb(50, 130, 223);
+  color: rgb(183, 50, 223);
 }
 .rf-button-border-color-client.--active, .rf-button-border-color-client:hover,
 .rf-button-icon-border-color-client.--active,
 .rf-button-icon-border-color-client:hover {
-  background-color: rgb(50, 130, 223) !important;
+  background-color: rgb(183, 50, 223) !important;
   color: #fff !important;
 }
 
@@ -6546,8 +6546,8 @@
   overflow: auto;
 }
 .rf-scroll::-webkit-scrollbar {
-  width: 15px;
-  height: 15px;
+  width: 5px;
+  height: 5px px;
   background-color: #ffffff;
   border-radius: 4px;
 }
@@ -6557,7 +6557,7 @@
 .rf-scroll::-webkit-scrollbar-thumb {
   background-color: #d4d4d4;
   border-radius: 10px;
-  border: 5px solid transparent;
+  border: 0px solid transparent;
   background-clip: padding-box;
 }
 .rf-scroll::-webkit-scrollbar-thumb:hover {
@@ -6634,8 +6634,8 @@
   overflow: auto;
 }
 .rf-widget__payment .rf-payment__infors::-webkit-scrollbar {
-  width: 15px;
-  height: 15px;
+  width: 5px;
+  height: 5px px;
   background-color: #ffffff;
   border-radius: 4px;
 }
@@ -6645,7 +6645,7 @@
 .rf-widget__payment .rf-payment__infors::-webkit-scrollbar-thumb {
   background-color: #d4d4d4;
   border-radius: 10px;
-  border: 5px solid transparent;
+  border: 0px solid transparent;
   background-clip: padding-box;
 }
 .rf-widget__payment .rf-payment__infors::-webkit-scrollbar-thumb:hover {
@@ -6718,8 +6718,8 @@
   overflow: auto;
 }
 .rf-widget__payment.--pix .rf-pix__content::-webkit-scrollbar {
-  width: 15px;
-  height: 15px;
+  width: 5px;
+  height: 5px px;
   background-color: #ffffff;
   border-radius: 4px;
 }
@@ -6729,7 +6729,7 @@
 .rf-widget__payment.--pix .rf-pix__content::-webkit-scrollbar-thumb {
   background-color: #d4d4d4;
   border-radius: 10px;
-  border: 5px solid transparent;
+  border: 0px solid transparent;
   background-clip: padding-box;
 }
 .rf-widget__payment.--pix .rf-pix__content::-webkit-scrollbar-thumb:hover {
@@ -6888,7 +6888,7 @@
   font-size: 1.7em;
   bottom: 0;
   font-family: "Poppins", sans-serif;
-  color: rgb(50, 130, 223);
+  color: rgb(183, 50, 223);
 }
 .rf-load .rf-load__content .rf-load__icon {
   width: 80px;
@@ -6908,21 +6908,21 @@
   width: 15px;
 }
 .rf-load .rf-load__content .rf-load__icon div:nth-child(1) {
-  background: rgb(50, 130, 223);
+  background: rgb(183, 50, 223);
   -webkit-animation: col-1 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
           animation: col-1 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
   -webkit-animation-delay: -0.2s;
           animation-delay: -0.2s;
 }
 .rf-load .rf-load__content .rf-load__icon div:nth-child(2) {
-  background: rgb(50, 130, 223);
+  background: rgb(183, 50, 223);
   -webkit-animation: col-2 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
           animation: col-2 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
   -webkit-animation-delay: -0.1s;
           animation-delay: -0.1s;
 }
 .rf-load .rf-load__content .rf-load__icon div:nth-child(3) {
-  background: rgb(50, 130, 223);
+  background: rgb(183, 50, 223);
   -webkit-animation: col-3 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
           animation: col-3 1s cubic-bezier(0, 0.5, 0.5, 1) infinite;
   -webkit-animation-delay: undefineds;
@@ -6933,13 +6933,19 @@
   width: 100%;
   font-family: "Poppins", sans-serif;
 }
+.rf-page__default .rf-wid-100 {
+  float: left;
+  width: 100%;
+}
 
 .rf-header {
-  position: relative;
+  position: -webkit-sticky;
+  position: sticky;
   z-index: 2;
+  top: 0;
 }
 .rf-header .rf-header__content {
-  background: #f1f1f1;
+  background: #ececec;
   height: 70px;
   display: flex;
   flex-direction: row;
@@ -6947,6 +6953,8 @@
   justify-content: space-between;
   gap: 20px;
   padding: 0 20px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 .rf-header .rf-header__content p {
   color: #333;
@@ -6981,72 +6989,92 @@
   background: #f7f7f7;
   box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  overflow: hidden;
 }
-.rf-menu .rf-wid-100 {
-  float: left;
-  width: 100%;
+.rf-menu .rf-menu__content {
+  padding: 10px 0;
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
-.rf-menu a {
+.rf-menu .rf-menu__content::-webkit-scrollbar {
+  width: 5px;
+  height: 5px px;
+  background-color: #ffffff;
+  border-radius: 4px;
+}
+.rf-menu .rf-menu__content::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+.rf-menu .rf-menu__content::-webkit-scrollbar-thumb {
+  background-color: #d4d4d4;
+  border-radius: 10px;
+  border: 0px solid transparent;
+  background-clip: padding-box;
+}
+.rf-menu .rf-menu__content::-webkit-scrollbar-thumb:hover {
+  background-color: #b7b7b7;
+}
+.rf-menu .rf-menu__content > div {
+  flex: 1;
+}
+.rf-menu .rf-menu__content a {
   padding: 10px 20px;
   text-decoration: none;
   box-sizing: border-box;
   color: rgb(122, 122, 122);
   font-size: 0.9em;
 }
-.rf-menu a span {
+.rf-menu .rf-menu__content a span {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 15px;
 }
-.rf-menu a span:before {
+.rf-menu .rf-menu__content a span:before {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: #f1f1f1;
+  background: #ececec;
   border-radius: 7px;
 }
-.rf-menu a:hover {
-  background: #f1f1f1;
+.rf-menu .rf-menu__content a:hover {
+  background: #ececec;
 }
-.rf-menu .rf-logo {
+.rf-menu .rf-user__thumb {
   width: 100%;
-  padding: 0 20px;
+  padding: 20px;
+  background: #ececec;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.rf-menu .rf-user__thumb .rf-icon-user {
+  width: 70px;
   height: 70px;
-  background: #f1f1f1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-.rf-menu .rf-logo span {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 15px;
-  color: rgb(114, 114, 114);
-}
-.rf-menu .rf-logo span:before {
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgb(50, 130, 223);
-  border-radius: 7px;
-  color: #fff;
+  background: rgb(231, 231, 231);
 }
-.rf-menu .rf-logo span img {
-  width: 70px;
+.rf-menu .rf-user__thumb .rf-icon-user:before {
+  color: #ccc;
+  font-size: 1.7em;
 }
 .rf-menu .rf-versionsystem {
   width: 100%;
   text-align: left;
   padding: 10px 20px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
   border-top: 2px dotted #ccc;
   font-size: 0.8em;
   color: #ccc;
@@ -7055,8 +7083,93 @@
 .rf-body {
   float: right;
   width: calc(100% - 250px);
+  padding-left: 20px;
+  padding-right: 10px;
 }
 
 .rf-footer {
   display: none;
+}
+
+.rf-page__title {
+  padding: 20px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.rf-page__title:before {
+  content: "";
+  font-size: 1.1em;
+  background: rgb(183, 50, 223);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: none;
+}
+.rf-page__title h1 {
+  flex: 1;
+  text-align: left;
+  font-size: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: rgb(183, 50, 223);
+  font-weight: 400;
+  position: relative;
+}
+.rf-page__title h1:before {
+  height: 29px;
+  width: 29px;
+  font-size: 0.8em;
+  color: rgb(183, 50, 223);
+  border: 2px solid rgb(183, 50, 223);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.rf-page__title h1:after {
+  content: "";
+  height: 6px;
+  width: 29px;
+  background: rgb(183, 50, 223);
+  border-radius: 5px;
+  position: absolute;
+  bottom: -15px;
+  left: 0px;
+}
+
+.rf-content {
+  padding: 20px;
+}
+.rf-content .rf-box__content {
+  border: 2px solid rgb(233, 233, 233);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+body {
+  overflow: auto;
+}
+body::-webkit-scrollbar {
+  width: 5px;
+  height: 5px px;
+  background-color: #ffffff;
+  border-radius: 4px;
+}
+body::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #d4d4d4;
+  border-radius: 10px;
+  border: 0px solid transparent;
+  background-clip: padding-box;
+}
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #b7b7b7;
 }/*# sourceMappingURL=styles.css.map */

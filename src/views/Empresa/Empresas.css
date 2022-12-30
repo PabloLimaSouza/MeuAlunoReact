@@ -1,33 +1,3 @@
-#empresas {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 95%;    
-  }  
-  
-  #empresas td, #customers th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #empresas tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #empresas tr:hover {background-color: #ddd;}
-  
-  #empresas th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: center;
-    background-color: #060b26;
-    color: white;
-  }
 
-  .lista-empresas h1{
-    text-align: center;  
-  }
 
-  .btn-novo{    
-    text-align: right;    
-    width: 95%;
-    padding-left: 85%;    
-    padding-bottom: 1%;
-  }
+/* tr:nth-child(even){background-color: #f2f2f2;} */
