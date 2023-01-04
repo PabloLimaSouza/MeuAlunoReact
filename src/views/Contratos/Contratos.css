@@ -1,0 +1,6 @@
+.clausula-list{
+    display: flex;    
+    padding: 5px;    
+    flex-direction: row;
+    gap: 10px;    
+}

@@ -1,14 +1,17 @@
-import { Grid, Paper, TextareaAutosize, FormControlLabel, Checkbox, Button,
+import {
+    Grid, TextField, TextareaAutosize, FormControlLabel, Checkbox, Button,
     DialogTitle,
     DialogContent,
     DialogContentText,
-    Dialog } from "@material-ui/core";
+    Dialog
+} from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import StoreContext from "../../contexts/StoreContext";
 import useStyles from "../Styles/useStyles";
 import { useFetch } from "../../hooks/useFetch";
 import { useHistory } from "react-router-dom";
 import { url } from "../../variaveis";
+import "./Contratos.css";
 
 
 function CadastroContrato() {
@@ -21,19 +24,11 @@ function CadastroContrato() {
     const alertas = {
         text: "",
         title: ""
-      }
-    
+    }
+
     const [mensagem, setMensagem] = useState(alertas);
     const [open, setOpen] = useState(false);
     const history = useHistory();
-    
-    const checkAdmin = () => {
-        if(userLogged.tipoUsuario == 1){
-            return true;
-        }else{
-            return false;
-        }
-    };
 
     useEffect(
         function () {
@@ -43,14 +38,15 @@ function CadastroContrato() {
                     EmpresaId: userLogged.empresaId
                 }
                 setContrato(contratoValues);
-                var clausulasExistentes = []                
+                var clausulasExistentes = []
                 retornoContrato.data.clausulas.map((clausula => (
-                    clausulasExistentes.push({ 
+                    clausulasExistentes.push({
                         Id: clausula.id,
                         Nome: clausula.nome,
                         Descricao: clausula.descricao,
-                        ContratoId: clausula.ContratoId,
-                        Ativa: clausula.ativa
+                        ContratoId: retornoContrato.data.contratoId,
+                        Ativa: clausula.ativa,
+                        Ordem: clausula.ordem
                     })
                 )))
                 setClausulas(clausulasExistentes);
@@ -58,67 +54,60 @@ function CadastroContrato() {
         }, [retornoContrato]
     );
 
-    useEffect(
-        function() {
-console.log("clausula", clausulas);
-        },[clausulas]
-    )
 
     const handleClose = () => {
         setOpen(false);
-      };
+    };
 
-      const handleClausula = (e) => {
-        const { name, value, checked } = e.target;
-        var clausulasExistentes = [...clausulas];  
-        var clausulaIndex = clausulas.findIndex(i => i.Id == name);
+    const handleClausula = (e, i) => {
+        debugger;
+        const { checked } = e.target;
+        var clausulasExistentes = [...clausulas];
         if (checked === false) {
-            clausulasExistentes[clausulaIndex].Ativa = false;
+            clausulasExistentes[i].Ativa = false;
             setClausulas(clausulasExistentes);
         }
         else if (checked === true) {
-            clausulasExistentes[clausulaIndex].Ativa = true;
+            clausulasExistentes[i].Ativa = true;
             setClausulas(clausulasExistentes);
         }
-    };  
+    };
 
     function checkChange(id) {
         var checkClausulas = clausulas;
         var clausulasId = []
         checkClausulas.map((clausula, i) => (
-            clausula.Ativa == true ? clausulasId.push(clausula.Id) : false                        
+            clausula.Ativa == true ? clausulasId.push(clausula.Id) : false
         ))
         if (clausulasId.find(e => e == id)) {
             return true
         } else
             return false
     }
-   
 
-    function addClausula(){        
-        var clausulasExistentes = [...clausulas];                
-        clausulasExistentes.push({ 
-                        Id: 1,
-                        Nome: "Nova cláusula",
-                        Descricao: "descrição",
-                        ContratoId: 0,
-                        Ativa: false
-                    });                                   
-        setClausulas(clausulasExistentes);   
+
+    function addClausula() {
+        var clausulasExistentes = [...clausulas];
+        clausulasExistentes.push({
+            Nome: "",
+            Descricao: "",
+            ContratoId: contrato == null ? 0 : contrato.ContratoId,
+            Ativa: false
+        });
+        setClausulas(clausulasExistentes);
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e, i) => {
         const { name, value } = e.target;
-        var clausulasExistentes = clausulas;
-        var clausulaIndex = clausulas.findIndex(i => i.Id == name);
-        clausulasExistentes[clausulaIndex].descricao = value;
+        var clausulasExistentes = [...clausulas];        
+        clausulasExistentes[i][name] = value;            
         setClausulas(clausulasExistentes);
-      };
+    };
 
-    function handleSubmit(e) {  
-        var ContratoId = contrato.ContratoId;
-        var EmpresaId = contrato.EmpresaId;
-        var request = {            
+    function handleSubmit(e) {
+        var ContratoId = contrato == null ? 0 : contrato.ContratoId;
+        var EmpresaId = userLogged.empresaId;
+        var request = {
             clausulas,
             ContratoId,
             EmpresaId
@@ -133,14 +122,18 @@ console.log("clausula", clausulas);
             },
             body: JSON.stringify(request),
         })
-        .then((response) => {     
-              setMensagem({ title: "Sucesso!", text: "Contrato atualizado." })
-              setOpen(true);         
-          })
-         .catch((response) => {
-             setMensagem({ title: "Erro!", text: "Erro ao atualizar cadastro." })
-             setOpen(true);
-          });
+            .then((response) => {
+                setMensagem({ title: "Sucesso!", text: "Contrato atualizado." })
+                setOpen(true);
+            })
+            .catch((response) => {
+                setMensagem({ title: "Erro!", text: "Erro ao atualizar cadastro." })
+                setOpen(true);
+            });
+
+    }
+
+    const onDragEnd = () => {
 
     }
 
@@ -154,84 +147,97 @@ console.log("clausula", clausulas);
                         </div>
                     </Grid>
                 </Grid>
-                
+
                 <form>
-                    <Grid container spacing={3}>                       
-                   {clausulas.map((clausula,i) => (
-                       
-                       <>
-                      <Grid item xs={12} sm={2}>
-                      <FormControlLabel
-                          control={
-                              <Checkbox
-                                  key={clausula.Id}
-                                  name={clausula.Id}
-                                  value={clausula.Id}
-                                  onChange={handleClausula}
-                                  checked={checkChange(clausula.Id)}
-                              />
-                          }
-                      />
-                      </Grid>
-                      <Grid item xs={12} sm={10}>
-                                            <TextareaAutosize
-                                                key={clausula.Id}
-                                                minRows={4}
-                                                aria-label="maximum height"
-                                                placeholder="Maximum 4 rows"
-                                                defaultValue={clausula.Nome + " " + clausula.Descricao}
-                                                disabled={checkAdmin() === true ? false : true}
-                                                name={clausula.Id}
-                                                style={{ width: 700 }}
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                      </>
-                  
-                   ))}
+                    <Grid container spacing={3}>
+                     
+                            
+                                       {clausulas.map((clausula, i) => (     
+                                        
+                                        
+                                        <div className="clausula-list" id={clausula.id}>
+                                          
+                                              
+                                                    <Grid item xs={12} sm={1}>
+                                                            <FormControlLabel
+                                                                control={<Checkbox
+                                                                    key={clausula.Id}
+                                                                    name={clausula.Id}
+                                                                    value={clausula.Id}
+                                                                    onChange={(e) => handleClausula(e, i)}
+                                                                    checked={checkChange(clausula.Id, i)}
+                                                                    width={"20px"} />} />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={4}>
+                                                            <TextField
+                                                                key={clausula.Id}
+                                                                value={clausula.Ordem}
+                                                                label={"Ordem"}
+                                                                name={"Ordem"}
+                                                                onChange={(e) => handleChange(e, i)}
+                                                                variant="outlined"
+                                                                style={{ width: 70 }}/>
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={4}>
+                                                            <TextField
+                                                                key={clausula.Id}
+                                                                value={clausula.Nome}
+                                                                label={"Nome"}
+                                                                name={"Nome"}
+                                                                onChange={(e) => handleChange(e, i)}
+                                                                variant="outlined"
+                                                                style={{ width: 300 }} />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <TextareaAutosize
+                                                                label={"Descrição"}
+                                                                name={"Descricao"}
+                                                                value={clausula.Descricao}
+                                                                key={clausula.Id}
+                                                                onChange={(e) => handleChange(e, i)}
+                                                                style={{ width: 600, height: 100 }} />
+                                                        </Grid>    
+                                        </div>
+                                    ))}
+                        
 
                     </Grid>
                     <div className={classes.button}>
-
-                    {checkAdmin() === true ? 
-                        <Button
-                        variant="contained"
-                        color="warning"                            
-                        onClick={addClausula}
-                        className={classes.button}
-                    >
-                        Adicionar
-                    </Button>
-
-                        : false}
-
                         <Button
                             variant="contained"
-                            color="primary"                            
+                            color="warning"
+                            onClick={addClausula}
+                            className={classes.button}
+                        >
+                            Adicionar
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
                             onClick={handleSubmit}
                             className={classes.button}
                         >
                             Salvar
                         </Button>
-                        
-                        
+
+
                     </div>
                 </form>
 
                 <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{mensagem.title}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {mensagem.text}
-            </DialogContentText>
-          </DialogContent>
-          {<Button onClick={() => { handleClose(); history.push("/contratos"); }}>Ok</Button>}
-        </Dialog>
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{mensagem.title}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {mensagem.text}
+                        </DialogContentText>
+                    </DialogContent>
+                    {<Button onClick={() => { handleClose(); history.push("/contratos"); }}>Ok</Button>}
+                </Dialog>
             </main>
         </React.Fragment>
     )

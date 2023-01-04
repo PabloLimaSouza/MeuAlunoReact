@@ -96,7 +96,7 @@ const handleClose = () => {
           setUserLogged(response.dadosUsuario);
           return history.push("/");
         } else {
-          setError(response);
+          setError("Erro ao realizar login. Tente novamente!");
         }
       }).then(() => {
         setLoading(false);

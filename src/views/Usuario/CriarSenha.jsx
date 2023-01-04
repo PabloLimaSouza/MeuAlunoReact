@@ -61,11 +61,11 @@ const CriarSenha = () => {
             .then( async (response) => {
                 if(response.ok){
                   let data = await response.json();
-                  setMensagem({ ...values, title: "Sucesso!", text: data })
+                  setMensagem({ ...values, title: "Sucesso!", text: data.message })
                   setOpen(true);
                 }else{
                   let data = await response.json();
-                  setMensagem({ ...values, title: "Erro!", text: data })
+                  setMensagem({ ...values, title: "Erro!", text: data.message })
                   setOpen(true);
                 }
               })

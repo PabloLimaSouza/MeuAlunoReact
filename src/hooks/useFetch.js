@@ -26,12 +26,19 @@ export const useFetch = (url,method, token, body) => {
             }),
             body: body       
     })
-        
-        .then(resp => resp.json())
-        .then(json => setResponse({
-                data: json,
-                loading: false
-            }));
+    
+    .then( async (response) => {
+        if(response.ok && response.status == 200){
+          let data = await response.json();
+          setResponse({data: data,loading: false})
+        }else{
+            setResponse({data: null, loading: false})
+        }
+      })
+      .catch((err) => {
+          console.log(err);
+      })       
+
     },[url,method])
     return response
 }
