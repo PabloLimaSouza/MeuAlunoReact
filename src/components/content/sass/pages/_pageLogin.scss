@@ -1,0 +1,135 @@
+.rf-page__login {
+    font-family: 'Poppins', sans-serif;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top:0;
+    left:0;    
+    @include mx-flex();
+    @include mx-flex-align-strech();
+    @include mx-flex-justify-start();
+}
+.rf-login__form{
+    position: relative;
+    height: 100%;
+    width: 350px;
+    @include mx-flex();
+    @include mx-flex-column();
+    @include mx-flex-center();
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    box-shadow: 1px 1px 20px 5px rgba(0, 0, 0, 0.10);
+    .rf-logo{
+        max-width: 100px;;
+    }
+    p{
+        text-align: center;
+        max-width: 200px;
+        text-align: center;
+        font-size: 0.9em !important;
+    }
+    form{
+        padding: 20px;
+        input[type="text"],
+        input[type="password"]{
+
+            height: 45px !important;
+            letter-spacing: 1.2px !important;
+            // font-size: 1.2em !important;
+            &:focus {
+                outline: 0;
+                border-color: #5988df;
+            }
+        }
+        button[type="submit"]{
+            height: 45px !important;
+        }
+    }
+    a{
+        text-align: center;
+        text-decoration: none;
+        color: $color-8;
+        margin-top: 20px;
+        font-size: 0.8em;
+    }
+}
+.rf-login__welcome{
+    flex: 1;
+    @include mx-flex();
+    @include mx-flex-column();
+    @include mx-flex-center();
+    background: url(images/rf-welcome.jpg);
+    background-position: center;
+    background-size: cover;
+    h1{
+        font-weight: 300;
+    }
+}
+
+
+
+  
+
+
+
+
+
+  .user-login__error {
+    color: red;
+  }
+
+  #loader{
+    position: absolute;
+    top: 100%;
+    right: 49%;
+  }
+  
+  .btn-recuperar-senha{
+    display: flex;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+    text-decoration: underline;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 400;
+    color: rgb(127, 133, 141);
+    margin: 0.5rem 0px 1rem;
+  }
+  
+
+  .btn-enviar-recuperacao { 
+    color: rgb(255, 255, 255);
+    background: #060b26;  
+    background-color: #060b26;
+  }
+  
+  .dialog-title {
+      
+      font-size: 1.25rem;
+      line-height: 1.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: rgb(0, 0, 0);
+      margin: 0px;
+      padding: 0px;
+      border: none;
+      list-style: none;
+      box-sizing: border-box;
+      font-size: 36px;
+      
+  }
+  
+  .dialog-message {
+      
+    font-size: 1.25rem;
+    line-height: 1.875rem;
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    list-style: none;
+    box-sizing: border-box;
+    font-size: 36px;
+    
+  }

@@ -1,0 +1,241 @@
+@for $i from 1 through 20 {
+    .--flex-#{$i},
+    .rf-item-flex-#{$i} {
+        flex: $i;
+        -webkit-box-flex: $i;
+        -ms-flex: $i;
+    }
+}
+
+@for $i from 1 through 20 {
+    .rf-order-#{$i} {
+        order: $i;
+    }
+}
+
+@for $i from 1 through 20 {
+    .--fgap-#{$i},
+    .rf-flex-gap-#{$i} {
+        gap: #{$i}px;
+    }
+}
+
+
+
+[class^="--f-"],
+[class*=" --f-"],
+[class^="--frow-"],
+[class*=" --frow-"],
+[class^="--fcol-"],
+[class*=" --fcol-"],
+[class^="rf-ds-flex-"],
+[class*=" rf-ds-flex-"] {
+    @include mx-flex;
+}
+
+[class^="--frow-"],
+[class^="rf-ds-flex-row-"],
+[class*=" rf-ds-flex-row-"] {
+    @include mx-flex-row;
+
+    &.--row-reverse {
+        flex-direction: row-reverse;
+    }
+}
+
+[class^="--fcol-"],
+[class^="rf-ds-flex-column-"],
+[class*=" rf-ds-flex-column-"] {
+    @include mx-flex-column;
+}
+
+.--f-center,
+.rf-ds-flex-center {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-center;
+}
+
+.--frow-strech,
+.rf-ds-flex-row-center {
+    @include mx-flex-align-strech;
+}
+
+.--frow-center,
+.rf-ds-flex-row-center {
+    @include mx-flex-align-center;
+}
+
+.--frow-centerbetween,
+.rf-ds-flex-row-center-between {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-between;
+}
+
+.--frow-centeraround,
+.rf-ds-flex-row-center-around {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-around;
+}
+
+/*----*/
+.--frow-centerend,
+.rf-ds-flex-row-center-end {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-end;
+}
+.--frow-centerstart,
+.rf-ds-flex-row-center-start {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-start;
+}
+
+.--frow-startbetween,
+.rf-ds-flex-row-start-between {
+    @include mx-flex-align-start;
+    @include mx-flex-justify-between;
+}
+
+.--frow-startaround,
+.rf-ds-flex-row-start-around {
+    @include mx-flex-align-start;
+    @include mx-flex-justify-around;
+}
+
+.--frow-startend,
+.rf-ds-flex-row-start-end {
+    @include mx-flex-align-start;
+    @include mx-flex-justify-end;
+}
+
+.--frow-start,
+.rf-ds-flex-row-start-start {
+    @include mx-flex-align-start;
+    @include mx-flex-justify-start;
+}
+
+
+.--frow-endbetween,
+.rf-ds-flex-row-end-between {
+    @include mx-flex-align-end;
+    @include mx-flex-justify-between;
+}
+
+.--frow-endaround,
+.rf-ds-flex-row-end-around {
+    @include mx-flex-align-end;
+    @include mx-flex-justify-around;
+}
+
+.--frow-end,
+.rf-ds-flex-row-end-end {
+    @include mx-flex-align-end;
+    @include mx-flex-justify-end;
+}
+
+.--frow-endstart,
+.rf-ds-flex-row-end-start {
+    @include mx-flex-align-end;
+    @include mx-flex-justify-start;
+}
+
+.--fcol,
+.rf-ds-flex-column {
+    @include mx-flex;
+    @include mx-flex-column;
+}
+
+.--fcol-center,
+.rf-ds-flex-column-center {
+    @include mx-flex-align-center;
+}
+
+.--fcol-centerbetween,
+.rf-ds-flex-column-center-between {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-between;
+}
+
+.--fcol-centeraround,
+.rf-ds-flex-column-center-around {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-around;
+}
+
+.--fcol-centerend,
+.rf-ds-flex-column-center-end {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-end;
+}
+
+.--fcol-centerstart,
+.rf-ds-flex-column-center-start {
+    @include mx-flex-align-center;
+    @include mx-flex-justify-start;
+}
+
+.--fcol-startbetween,
+.rf-ds-flex-column-start-between {
+    @include mx-flex-align-start;
+    @include mx-flex-justify-between;
+}
+
+.--fcol-startaround,
+.rf-ds-flex-column-start-around {
+    @include mx-flex-align-start;
+    @include mx-flex-justify-around;
+}
+
+.--fcol-startend,
+.rf-ds-flex-column-start-end {
+    @include mx-flex-align-start;
+    @include mx-flex-justify-end;
+}
+
+.--fcol-start,
+.rf-ds-flex-column-start-start {
+    @include mx-flex-align-start;
+    @include mx-flex-justify-start;
+}
+
+.--fcol-endbetween,
+.rf-ds-flex-column-end-between {
+    @include mx-flex-align-end;
+    @include mx-flex-justify-between;
+}
+
+.--fcol-endaround,
+.rf-ds-flex-column-end-around {
+    @include mx-flex-align-end;
+    @include mx-flex-justify-around;
+}
+
+.--fcol-end,
+.rf-ds-flex-column-end-end {
+    @include mx-flex-align-end;
+    @include mx-flex-justify-end;
+}
+
+.--fcol-endstart,
+.rf-ds-flex-column-end-start {
+    @include mx-flex-align-end;
+    @include mx-flex-justify-start;
+}
+
+
+.--fwrap,
+.--row-wrap {
+    flex-flow: row wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.rf-ds-none{
+    display:none;
+}
+
+.--to-dsBlock {
+    display: block;
+}
+.--to-dsFlex{
+    display:flex;
+}

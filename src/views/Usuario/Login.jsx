@@ -106,42 +106,48 @@ const handleClose = () => {
 
   return (
    
-    <div>
-      <img className="logotipo" src="https://i.imgur.com/LbUVpGb.png" />
-      <div className="wrapper">
-        <div className="user-login">
-          <h1 className="user-login__title">FAZER LOGIN</h1>
-          <form onSubmit={onSubmit}>
-            <div className="user-login__form-control">
+    <div className="rf-page__login">
+      <div className="rf-login__form">
+        <img className="rf-logo" src="https://i.imgur.com/LbUVpGb.png" />
+        <div className="rf-wid-100 --mg-20-0 --divider"></div>
+        <p className="rf-wid-100">Área restrita a usuários administrativos</p>
+        <div className="rf-wid-100 rf-form --inputs">
+          <form className="rf-wid-100 --fcol --fgap-10" onSubmit={onSubmit}>
+            <div className="rf-wid-100">
               <TextField
                 id="user"
                 name="Login"
-                label="E-mail"
+                placeholder="E-mail"
                 required={true}
                 onChange={onChange}
                 value={values.Login}
-                variant="outlined" />
+                variant="outlined" className="rf-wid-100 user-login__form-control"/>
             </div>
-            <div className="user-login__form-control">
+            <div className="rf-wid-100">
               <TextField
                 id="password"
+                placeholder="Senha"
                 name="Senha"
-                label="Senha"
                 type="password"
                 required={true}
                 onChange={onChange}
                 value={values.Senha}
                 variant="outlined"
-                className="user-login__form-control" />
+                className="rf-wid-100 user-login__form-control" />
             </div>
 
             <div className="user-login__error">{error}</div>
-            <button type="submit" className="user-login__submit-button" disabled={loading ? "disabled" : ''}>
+            <button type="submit" className="rf-wid-100 rf-button-color-client" disabled={loading ? "disabled" : ''}>
               Entrar
             </button>
-            <a href="#" className="btn-recuperar-senha" onClick={recuperarSenha}>Esqueceu a Senha?</a>
+            <a href="#" className="rf-wid-100" onClick={recuperarSenha}>Esqueceu a Senha?</a>
           </form>
         </div>
+      </div>
+      <div className="rf-login__welcome">
+        <h1>Bem-vindo ao Meus Alunos</h1>
+        <div className="rf-wid-10 --mg-20-0 --divider"></div>
+        <p className="--font-09 --frow-center --fgap-10"><span className="rf-icon-notification"></span>Para acessar, faça login ao lado</p>
       </div>
       <Dialog
         open={open}

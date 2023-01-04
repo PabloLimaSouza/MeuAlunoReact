@@ -1,0 +1,209 @@
+.rf-page__default {
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.rf-header {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+
+    .rf-header__content {
+        background: $color-client-sec;
+        // box-shadow: 1px 1px 10px 5px rgba(0, 0, 0, 0.08);
+        height: 70px;
+        @include mx-flex();
+        @include mx-flex-row();
+        @include mx-flex-align-center();
+        @include mx-flex-justify-between();
+        gap: 20px;
+        padding: 0 20px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+
+        p {
+            color: #333;
+        }
+
+        button {
+            border: 0;
+        }
+
+        .MuiInputBase-input {
+            color: rgb(90, 120, 146);
+            position: relative;
+            font-size: 0.8em;
+            width: 110px;
+            height: 30px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            @include mx-flex();
+            @include mx-flex-center();
+            line-height: initial;
+        }
+
+        .MuiInput-underline:before {
+            border: 0 !important;
+        }
+
+    }
+}
+
+.rf-menu {
+    position: fixed;
+    width: 250px;
+    height: 100%;
+    top: 0;
+    background: #f7f7f7;
+    box-sizing: border-box;
+    overflow: hidden;
+    @include mx-flex();
+    @include mx-flex-column();
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow: hidden;
+
+    .rf-menu__content {
+        padding: 10px 0;
+        flex: 1;
+        @include mx-scroll();
+        @include mx-flex();
+        @include mx-flex-column();
+        > div{
+            flex:1;
+        }
+        a {
+            padding: 10px 20px;
+            text-decoration: none;
+            box-sizing: border-box;
+            color: rgb(122, 122, 122);
+            font-size: 0.9em;
+    
+            span {
+                @include mx-flex();
+                @include mx-flex-row();
+                @include mx-flex-align-center();
+                gap: 15px;
+    
+                &:before {
+                    @include mx-flex();
+                    @include mx-flex-center();
+                    width: 40px;
+                    height: 40px;
+                    background: $color-client-sec;
+                    border-radius: 7px;
+                }
+            }
+    
+            &:hover {
+                background: $color-client-sec;
+            }
+        }
+    }
+
+    .rf-user__thumb {
+        width: 100%;
+        padding: 20px;
+        background: $color-client-sec;
+        @include mx-flex();
+        @include mx-flex-column();
+        @include mx-flex-center();
+        gap:10px;
+
+        .rf-icon-user {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            @include mx-flex();
+            @include mx-flex-center();
+            background: rgb(231, 231, 231);
+
+            &:before {
+                color: #ccc;
+                font-size: 1.7em;
+            }
+        }
+    }
+
+    .rf-versionsystem {
+        width: 100%;
+        text-align: left;
+        padding: 10px 20px;
+        border-top: 2px dotted #ccc;
+        font-size: 0.8em;
+        color: #ccc;
+    }
+}
+
+.rf-body {
+    float: right;
+    width: calc(100% - 250px);
+    padding-left: 20px;
+    padding-right: 10px;
+}
+
+.rf-footer {
+    display: none;
+}
+
+.rf-page__title{
+    padding: 20px;
+    padding-bottom: 10px;
+    @include mx-flex();
+    @include mx-flex-row();
+    @include mx-flex-align-center();
+    gap:10px;
+    &:before{
+        content: "";
+        font-size: 1.1em;
+        background: $color-client;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: none;
+
+    }
+    h1{
+        flex:1;
+        text-align: left;
+        font-size: 1em;
+        @include mx-flex();
+        @include mx-flex-row();
+        @include mx-flex-align-center();
+        gap:10px;
+        color: $color-client;
+        font-weight: 400;
+        position: relative;
+        &:before{
+            height: 29px;
+            width: 29px;
+            font-size: 0.8em;
+            color: $color-client;
+            border:2px solid $color-client;
+            @include mx-flex();
+            @include mx-flex-center();
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        &:after{
+            content: "";
+            height: 6px;
+            width: 29px;
+            background: $color-client;
+            border-radius: 5px;
+            position: absolute;
+            bottom: -15px;
+            left: 0px;
+        }
+    }
+}
+.rf-content{
+    padding: 20px;
+    .rf-box__content{
+        border: 2px solid rgb(233, 233, 233);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+}

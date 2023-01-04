@@ -7,56 +7,47 @@ export const MenuItemAdmin = [
     {
         title: 'Home',
         path: '/',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-home'
     },
     {
         title: 'Empresas',
         path: '/empresas',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-office'
     },
     {
         title: 'Aulas',
         path: '/aulas',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-book'
     },
     {
         title: 'Serviços',
         path: '/servicos',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-home'
     },
     {
         title: 'Matérias',
         path: '/materias',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-books'
     },
     {
         title: 'Alunos',
         path: '/alunos',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-user'
     },
     {
         title: 'Financeiro',
         path: '/financeiros',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-coin-dollar'
     },
     {
         title: 'Usuários',
         path: '/usuarios',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-users'
     },
     {
         title: 'Contratos',
         path: '/contratos',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-profile'
     }  
 ]
 
@@ -64,37 +55,31 @@ export const MenuItemCliente = [
     {
         title: 'Home',
         path: '/',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-home'
     },  
     {
         title: 'Matérias',
         path: '/materias',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-books'
     },  
     {
         title: 'Aulas',
         path: '/aulas',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-book'
     },
     {
         title: 'Serviços',
         path: '/servicos',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-home'
     },    
     {
         title: 'Alunos',
         path: '/alunos',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-user'
     },
     {
         title: 'Financeiro',
         path: '/financeiros',
-        icon: <AiIcons.AiFillHome/>,
-        cName: 'nav-text'
+        cName: 'rf-icon-coin-dollar'
     }     
 ]

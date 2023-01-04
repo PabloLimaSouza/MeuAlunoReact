@@ -1,0 +1,195 @@
+.rf-scroll {
+    @include mx-scroll();
+}
+.rf-scroll-h {
+    display:block;
+    @include mx-scroll-h();
+}
+
+.--divider,
+.--rf-divider,
+.rf-divider__dotted {
+    border-top: 2px dotted #cfcfcf;
+    &.--recuo-3{
+        width:calc(100% - 6px);
+        margin-left:3px !important;
+    }
+}
+
+.rf-widget__payment {
+    font-family: 'Poppins', sans-serif;
+    background: #fff;
+
+    @include mx-flex();
+    @include mx-flex-column();
+    gap: 10px;
+
+    &.--row {
+        @include mx-flex-row();
+    }
+
+    .rf-payment__content {
+        @include mx-flex();
+        gap: 10px;
+
+        &.--column {
+            @include mx-flex-column();
+        }
+
+        &.--row {
+            @include mx-flex-row();
+
+            .rf-payment__drop {
+                max-width: 350px;
+            }
+        }
+    }
+
+    .rf-payment__drop {
+        @include mx-flex();
+        @include mx-flex-column();
+        gap: 10px;
+    }
+
+    .rf-payment__infors {
+        max-height: 380px;
+        @include mx-flex();
+        @include mx-flex-column();
+        @include mx-scroll();
+
+        .rf-infors__title {
+            padding: 20px;
+            position: relative;
+            background: #f7f7f7;
+            border-radius: 10px;
+
+            &:hover {
+                background: #f1f1f1 !important;
+            }
+
+            &:before {
+                position: absolute;
+                right: 20px;
+                top: calc(50% - 9px);
+                color: #ffffff;
+                font-size: 1em;
+                height: 20px;
+                width: 20px;
+                border-radius: 3px;
+                background: #04b404;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+            }
+
+            &.--rotate {
+                &:before {
+                    transform: rotate(180deg);
+                }
+            }
+
+            &.--top-20 {
+                &:before {
+                    top: 20px;
+                }
+            }
+        }
+    }
+
+    .rf-wallet__balance {
+        font-family: 'Poppins', sans-serif;
+        background: #fff;
+        margin: 10px 0;
+
+        .rf-balance__value {
+
+            > p {
+                margin-top: 10px;
+                padding-top: 10px;
+                font-size: 1em;
+                border-top: 2px dotted #ccc;
+            }
+
+            .--balance {
+                font-size: 1.5em;
+                font-weight: bold;
+            }
+        }
+    }
+
+    select {
+        font-size: 1.1em !important;
+    }
+
+    .rf-legend {
+        color: #000 !important;
+    }
+
+    &.--pix {
+        max-height: 100%;
+        overflow: auto;
+
+        .rf-pix__content {
+            @include mx-grid(1);
+            @include mx-grid-gap(20);
+            @include mx-scroll();
+
+
+            // @include mx-responsive(1366px) {
+            //     @include mx-grid(2);
+            //     max-height: 500px;
+            // }
+        
+
+            .rf-pix__qrcode {
+                border-radius: 10px;
+                padding: 10px;
+                border: 1px solid #e9e9e9;
+                @include mx-flex();
+                @include mx-flex-center();
+            }
+
+            .rf-pix__steps {
+                margin: 10px 0;
+
+                .rf-step__item {
+
+                    @include mx-flex();
+                    @include mx-flex-row();
+                    @include mx-flex-justify-start();
+                    @include mx-flex-align-center();
+                    padding: 5px 0;
+
+                    span:first-of-type {
+                        width: 20px;
+                        height: 20px;
+                        @include mx-flex();
+                        @include mx-flex-center();
+                        border: 1px solid $color-8;
+                        color: $color-8;
+                        border-radius: 50%;
+                        margin-right: 10px;
+                        font-size: 0.8em;
+                    }
+
+                    span:last-of-type {
+                        font-size: 0.8em;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.--relative{
+    position:relative;
+}
+.--sticky{
+    position:sticky;
+    top:0;
+}
+.--sticky-bottom {
+    position: sticky;
+    bottom: 0;
+}

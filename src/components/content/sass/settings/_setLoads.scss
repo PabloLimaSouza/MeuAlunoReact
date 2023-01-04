@@ -1,0 +1,121 @@
+.rf-load{
+    width: 100%;
+    height: 100%;
+
+    @include mx-flex();
+    @include mx-flex-center();
+    position: fixed;
+    /*background: rgba(255, 255, 255, 0.25);*/
+    background: rgba(255, 255, 255, 0.70);
+    left: 0;
+    top: 0;
+    z-index: 9999999 !important;
+
+
+    > img {
+        width: 100px;
+    }
+
+    @keyframes col-1 {
+        0% {
+            height: 128px
+        }
+
+        50% {
+            height: 50px
+        }
+
+        100% {
+            height: 50px
+        }
+    }
+
+    @keyframes col-2 {
+        0% {
+            height: 116.00000000000001px
+        }
+
+        50% {
+            height: 50px
+        }
+
+        100% {
+            height: 50px
+        }
+    }
+
+    @keyframes col-3 {
+        0% {
+            height: 104px
+        }
+
+        50% {
+            height: 50px
+        }
+
+        100% {
+            height: 50px
+        }
+    }
+
+    .rf-load__content {
+        /*width: 100px;
+        height: 100px;
+        background-position: center;
+        background-size: contain;
+        background-image: url(../Imagens/rf-load.gif);*/
+        /*overflow: hidden;*/
+        @include mx-flex();
+        @include mx-flex-column();
+        @include mx-flex-center();
+        width: 380px;
+        height: 160px;
+        position: relative;
+
+        .rf-load__text {
+            position: absolute;
+            text-align: center;
+            font-size: 1.7em;
+            bottom: 0;
+            font-family: 'Poppins', sans-serif;
+            color: $color-client;
+        }
+
+        .rf-load__icon {
+            width: 80px;
+            height: 100%;
+            position: relative;
+            transform: translateZ(0) scale(1);
+            backface-visibility: hidden;
+            transform-origin: 0 0;
+
+            @include mx-flex();
+            @include mx-flex-row();
+            @include mx-flex-align-center();
+            @include mx-flex-justify-between();
+
+            div {
+                position: relative;
+                width: 15px;
+
+                &:nth-child(1) {
+                    background: $color-client;
+                    animation: col-1 1s cubic-bezier(0,0.5,0.5,1) infinite;
+                    animation-delay: -0.2s
+                }
+
+                &:nth-child(2) {
+                    background: $color-client;
+                    animation: col-2 1s cubic-bezier(0,0.5,0.5,1) infinite;
+                    animation-delay: -0.1s
+                }
+
+                &:nth-child(3) {
+                    background: $color-client;
+                    animation: col-3 1s cubic-bezier(0,0.5,0.5,1) infinite;
+                    animation-delay: undefineds
+                }
+            }
+        }
+    }
+}

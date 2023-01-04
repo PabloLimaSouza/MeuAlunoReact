@@ -1,0 +1,24 @@
+$num-1: 5;
+@for $i from 1 through 20 {
+    .--mg-#{$num-1} {
+        margin: $num-1 +px;
+    }
+    $num-1: $num-1 + 5;
+}
+
+
+$num-2: 5;
+@for $i from 1 through 12 {
+    .--mg-#{$num-2}-0 {
+        margin: $num-2+px 0;
+    }
+    $num-2: $num-2 + 5;
+}
+
+$num-3: 5;
+@for $i from 1 through 12 {
+    .--pd-#{$num-3}-0 {
+        padding: $num-3+px 0;
+    }
+    $num-3: $num-3 + 5;
+}
